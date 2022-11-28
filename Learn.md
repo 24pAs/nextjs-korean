@@ -5,8 +5,8 @@
 ## 																		Next.js
 
 - [Foundations](#Foundations)
-  - [About Next.js](#About Next.js)
-  - From JavaScript to React
+  - [About Next.js](#about-Next.js)
+  - [From JavaScript to React](#from-javascript-to-react)
   - From React to Next.js
   - How Next.js Works
 - [Create Your First App](#create-your-first-app)
@@ -17,7 +17,7 @@
   - Dynamic Routes
   - API Routes
   - Deploying Your Next.js App
-- [Search Engine Optimization](#Search Engine Optimization)
+- [Search Engine Optimization](#search-engine-optimization)
   - Introduction to SEO
   - Crawling and Indexing
   - Rendering and Ranking
