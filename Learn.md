@@ -4,12 +4,12 @@
 
 ## 																		Next.js
 
-- Foundations
-  - About Next.js
+- [Foundations](#Foundations)
+  - [About Next.js](#About Next.js)
   - From JavaScript to React
   - From React to Next.js
   - How Next.js Works
-- Create Your First App
+- [Create Your First App](#create-your-first-app)
   - Create a Next.js App
   - Navigate Between Pages
   - Assets, Metadata, and CSS
@@ -17,14 +17,14 @@
   - Dynamic Routes
   - API Routes
   - Deploying Your Next.js App
-- Search Engine Optimization
+- [Search Engine Optimization](#Search Engine Optimization)
   - Introduction to SEO
   - Crawling and Indexing
   - Rendering and Ranking
   - Performanca & Core Web Vitals
   - Improving your Core Web Vitals
   - Monitoring your Core Web Vitals
-- Excel
+- [Excel](#Excel)
   - TypeScript
 
 
@@ -316,8 +316,6 @@
 #### 5) Other Tools
 
 #### 6) What To Learn Next
-
-
 
 ## Excel
 
