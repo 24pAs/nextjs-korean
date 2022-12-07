@@ -175,7 +175,7 @@ HTML 파일 내부에서 JavaScript를 사용할 수 있게 `script` 태그를 �
 
 하지만 UI를 구성하는 것에 관해서는 개발 프로세스를 빠르게 만들 수 있기 때문에 선언적인 접근이 선호됩니다. DOM method를 적는 것 대신, 개발자가 보여주고 싶은 것을 선언할 수 있다면 더욱 도움이 될 수 있습니다.(위 예시의 경우, 몇가지 단어가 포함된 `h1` 태그).
 
-다시 말해, **선언형 프로그래밍**은 피자 만드는 방법을 하나하나 요리사가 지시하는 것과 같습니다. **명령형 프로그래밍**은 피자를 만드는 데 필요한 과정에 대해서는 생각하지 않고 그저 피자를 주문하는 것과 같습니다.
+다시 말해, **명령형 프로그래밍**은 피자 만드는 방법을 하나하나 요리사가 지시하는 것과 같습니다. **선언형 프로그래밍**은 피자를 만드는 데 필요한 과정에 대해서는 생각하지 않고 그저 피자를 주문하는 것과 같습니다.
 
 #### React: A declarative UI library
 
@@ -602,7 +602,7 @@ return <h1>{title}</h1>;
 중괄호를 JSX의 영역에서 자바스크립트 영역으로 넘어가는 방법이라고 생각할 수 있다. 중괄호 안에서는 어떠한 자바스크립트 표현( 단일 값으로 평가되는 것)도 추가 가능하다. 아래는 그 예시이다. 
 
 1. Dot notation(점 표기법)을 사용한 객체 속성 접근 
-    
+   
     ```jsx
     function Header(props) {
       return <h1>{props.title}</h1>;
@@ -610,7 +610,7 @@ return <h1>{title}</h1>;
     ```
     
 2. A **template literal**
-    
+   
     ```jsx
     function Header({ title }) {
       return <h1>{`Cool ${title}`}</h1>;
@@ -618,7 +618,7 @@ return <h1>{title}</h1>;
     ```
     
 3. 함수의 반환값
-    
+   
     ```jsx
     function createTitle(title) {
       if (title) {
@@ -634,7 +634,7 @@ return <h1>{title}</h1>;
     ```
     
 4. 삼항 연산자
-    
+   
     ```jsx
     function Header({ title }) {
       return <h1>{title ? title : 'Default Title'}</h1>;
@@ -905,19 +905,19 @@ Managing State
 방금 리액트의 필수적인 개념인 컴포넌트, props, 상태에 대해 알아보았다. 해당 내용에 대해 강력한 기반을 갖추는 것은 리액트 애플리케이션을 구축하는 것을 시작하는 데 도움이 될 것이다. 해당 내용들에 대해 자신감을 가졌다면 아래와 같은 다른 리액트의 주제들도 확인하면 좋다. 
 
 - [How React handles renders](https://beta.reactjs.org/learn/render-and-commit) and [how to use refs](https://beta.reactjs.org/learn/referencing-values-with-refs)
-    
+  
     리액트에서 렌더링을 다루는 방법과 ref를 사용하는 방법 
     
 - [How to manage state](https://beta.reactjs.org/learn/managing-state)
-    
+  
     상태를 다루는 방법 
     
 - [How to use context for deeply nested data](https://beta.reactjs.org/learn/passing-data-deeply-with-context)
-    
+  
     깊이 중첩된 데이터를 위해 context를 사용하는 방법 
     
 - [How to use React API hooks](https://beta.reactjs.org/reference) such as `useEffect()`
-    
+  
     `useEffect()`와 같은 리액트 API 훅 사용 방법 
     
 
@@ -945,19 +945,107 @@ Managing State
 
 #### 1) Introduction
 
+Next.js의 심화 내용을 배우기 전에 어떻게 Next.js가 동작하는 방식에 대한 기본적이 이해가 있다면 좋습니다.
+
+이 과정의 시작 부분에서 React가 애플리케이션을 build하는 다양한 방식이 있고 어떻게 애플리케이션을 구조화하고 구축하는지에 대해 이야기 했습니다. Next.js는 애플리케이션을 구조화할 수 있는 프레임워크와 개발 과정과 애플리케이션 모두 더욱 빠르게 만드는 데 도움이 되는 최적화를 제공합니다.
+
+다음 섹션에서는 아래의 보여주는 서로 다른 공간에서 애플리케이션의 코드에 어떤 일이 발생하는지를 알아볼 것입니다.
+
+- 코드가 작동하는 곳의 환경 : **Development vs. Production**
+- 코드가 작동할 때의 시점 : **Build Time vs. Runtime**
+- 어디에서 rendering이 발생하는가 : **Client vs. Server**
+
+이제 Next.js가 작동하는 동안 뒤에서 벌어지는 여러가지 process에 대해 논의하고 개념들을 깊게 공부해봅시다!
+
 #### 2) From Development to Production
+
+#### Development and Production Environments
+
+환경을 코드가 동작하는 Context로 생각할 수 있습니다.
+
+개발을 하는 동안 local machine에서 애플리케이션을 빌드하고 실행합니다. 프로덕션 환경으로 이동하는건 애플리케이션이 배포되고 유저들이 사용할 수 있도록 만드는 과정입니다.
+
+#### How this applies to Next.js
+
+Next.js는 애플리케이션의 development와 production 환경을 위한 여러 기능을 제공합니다. 예를 들어,
+
+- 개발 환경(Development)에서 Next.js는 애플리케이션 build에 대해 최적화된 경험을 제공합니다. Next.js는 [TypeScript](https://nextjs.org/docs/basic-features/typescript), [ESLint integration](https://nextjs.org/docs/basic-features/eslint), [Fast Refresh](https://nextjs.org/docs/basic-features/fast-refresh) 등과 같이 **Developer Experience(개발자 경험)** 을 향상시키는데 목적을 둔 기능들을 함께 제공합니다.
+- 배포 환경(Production)에서 Next.js는 최종 사용자와 애플리케이션을 사용하는 경험을 최적화합니다. Next.js는 성능과 접근성을 높이기 위해 코드를 변환하는 데 목적을 둡니다.
+
+각 환경마다 목표과 고려사항들이 다르기 때문에 애플리케이션을 development 환경에서 production 환경으로 옮기기 위해서는 완료되어야 되는 것들이 많습니다. 예를 들어, 애플리케이션의 코드는 [컴파일](https://nextjs.org/learn/foundations/how-nextjs-works/compiling), [번들링](https://nextjs.org/learn/foundations/how-nextjs-works/bundling), [축소](https://nextjs.org/learn/foundations/how-nextjs-works/minifying) 및 [코드 분할](https://nextjs.org/learn/foundations/how-nextjs-works/code-splitting)이 필요합니다.
+
+#### The Next.js Compiler
+
+Next.js는 수많은 코드 변환과 인프라 설정을 처리하여 더욱 수비게 애플리케이션을 production 환경으로 전환시켜줍니다.
+
+이것은 Next.js가 저수준 언어인 Rust로 만들어져 compilation, minification, bundling 등에 사용할 수 있는 플랫폼인  SWC라는 컴파일러를 가지고 있기 때문에 가능합니다.
 
 #### 3) Compiling
 
+개발자들은 JSX, TypeScript 그리고 현대적인 JavaScript 같이 더욱 개발자 친숙한 언어들로 코드를 작성합니다. 이런 변화는 개발자들의 효율성과 자신감을 높여줬지만 브라우저가 이해할 수 있게 JavaScript로 compile 해줄 필요가 있습니다.
+
+Compiling은 한 언어로 된 를 다른 언어 또는 해당 언어의 다른 버전으로 바꿔주는 과정을 의미합니다.
+
+<img src="https://nextjs.org/static/images/learn/foundations/compiling.png" />
+
+Next.js에서 **Compliation** 은 당신의 코드를 수정하거나 애플리케이션 배포를 위한 build의 일부 과정 동안 발생합니다.
+
 #### 4) Minifying
+
+개발자는 가독성을 높이는 코드를 작성합니다. 이러한 코드는 주석, 공백, 들여쓰기, 여러 줄 등의 코드를 동작시키는데 필요하지 않은 추가적인 정보들을 포함할 지도 모릅니다.
+
+<img src="https://nextjs.org/static/images/learn/foundations/minifying.png" />
+
+Minification(최소화) 코드 기능의 변화 없이 주석, 코드 포매팅과 같은 불필요한 코드를 제거하는 과정입니다. 파일 크기를 줄여 애플리케이션의 성능을 개선시키는 것이 Minification의 목표입니다. 
+
+Next.js에서 JavaScript와 CSS 파일은 배포 환경에서 자동적으로 최소화시킵니다.
 
 #### 5) Bundling
 
+#### What is Bundling?
+
+개발자들은 애플리케이션을 더 큰 애플리케이션을 구축하는 데 사용할 수 있는 module, components, function으로 분리합니다. 이러한 내부 모듈과 외부 패키지들을 내보내고 가져오게 되면 비로소 파일 종속성을 가진 복잡한 웹이 만들어집니다.
+
+<img src="https://nextjs.org/static/images/learn/foundations/bundling.png" />
+
+번들링은 유저가 웹 페이지를 방문할 때 파일에 대한 수많은 요청을 줄이기 위해 웹의 의존성들을 해결하고 파일이나 모듈을  브라우저의 최적화된 번들로 병합(또는 패키징)하는 과정을 말합니다.
+
 #### 6) Code Splitting
+
+개발자들은 보통 각기 다른 URL에서 접근할 수 있게 만들기 위해 여러 개의 페이지로 애플리케이션을 분리합니다. 그리고 이 각각의 페이지는 애플리케이션의 유일한 **entry point** 가 됩니다.
+
+<img src="https://nextjs.org/static/images/learn/foundations/code-splitting.png" />
+
+Next.js는 코드 스플리팅을 기본적으로 지원합니다. `pages/` 디렉토리 안의 각 파일은 build단계 동안 자동적으로 JavaScript 번들로 분리됩니다.
+
+추가사항:
+
+- 페이지들 간 공유되는 코드는 페이지 이동 간에 같은 코드를 다시 다운로드 받지 않기 위해 또다른 bundle로 분리됩니다.
+- 페이지 초기 로드 후, Next.js는 이동 가능한 다른 페이지의 코드를 [pre-loading](https://nextjs.org/docs/api-reference/next/link) 할 수 있습니다.
+- [Dynamic imports](https://nextjs.org/docs/advanced-features/dynamic-import) 는 초기에 로드된 코드를 명시적으로 분리하는 또 다른 방법입니다.
 
 #### 7) Build Time vs. Runtime
 
+**Build Time**(or build step)은 배포를 위해 애플리케이션의 코드를 준비하는 일련의 과정에 붙혀진 이름입니다.
+
+애플리케이션을 build 할 때, Next.js는 당신의 코드를 [서버](https://nextjs.org/learn/foundations/how-nextjs-works/client-and-server)에 배포하고 사용자들이 이용할 준비가 된 프로덕션에 최적화된 파일로 변경할 것입니다. 이 파일을 다음과 같은 것을 포함합니다.
+
+- 정적으로 생성된 페이지의 HTML 파일
+- [서버](https://nextjs.org/learn/foundations/how-nextjs-works/client-and-server)에서 페이지를 [렌더링](https://nextjs.org/learn/foundations/how-nextjs-works/rendering) 하기 위한 JavaScript 코드
+- [클라이언트](https://nextjs.org/learn/foundations/how-nextjs-works/client-and-server)에서 동적으로 만드는 페이지를 위한 JavaScript 코드
+- CSS 파일
+
+**Runtime**(or request time)은 애플리케이션이 빌드와 배포가 된 후 사용자의 요청에 대한 응답으로 애플리케이션이 실행하는 기간을 의미합니다.
+
+다음으로 클라이언트, 서버 그리고 렌더링에 대해서 이야기 해보도록 하겠습니다.
+
 #### 8) Client and Server
+
+웹 애플리케이션의 맥락에서 **Client**는 애플리케이션 코드를 위해 서버에 요청을 보내는 사용자 기기의 브라우저를 말합니다. 그리고 서버로부터 받은 응답을 사용자가 상호 작용할 수 있는 인터페이스로 바꿉니다.
+
+<img src="https://nextjs.org/static/images/learn/foundations/client-server.png" />
+
+**Server** 는 애플리케이션의 코드를 저장하고, Client로부터 요청을 받고, 몇가지의 연산을 진행하고, 적절한 응답을 보내주는 데이터 센터의 컴퓨터를 말합니다.
 
 #### 9) Rendering
 
