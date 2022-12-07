@@ -951,7 +951,7 @@ Managing State
 
 #### 렌더링이란 무엇인가?
 
-리액트에서 UI를 표현하기 위해서 쓴 HTML은 필수적으로
+리액트에서 UI를 표현하기 위해서 쓴 HTML 표현은 변환하는 작업을 거쳐야 합니다.
 이 과정을 렌더링이라고 부릅니다.
 
 렌더링은 서버 또는 클라이언트에서 발생할 수 있습니다. 렌더링은 빌드시간에 일어날 수도 있고 모든 요청마다 일어날 수 있습니다.
@@ -971,7 +971,7 @@ SSR과 SSG는 Pre-rendering을 한다고 알려져 있습니다. 왜냐하면 �
 
 반대로 Next.js는 기본적으로 모든 페이지를 **사전 렌더링합니다.** Pre-rendering은 유저 device에서 JavaScript에 의해 모두 수행되는 대신 서버에서 미리 생성됨을 의미합니다.
 
-CSR(Client-Side-rendering)은 렌더링이 끝날때까지 유저는 빈 페이지를 볼 것 입니다. 반대로 Pre-rendering은 유저가 완서된 HTML을 볼 수 있습니다.
+CSR(Client-Side-rendering)은 렌더링이 끝날때까지 유저는 빈 페이지를 볼 것 입니다. 반대로 Pre-rendering은 유저가 완성된 HTML을 볼 수 있습니다.
 
 ![](https://nextjs.org/static/images/learn/foundations/pre-rendering.png)
 
