@@ -1049,7 +1049,7 @@ Next.js에서 다른 페이지를 만들수 있는 방법이다.
 
 웹페이지에 페이지들 사이를 연결할때 `<a>` HTML tag를 사용한다.
 
-Next.js는 application에선 `Link` Component `nest/link`를 사용하여 페이지들을 연결 할 수 있다. `<Link>`는 client-side navigation을 할 수 있고, navigation 동작을 통해 더 질 제어를 하는 props를 사용할 수 있다.
+Next.js는 application에선 `Link` Component `nest/link`를 사용하여 페이지들을 연결 할 수 있다. `<Link>`는 client-side navigation을 할 수 있고, navigation 동작을 통해 더 잘 제어하는 props를 사용할 수 있다.
 
 **Using `<Link>`**
 
@@ -1126,7 +1126,7 @@ Next.js는 code splitting이 자동적이고, 각 페이지는 그 페이지가 
 요청한 페이지의 코드만 로딩하는 것은 페이지들이 분리되는 것을 의미한다.
 만약 특정 페이지가 error가 나도 나머지 application은 동작한다.
 
-게다가, Next.js의 production build에서는 `Link` compoenents 는 browser의 viewport 안에서 나타날때 마다, Next.js는 자동적으로 백그라운드에서 연결된 페이지들의 코드를 prefetch합니다. 
+게다가, Next.js의 production build에서는 `Link` compoenents 는 browser의 viewport 안에서 나타날때 마다, Next.js는 자동적으로 백그라운드에서 연결된 페이지들의 코드를 prefetch 한다. 
 링크를 클릭할때까지 대상 페이지의 코드는 백그라운드에서 로드될 준비를 하고 있고, 페이지 전환은 거의 즉시 된다.
 
 **Summary**
@@ -1135,7 +1135,7 @@ Next.js는 code splitting, client-side navigation, 그리고 prefetching(in prod
 
 `pages` 아래의 파일과 같은 routes를 만들고 내장된 `Link` compoenent를 사용한다. 라우팅 라이브러리들은 필수가 아니다.
 
-` in the API reference for next/link` 에서 `Link` component,  `in the routing documentation.`에서 routing을 더 학습 수 있다. 
+` in the API reference for next/link` 에서 `Link` component,  `in the routing documentation.`에서 routing을 더 학습 할수 있다. 
 
 >Note: 만약 Next.js app 바깥의 외부 페이지 링크가 필요하다면 `<Link>` 없이 `<a>` tag를 사용하면 된다.
 
