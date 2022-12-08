@@ -981,13 +981,163 @@ Managing State
 
 #### 1) Introduction
 
+지금까지 Next.js app 에 하나의 페이지만 있다. 웹사이트들과 웹 어플리케이션들은 일반적으로 다수의 다른 페이지들을 가진다.
+application에 더 많은 페이지들을 추가하는 방법을 알아보자.
+
+**What You`ll learn in This Lesson**
+
+이 단원에서 할것:
+- 통합 file system routing을 사용하여 새로운 페이지 만들기
+- client-side navigation과 페이지들을 잇는 `Link` compoenent 사용법 배우기
+- code splitting 과 prefetching을 위한 built-in 지원에 대하여 배우기
+
+> 만약 Next.js routing 에 대한 자세한 문서를 찾는다면 여기를 봐라. routing documentation (차후 링크 필요)
+
 #### 2) Setup
+
+이전 단원부터 계속 진행중이라면 이 페이지를 넘어가도 된다. 아래의 버튼을 클릭해서 다음 페이지로 이동(버튼 없음)
+
+**Download Starter Code(Optional)**
+
+만약 이전 단원부터 진행중이지 않다면 이 단원 아래에 있는 starter code로 다운로드, 설치 그리고 실행할 수 있다. 이 코드는 이전 단원의 결과와 동일한 'nextjs-blog' 디렉토리를 설정한다.
+
+다시 말하지만 이전 단원을 마무리 했다면 이것은 필요치 않다.
+
+```bash
+npx create-next-app@latest nextjs-blog --use-npm --example "https://github.com/vercel/next-learn/tree/master/basics/navigate-between-pages-starter"
+```
+그런 다음 command output의 명령에 따른다.(`cd` directory 하고 development server 시작)
+
 
 #### 3) Pages in Next.js
 
+**Pages in Next.js**
+
+Next.js에선 페이지는 `pages` directory에 있는 파일로 부터 exported 된 React Component 이다.
+
+페이지들은 파일이름을 기반으로 된 route와 연결된다. 예를 들어, development에선:
+- `pages/index.js` 는 `/` route 와 연결되어있다.
+- `pages/posts/first-post.js`는 `/posts/first-post` route 와 연결되어있다.
+- 우리는 이미 `pages/index.js` 를 가지고 있어서 `pages/posts/first-post.js` 를 만들고 어떻게 작동하는지 보자. 
+
+**Create a New Page**
+
+`pages` 아래에 `posts` directory를 만든다.
+아래의 컨텐츠와 함께 `posts` directory안에 `first-post.js` 파일을 만든다.
+
+```js
+export default function FirstPost() {
+  return <h1>First Post</h1>;
+}
+```
+
+component는 다른이름을 가질 수 있지만 `default` export를 반드시 해야한다.
+
+지금, development server 가 실행되는지 확인하고 http://localhost:3000/posts/first-post 를 방문하자. 다음 페이지를 볼 수 있다.
+
+![image](https://nextjs.org/static/images/learn/navigate-between-pages/first-post.png)
+
+Next.js에서 다른 페이지를 만들수 있는 방법이다.
+
+간단히 `pages` directory 아래에 JS file을 만들면, 파일의 path가 URL path 가 된다.
+
+어떻게 보면, HTML 또는 PHP 파일들을 사용하여 웹사이트를 구축하는 것과 비슷하다. HTML을 작성하는 대신 JSX를 작성하고 React component를 사용한다.
+
+새롭게 추가된 페이지에 링크를 추가하여 홈페이지로 부터 이동이 가능하도록 하자.
+
 #### 4) Link Component
 
+웹페이지에 페이지들 사이를 연결할때 `<a>` HTML tag를 사용한다.
+
+Next.js는 application에선 `Link` Component `nest/link`를 사용하여 페이지들을 연결 할 수 있다. `<Link>`는 client-side navigation을 할 수 있고, navigation 동작을 통해 더 질 제어를 하는 props를 사용할 수 있다.
+
+**Using `<Link>`**
+
+첫번째, `pages/index.js`을 열고, 최상단에 `Link` component from `next/link`를 import 하는 라인을 추가해라.
+
+```js
+import Link from 'next/link';
+```
+
+그리고 나서 아래와 같이 생긴 `h1` tag 를 찾아라:
+
+```js
+<h1 className="title">
+  Welcome to <a href="https://nextjs.org">Next.js!</a>
+</h1>
+```
+
+그리고 아래와 같이 변경해라:
+
+```js
+<h1 className="title">
+  Read <Link href="/posts/first-post">this page!</Link>
+</h1>
+```
+
+다음, `pages/posts/first-post.js` 열고 아래와 같이 컨텐츠를 변경해라:
+
+```js
+import Link from 'next/link';
+
+export default function FirstPost() {
+  return (
+    <>
+      <h1>First Post</h1>
+      <h2>
+        <Link href="/">Back to home</Link>
+      </h2>
+    </>
+  );
+}
+```
+
+볼 수 있듯이, `Link` component 는 `<a>` tag 들을 사용하는 것과 비슷하지만 `<a href="…">`을 사용하는 대신 `<Link href="…">`를 사용한다.
+
+>Note: Next.js 12.2 버전 이전에는 `<a>` tag를 `<Link>` component를 감싸는 것이 필수였지만 12.2 이상부터는 필수가 아니다.
+> 
+
+작동하는지 확인하자. 각 페이지에 링크가 있고, 뒤와 앞으로 이동 할 수 있다.
+
+![image](https://nextjs.org/static/images/learn/navigate-between-pages/links.gif)
+
 #### 5) Client-Side Navigation
+`Link` component는 같은 Next.js app 의 두개의 페이지 사이에서 clint-side navigation 할 수 있게 한다.
+
+client-side navation의 의미는 javascript를 사용하여  브라우저가 수행하는 기본적인 navigation 보다 빠른 페이지의 transition(전환)을 일으키는 것을 말한다.
+
+이것을 간단히 증명할 수 있는 간단한 방법:
+- 브라우저의 개발 툴을 사용하여 `<html>`의 `background` CSS property를 `yellow`로 바꾼다.
+- 두 사이를 링크를 클릭하여 뒤 와 앞으로 이동한다.
+- 페이지 전환사이에 노란색 뒷배경이 지속되는 것을 볼 수 있다.
+
+이것은 브라우저가 전체 페이지를 load하지 않고 client-side navigation이 작동하는 것을 보여준다.
+
+![image](https://nextjs.org/static/images/learn/navigate-between-pages/client-side.gif)
+
+만약 `<Link href="…">` 대신 `<a href="…">`을 사용했다면, 브라우저는 full refresh를 하기에 백그라운드 색은 링크 클릭시 지워진다.
+
+**Code splitting and prefetching**
+
+Next.js는 code splitting이 자동적이고, 각 페이지는 그 페이지가 필요할 시에만 로드된다. 홈페이지가 render 되었을 때, 다른 페이지들의 코드는 초기에 전달되지 않는 것을 의미한다.
+
+이 것은 몇백개의 페이지들을 가지고 있어도 홈페이지 로드는 빠르다는 것을 증명한다.
+
+요청한 페이지의 코드만 로딩하는 것은 페이지들이 분리되는 것을 의미한다.
+만약 특정 페이지가 error가 나도 나머지 application은 동작한다.
+
+게다가, Next.js의 production build에서는 `Link` compoenents 는 browser의 viewport 안에서 나타날때 마다, Next.js는 자동적으로 백그라운드에서 연결된 페이지들의 코드를 prefetch합니다. 
+링크를 클릭할때까지 대상 페이지의 코드는 백그라운드에서 로드될 준비를 하고 있고, 페이지 전환은 거의 즉시 된다.
+
+**Summary**
+
+Next.js는 code splitting, client-side navigation, 그리고 prefetching(in production)에 의해 최고의 퍼포먼스를 위한 자동적 최적화를 한다.
+
+`pages` 아래의 파일과 같은 routes를 만들고 내장된 `Link` compoenent를 사용한다. 라우팅 라이브러리들은 필수가 아니다.
+
+` in the API reference for next/link` 에서 `Link` component,  `in the routing documentation.`에서 routing을 더 학습 수 있다. 
+
+>Note: 만약 Next.js app 바깥의 외부 페이지 링크가 필요하다면 `<Link>` 없이 `<a>` tag를 사용하면 된다.
 
 ### 3. Assets, Metadata, and CSS
 
