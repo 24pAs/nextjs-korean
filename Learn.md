@@ -106,7 +106,7 @@ HTML 파일 내부에서 JavaScript를 사용할 수 있게 `script` 태그를 �
     <div id="app"></div>
 
     <script type="text/javascript">
-      const app = document.getElementById('app');
+      const app = document.getElementById("app");
     </script>
   </body>
 </html>
@@ -122,14 +122,14 @@ HTML 파일 내부에서 JavaScript를 사용할 수 있게 `script` 태그를 �
 
     <script type="text/javascript">
       // Select the div element with 'app' id
-      const app = document.getElementById('app');
+      const app = document.getElementById("app");
 
       // Create a new H1 element
-      const header = document.createElement('h1');
+      const header = document.createElement("h1");
 
       // Create a new text node for the H1 element
       const headerContent = document.createTextNode(
-        'Develop. Preview. Ship. 🚀',
+        "Develop. Preview. Ship. 🚀"
       );
 
       // Append the text to the H1 element
@@ -157,9 +157,9 @@ HTML 파일 내부에서 JavaScript를 사용할 수 있게 `script` 태그를 �
 ```html
 <!-- index.html -->
 <script type="text/javascript">
-  const app = document.getElementById('app');
-  const header = document.createElement('h1');
-  const headerContent = document.createTextNode('Develop. Preview. Ship. 🚀');
+  const app = document.getElementById("app");
+  const header = document.createElement("h1");
+  const headerContent = document.createTextNode("Develop. Preview. Ship. 🚀");
   header.appendChild(headerContent);
   app.appendChild(header);
 </script>
@@ -202,7 +202,7 @@ HTML 파일 내부에서 JavaScript를 사용할 수 있게 `script` 태그를 �
     <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
 
     <script type="text/javascript">
-      const app = document.getElementById('app');
+      const app = document.getElementById("app");
     </script>
   </body>
 </html>
@@ -220,7 +220,7 @@ HTML 파일 내부에서 JavaScript를 사용할 수 있게 `script` 태그를 �
     <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
 
     <script type="text/javascript">
-      const app = document.getElementById('app');
+      const app = document.getElementById("app");
       ReactDOM.render(<h1>Develop. Preview. Ship. 🚀</h1>, app);
     </script>
   </body>
@@ -237,7 +237,7 @@ HTML 파일 내부에서 JavaScript를 사용할 수 있게 `script` 태그를 �
 
 JSX는 친숙한 HTML과 비슷한 문법으로 당신의 UI를 설명할 수 있게 만들어주는 JavaScript를 위한 문법적인 확장입니다. JSX의 훌륭한 점은 [세 가지의 JSX 규칙](https://beta.reactjs.org/learn/writing-markup-with-jsx#the-rules-of-jsx) 을 따르는 것 외에는 HTML과 JavaScript의 어떤 새로운 심볼이나 문법을 배울 필요가 없다는 점입니다.
 
-브라우저는 JSX를이해할 수 없다는 것을 기억하세요. 그렇기 때문에 당신은 JSX를 일반 JavaScript로 변환하기 위해  [Babel](https://babeljs.io/)과 같은 JavaScript 컴파일러가 필요합니다.
+브라우저는 JSX를이해할 수 없다는 것을 기억하세요. 그렇기 때문에 당신은 JSX를 일반 JavaScript로 변환하기 위해 [Babel](https://babeljs.io/)과 같은 JavaScript 컴파일러가 필요합니다.
 
 #### Adding Babel to your project
 
@@ -280,9 +280,9 @@ JSX는 친숙한 HTML과 비슷한 문법으로 당신의 UI를 설명할 수 �
 
 ```html
 <script type="text/javascript">
-  const app = document.getElementById('app');
-  const header = document.createElement('h1');
-  const headerContent = document.createTextNode('Develop. Preview. Ship. 🚀');
+  const app = document.getElementById("app");
+  const header = document.createElement("h1");
+  const headerContent = document.createTextNode("Develop. Preview. Ship. 🚀");
   header.appendChild(headerContent);
   app.appendChild(header);
 </script>
@@ -469,7 +469,7 @@ ReactDOM.render(<HomePage />, app);
 
 #### 7) Displaying Data with Props
 
-지금까지는 `<Header />` 컴포넌트를 재사용할 경우 같은 내용을 보여줬다. 
+지금까지는 `<Header />` 컴포넌트를 재사용할 경우 같은 내용을 보여줬다.
 
 ```jsx
 function Header() {
@@ -488,20 +488,19 @@ function HomePage() {
 
 하지만 다른 내용을 넘겨주고 싶거나 외부 소스에서 데이터를 가져와 어떤 정보를 넘겨줘야 할지 사전에 알지 못하는 경우에는 어떻게 해야할까?
 
-일반적인 HTML 요소는 해당 요소의 동작을 변경하는 정보를 전달하기 위해 사용할 수 있는 속성을 가지고 있다. 예를 들어 `<img>` 의 `src` 속성을 변경하면 표시되는 이미지가 변경된다. `<a>` 태그의 `href` 속성을 변경하면 링크의 대상이 변경된다. 
+일반적인 HTML 요소는 해당 요소의 동작을 변경하는 정보를 전달하기 위해 사용할 수 있는 속성을 가지고 있다. 예를 들어 `<img>` 의 `src` 속성을 변경하면 표시되는 이미지가 변경된다. `<a>` 태그의 `href` 속성을 변경하면 링크의 대상이 변경된다.
 
-동일한 방식을 사용하여 우리는 정보의 일부를 리액트 컴포넌트에 속성으로 전달할 수 있으며 이를 props라고 한다. 
+동일한 방식을 사용하여 우리는 정보의 일부를 리액트 컴포넌트에 속성으로 전달할 수 있으며 이를 props라고 한다.
 
 ![image](https://user-images.githubusercontent.com/95066223/204819353-b86ebfdd-4de1-4b38-aed4-874d266b2146.png)
 
-자바스크립트 함수와 비슷하게 컴포넌트의 동작이나 화면에 렌더링 될 때 보여지는 내용을 변경하는 인자(혹은 props)를 받도록 컴포넌트를 설계할 수 있다.  그리고 이러한 props를 부모 컴포넌트에서 자식 컴포넌트로 전달할 수 있다. 
+자바스크립트 함수와 비슷하게 컴포넌트의 동작이나 화면에 렌더링 될 때 보여지는 내용을 변경하는 인자(혹은 props)를 받도록 컴포넌트를 설계할 수 있다. 그리고 이러한 props를 부모 컴포넌트에서 자식 컴포넌트로 전달할 수 있다.
 
 > 참고 : 리액트에서 데이터는 컴포넌트 트리 아래로 흐르며 이를 단방향 데이터 흐름이라고 한다. 다음 섹션에서 다룰 State는 부모에서 자식 컴포넌트로 전달된다.
-> 
 
 ### Using props
 
-우리는 HTML 속성을 전달하는 것과 비슷한 방식으로 `HomePage` 컴포넌트에서 `Header` 컴포넌트로 원하는대로 변경할 수 있는  `title` 속성을 넘길 수 있다. 
+우리는 HTML 속성을 전달하는 것과 비슷한 방식으로 `HomePage` 컴포넌트에서 `Header` 컴포넌트로 원하는대로 변경할 수 있는 `title` 속성을 넘길 수 있다.
 
 ```jsx
 // function Header() {
@@ -519,7 +518,7 @@ function HomePage() {
 // ReactDOM.render(<HomePage />, app)
 ```
 
-그리고 자식 요소인 `Header` 는 이러한 props들을 함수의 첫 번째 매개변수로 받아들일 수 있다. 
+그리고 자식 요소인 `Header` 는 이러한 props들을 함수의 첫 번째 매개변수로 받아들일 수 있다.
 
 ```jsx
 function Header(props) {
@@ -537,7 +536,7 @@ function Header(props) {
 // ReactDOM.render(<HomePage />, app)
 ```
 
-만약 props를 `console.log()` 로 확인해보면 props가 title 속성을 가지고 있는 객체라는 것을 알 수 있다. 
+만약 props를 `console.log()` 로 확인해보면 props가 title 속성을 가지고 있는 객체라는 것을 알 수 있다.
 
 ```jsx
 function Header(props) {
@@ -556,7 +555,7 @@ function Header(props) {
 // ReactDOM.render(<HomePage />, app)
 ```
 
-props가 객체이므로 우리는 객체 비구조화를 사용하여 함수 매개변수 내의 props의 값을 명시적으로 지정할 수 있다. 
+props가 객체이므로 우리는 객체 비구조화를 사용하여 함수 매개변수 내의 props의 값을 명시적으로 지정할 수 있다.
 
 ```jsx
 function Header({ title }) {
@@ -575,7 +574,7 @@ function Header({ title }) {
 // ReactDOM.render(<HomePage />, app)
 ```
 
-이제 우리는 `<h1>` 태그의 내용을 title 변수를 사용하여 변경할 수 있다. 
+이제 우리는 `<h1>` 태그의 내용을 title 변수를 사용하여 변경할 수 있다.
 
 ```jsx
 function Header({ title }) {
@@ -584,13 +583,13 @@ function Header({ title }) {
 }
 ```
 
-하지만 브라우저에서 프로젝트를 열게 되면 우리는 ‘title’ 이라는 실제 단어만을 나타내고 있는 것을 볼 수 있다. 이는 리액트가 우리가 일반 텍스트 문자열을 DOM에 렌더링하기를 원했다고 생각하기 때문이다. 
+하지만 브라우저에서 프로젝트를 열게 되면 우리는 ‘title’ 이라는 실제 단어만을 나타내고 있는 것을 볼 수 있다. 이는 리액트가 우리가 일반 텍스트 문자열을 DOM에 렌더링하기를 원했다고 생각하기 때문이다.
 
-우리는 title이 자바스크립트 변수라는 것을 리액트에 표시할 수 있는 방법이 필요하다. 
+우리는 title이 자바스크립트 변수라는 것을 리액트에 표시할 수 있는 방법이 필요하다.
 
-**Using Variables in JSX** 
+**Using Variables in JSX**
 
-정의한 변수를 사용하기 위해서 일반 자바스크립트를 JSX 마크업 내에 직접 작성할 수 있도록 해주는 특수 JSX 구문인 중괄호를  사용할 수 있다. 
+정의한 변수를 사용하기 위해서 일반 자바스크립트를 JSX 마크업 내에 직접 작성할 수 있도록 해주는 특수 JSX 구문인 중괄호를 사용할 수 있다.
 
 ```jsx
 // function Header({title}) {
@@ -599,54 +598,53 @@ return <h1>{title}</h1>;
 // }
 ```
 
-중괄호를 JSX의 영역에서 자바스크립트 영역으로 넘어가는 방법이라고 생각할 수 있다. 중괄호 안에서는 어떠한 자바스크립트 표현( 단일 값으로 평가되는 것)도 추가 가능하다. 아래는 그 예시이다. 
+중괄호를 JSX의 영역에서 자바스크립트 영역으로 넘어가는 방법이라고 생각할 수 있다. 중괄호 안에서는 어떠한 자바스크립트 표현( 단일 값으로 평가되는 것)도 추가 가능하다. 아래는 그 예시이다.
 
-1. Dot notation(점 표기법)을 사용한 객체 속성 접근 
-   
-    ```jsx
-    function Header(props) {
-      return <h1>{props.title}</h1>;
-    }
-    ```
-    
+1. Dot notation(점 표기법)을 사용한 객체 속성 접근
+
+   ```jsx
+   function Header(props) {
+     return <h1>{props.title}</h1>;
+   }
+   ```
+
 2. A **template literal**
-   
-    ```jsx
-    function Header({ title }) {
-      return <h1>{`Cool ${title}`}</h1>;
-    }
-    ```
-    
-3. 함수의 반환값
-   
-    ```jsx
-    function createTitle(title) {
-      if (title) {
-        return title;
-      } else {
-        return 'Default title';
-      }
-    }
-    
-    function Header({ title }) {
-      return <h1>{createTitle(title)}</h1>;
-    }
-    ```
-    
-4. 삼항 연산자
-   
-    ```jsx
-    function Header({ title }) {
-      return <h1>{title ? title : 'Default Title'}</h1>;
-    } 
-    ```
-    
 
-이제 우리는 title props에 어떠한 문자열도 전달할 수 있으며 삼항 연산자를 이용하여 기본값을 할당하는 방법을 이용하면 title prop을 전달하지 않아도 된다. 
+   ```jsx
+   function Header({ title }) {
+     return <h1>{`Cool ${title}`}</h1>;
+   }
+   ```
+
+3. 함수의 반환값
+
+   ```jsx
+   function createTitle(title) {
+     if (title) {
+       return title;
+     } else {
+       return "Default title";
+     }
+   }
+
+   function Header({ title }) {
+     return <h1>{createTitle(title)}</h1>;
+   }
+   ```
+
+4. 삼항 연산자
+
+   ```jsx
+   function Header({ title }) {
+     return <h1>{title ? title : "Default Title"}</h1>;
+   }
+   ```
+
+이제 우리는 title props에 어떠한 문자열도 전달할 수 있으며 삼항 연산자를 이용하여 기본값을 할당하는 방법을 이용하면 title prop을 전달하지 않아도 된다.
 
 ```jsx
 function Header({ title }) {
-  return <h1>{title ? title : 'Default title'}</h1>;
+  return <h1>{title ? title : "Default title"}</h1>;
 }
 
 function Page() {
@@ -658,20 +656,19 @@ function Page() {
 }
 ```
 
-이제 우리는 title만 변경하면 애플리케이션의 다른 부분에서 재사용할 수 있는 generic title prop을 사용할 수 있다. 
+이제 우리는 title만 변경하면 애플리케이션의 다른 부분에서 재사용할 수 있는 generic title prop을 사용할 수 있다.
 
-**Iterating through lists** 
+**Iterating through lists**
 
-데이터를 목록으로 보여주는 것은 일반적이다. 우리는 배열 메소드를 사용하여 데이터를 조작하고 스타일은 동일하지만 정보가 다른 UI 요소를 생성 할 수 있다. 
+데이터를 목록으로 보여주는 것은 일반적이다. 우리는 배열 메소드를 사용하여 데이터를 조작하고 스타일은 동일하지만 정보가 다른 UI 요소를 생성 할 수 있다.
 
 > 참고 : 리액트는 데이터를 가져오는 것에 대한 언급이 없습니다. 즉 우리의 필요에 따라 가장 적합한 방법을 선택할 수 있습니다. 이후에 Next.js에서 데이터를 가져오는 옵션에 대해 설명할 것입니다. 하지만 지금은 단순한 배열을 사용하여 데이터를 나타낼 수 있습니다.
-> 
 
-`HomePage` 컴포넌트에 이름으로 된 배열을 추가하겠습니다. 
+`HomePage` 컴포넌트에 이름으로 된 배열을 추가하겠습니다.
 
 ```jsx
 function HomePage() {
-  const names = ['Ada Lovelace', 'Grace Hopper', 'Margaret Hamilton'];
+  const names = ["Ada Lovelace", "Grace Hopper", "Margaret Hamilton"];
 
   return (
     <div>
@@ -681,11 +678,11 @@ function HomePage() {
 }
 ```
 
-우리는 `array.map()`을 사용하여 배열을 반복하고 화살표 함수를 사용하여 이름을 리스트 아이템에 매핑할 수 있다. 
+우리는 `array.map()`을 사용하여 배열을 반복하고 화살표 함수를 사용하여 이름을 리스트 아이템에 매핑할 수 있다.
 
 ```jsx
 function HomePage() {
-  const names = ['Ada Lovelace', 'Grace Hopper', 'Margaret Hamilton'];
+  const names = ["Ada Lovelace", "Grace Hopper", "Margaret Hamilton"];
 
   return (
     <div>
@@ -700,13 +697,13 @@ function HomePage() {
 }
 ```
 
-어떻게 중괄호를 사용하여 자바스크립트와 JSX의 영역을 넘나드는지 주목해야 한다. 
+어떻게 중괄호를 사용하여 자바스크립트와 JSX의 영역을 넘나드는지 주목해야 한다.
 
-만약 위의 코드를 실행한다면 리액트는 `key` prop이 없다는 경고를 표시한다. 이는 리액트가 DOM에서 업데이트할 요소를 알 수 있도록 배열에서 리스트를 고유하게 식별할 수 있는 무언가가 필요하기 때문이다. 현재 배열에서 각각의 항목들은 고유하므로 사용할 수는 있지만 id와 같이 고유한 값이 보장되는 것을 키로 사용하는 것이 좋다. 
+만약 위의 코드를 실행한다면 리액트는 `key` prop이 없다는 경고를 표시한다. 이는 리액트가 DOM에서 업데이트할 요소를 알 수 있도록 배열에서 리스트를 고유하게 식별할 수 있는 무언가가 필요하기 때문이다. 현재 배열에서 각각의 항목들은 고유하므로 사용할 수는 있지만 id와 같이 고유한 값이 보장되는 것을 키로 사용하는 것이 좋다.
 
 ```jsx
 function HomePage() {
-  const names = ['Ada Lovelace', 'Grace Hopper', 'Margaret Hamilton'];
+  const names = ["Ada Lovelace", "Grace Hopper", "Margaret Hamilton"];
 
   return (
     <div>
@@ -727,11 +724,11 @@ function HomePage() {
 
 리액트를 통해 상태 및 이벤트 핸들러와의 상호 작용을 추가하는 방법에 대해 알아보자.
 
-예를 들어 `HomePage` 컴포넌트에 버튼을 하나 생성해보자. 먼저 버튼 요소를 return() 문 안에 추가한다. 
+예를 들어 `HomePage` 컴포넌트에 버튼을 하나 생성해보자. 먼저 버튼 요소를 return() 문 안에 추가한다.
 
 ```jsx
 function HomePage() {
-  const names = ['Ada Lovelace', 'Grace Hopper', 'Margaret Hamilton'];
+  const names = ["Ada Lovelace", "Grace Hopper", "Margaret Hamilton"];
 
   return (
     <div>
@@ -748,9 +745,9 @@ function HomePage() {
 }
 ```
 
-**Listening to Events** 
+**Listening to Events**
 
-버튼을 클릭했을 때 어떤 작업을 수행하게 하기 위해서 우리는 `onClick` 이벤트를 사용할 수 있다. 
+버튼을 클릭했을 때 어떤 작업을 수행하게 하기 위해서 우리는 `onClick` 이벤트를 사용할 수 있다.
 
 ```jsx
 function HomePage() {
@@ -766,9 +763,9 @@ function HomePage() {
 
 리액트에서 이벤트의 이름은 camelCase로 작성한다. `onClick` 이벤트는 유저의 상호 작용에 응답하기 위해 사용할 수 있는 여러 이벤트 중 하나이다. 예를 들어 input fields를 위해 `onChange` 를 사용하거나 `form` 을 위해 `onSubmit` 을 사용할 수 있다.
 
-**Handling Events** 
+**Handling Events**
 
-이벤트가 트리거 될 때마다 이벤트를 ‘handle’ 하는 함수를 정의할 수 있다. return 문 전에 `handleClick` 이라는 함수를 생성한다. 
+이벤트가 트리거 될 때마다 이벤트를 ‘handle’ 하는 함수를 정의할 수 있다. return 문 전에 `handleClick` 이라는 함수를 생성한다.
 
 ```jsx
 function HomePage() {
@@ -787,13 +784,13 @@ function HomePage() {
    }
 ```
 
-그러면 `onClick` 이벤트가 트리거 되었을 때 `handleClick` 함수를 호출할 수 있다. 
+그러면 `onClick` 이벤트가 트리거 되었을 때 `handleClick` 함수를 호출할 수 있다.
 
 ```jsx
 function HomePage() {
   //    ...
   function handleClick() {
-    console.log('increment like count');
+    console.log("increment like count");
   }
 
   return (
@@ -805,13 +802,13 @@ function HomePage() {
 }
 ```
 
-**State and Hooks** 
+**State and Hooks**
 
-리액트는 hooks이라고 불리는 함수가 있다. Hooks를 사용하면 state와 같은 로직을 컴포넌트에 추가할 수 있다. state는 시간이 지남에 따라 변경되는 UI 정보로 간주할 수 있으며 일반적으로 유저의 상호작용에 의해 트리거된다. 
+리액트는 hooks이라고 불리는 함수가 있다. Hooks를 사용하면 state와 같은 로직을 컴포넌트에 추가할 수 있다. state는 시간이 지남에 따라 변경되는 UI 정보로 간주할 수 있으며 일반적으로 유저의 상호작용에 의해 트리거된다.
 
 ![image](https://user-images.githubusercontent.com/95066223/204819545-c2b56b26-4388-4bac-86ed-78e111068deb.png)
 
-우리는 state를 사용하여 사용자가 좋아요 버튼을 클릭한 횟수를 저장하고 증가시킬 수 있다. `useState()` 는 state를 관리하는 리액트 훅이다. 
+우리는 state를 사용하여 사용자가 좋아요 버튼을 클릭한 횟수를 저장하고 증가시킬 수 있다. `useState()` 는 state를 관리하는 리액트 훅이다.
 
 ```jsx
 function HomePage() {
@@ -819,7 +816,7 @@ function HomePage() {
 }
 ```
 
-`useState()` 는 배열을 반환하며 배열 비구조화를 사용하여 컴포넌트 내의 해당 배열 값에 접근하여 사용할 수 있다. 
+`useState()` 는 배열을 반환하며 배열 비구조화를 사용하여 컴포넌트 내의 해당 배열 값에 접근하여 사용할 수 있다.
 
 ```jsx
 function HomePage() {
@@ -829,7 +826,7 @@ function HomePage() {
 }
 ```
 
-배열의 첫번째 값은 상태값이며 어떠한 이름을 지어도 되지만 서술적인 이름을 지정하는 것이 좋다. 
+배열의 첫번째 값은 상태값이며 어떠한 이름을 지어도 되지만 서술적인 이름을 지정하는 것이 좋다.
 
 ```jsx
 function HomePage() {
@@ -839,7 +836,7 @@ function HomePage() {
 }
 ```
 
-배열의 두번째 값은 값을 업데이트할 수 있는 함수이다. 우리는 해당 함수의 이름을 자유롭게 지을 수 있지만 일반적으로 set 뒤에 업데이트 중인 상태 변수의 이름을 추가한다. 
+배열의 두번째 값은 값을 업데이트할 수 있는 함수이다. 우리는 해당 함수의 이름을 자유롭게 지을 수 있지만 일반적으로 set 뒤에 업데이트 중인 상태 변수의 이름을 추가한다.
 
 ```jsx
 function HomePage() {
@@ -849,7 +846,7 @@ function HomePage() {
 }
 ```
 
-`likes`의 초기값을 0으로 설정해줄 수도 있다. 
+`likes`의 초기값을 0으로 설정해줄 수도 있다.
 
 ```jsx
 function HomePage() {
@@ -857,7 +854,7 @@ function HomePage() {
 }
 ```
 
-그러면 컴포넌트 내부의 상태 변수를 사용하여 초기 상태인지 확인할 수 있다. 
+그러면 컴포넌트 내부의 상태 변수를 사용하여 초기 상태인지 확인할 수 있다.
 
 ```jsx
 function HomePage() {
@@ -871,7 +868,7 @@ function HomePage() {
 }
 ```
 
-마지막으로 `HomePage` 컴포넌트 안에서 상태 업데이트 함수인 `setLikes` 추가할 수 있다. 이전에 정의한 `handleClick()` 안에 추가했다. 
+마지막으로 `HomePage` 컴포넌트 안에서 상태 업데이트 함수인 `setLikes` 추가할 수 있다. 이전에 정의한 `handleClick()` 안에 추가했다.
 
 ```jsx
 function HomePage() {
@@ -894,19 +891,18 @@ function HomePage() {
 버튼을 클릭하면 `handleClick()` 함수가 실행되며 해당 함수는 현재 좋아요 수에 1을 더한 값을 단일 인수로 가지는 `setLikes` 를 호출한다.
 
 > 참고 : 첫 번째 함수 매개 변수로 구성 요소에 전달되는 props와 달리 상태는 컴포넌트 안에서 초기화되고 저장된다. 상태 정보를 자식 컴포넌트에 props로 전달할 수 있지만 상태 업데이트를 위한 로직은 처음 상태가 생성된 컴포넌트 내에서 유지되어야 한다.
-> 
 
-Managing State 
+Managing State
 
 위 내용은 상태에 대한 소개일 뿐이며 리액트 애플리케이션에서의 상태 관리와 데이터 흐름에 대해서는 배울 내용이 훨씬 많다. 해당 내용에 대해 더 알아보기 위해서는 리액트 공식 문서의 [Adding Interactivity](https://beta.reactjs.org/learn/adding-interactivity), [Managing State](https://beta.reactjs.org/learn/managing-state) 섹션을 참고해라.
 
 #### 9) How to continue learning React
 
-방금 리액트의 필수적인 개념인 컴포넌트, props, 상태에 대해 알아보았다. 해당 내용에 대해 강력한 기반을 갖추는 것은 리액트 애플리케이션을 구축하는 것을 시작하는 데 도움이 될 것이다. 해당 내용들에 대해 자신감을 가졌다면 아래와 같은 다른 리액트의 주제들도 확인하면 좋다. 
+방금 리액트의 필수적인 개념인 컴포넌트, props, 상태에 대해 알아보았다. 해당 내용에 대해 강력한 기반을 갖추는 것은 리액트 애플리케이션을 구축하는 것을 시작하는 데 도움이 될 것이다. 해당 내용들에 대해 자신감을 가졌다면 아래와 같은 다른 리액트의 주제들도 확인하면 좋다.
 
 - [How React handles renders](https://beta.reactjs.org/learn/render-and-commit) and [how to use refs](https://beta.reactjs.org/learn/referencing-values-with-refs)
-  
-    리액트에서 렌더링을 다루는 방법과 ref를 사용하는 방법 
+
+리액트에서 렌더링을 다루는 방법과 ref를 사용하는 방법 
     
 - [How to manage state](https://beta.reactjs.org/learn/managing-state)
   
@@ -921,15 +917,15 @@ Managing State
     `useEffect()`와 같은 리액트 API 훅 사용 방법 
     
 
-**React Resources** 
+**React Resources**
 
-시간이 지나며 개발자들을 위해 리액트를 가르쳐 주는 강의, 영상, 문서들이 많이 만들어졌다. 학습 스타일에 맞는 자료를 추천하기는 어렵지만 중요한 참고 자료 중 하나는 해당 주제를 연습하는 데 도움이 되는 sandbox가 포함된 리액트 공식 문서이다. 
+시간이 지나며 개발자들을 위해 리액트를 가르쳐 주는 강의, 영상, 문서들이 많이 만들어졌다. 학습 스타일에 맞는 자료를 추천하기는 어렵지만 중요한 참고 자료 중 하나는 해당 주제를 연습하는 데 도움이 되는 sandbox가 포함된 리액트 공식 문서이다.
 
-리액트를 배우는 데 있어 가장 좋은 방법은 직접 구축해보는 것이다. 기존에 존재하는 웹 사이트에 `<script>`와 지금까지 배운 것들을 이용하여 작은 컴포넌트를 추가하는 것을 시작으로 리액트를 점차적으로 늘려나갈 수 있다. 하지만 많은 개발자들은 사용자와 개발자의 경험에 있어서 리액트가 전체 프론트엔드 프로젝트를 작성할 수 있을 정도록 가치가 있다는 것을 알게 되었다. 
+리액트를 배우는 데 있어 가장 좋은 방법은 직접 구축해보는 것이다. 기존에 존재하는 웹 사이트에 <script>와 지금까지 배운 것들을 이용하여 작은 컴포넌트를 추가하는 것을 시작으로 리액트를 점차적으로 늘려나갈 수 있다. 하지만 많은 개발자들은 사용자와 개발자의 경험에 있어서 리액트가 전체 프론트엔드 프로젝트를 작성할 수 있을 정도록 가치가 있다는 것을 알게 되었다.
 
-**From React to Next.js** 
+**From React to Next.js**
 
-리액트는 UI를 구축하는데 탁월하지만 그 UI를 완전히 작동하는 확장 가능한 애플리케이션으로 독립적으로 구축하는 데 약간의 작업이 필요하다. 좋은 소식은 Next.js가 대부분의 설정 및 구성을 처리하고 React 응용 프로그램을 빌드한느 데 도움이 되는 추가 기능을 가지고 있다는 것이다. 
+리액트는 UI를 구축하는데 탁월하지만 그 UI를 완전히 작동하는 확장 가능한 애플리케이션으로 독립적으로 구축하는 데 약간의 작업이 필요하다. 좋은 소식은 Next.js가 대부분의 설정 및 구성을 처리하고 React 응용 프로그램을 빌드한느 데 도움이 되는 추가 기능을 가지고 있다는 것이다.
 
 다음으로는 예제를 React에서 Next.js로 마이그레이션하고 Next.js의 작동 방식에 대해 설명하고 고급 Next.js 기능을 학습하는 데 도움이 되는 몇 가지 웹 개발 개념을 소개한다.
 
@@ -1049,9 +1045,111 @@ Next.js는 코드 스플리팅을 기본적으로 지원합니다. `pages/` 디�
 
 #### 9) Rendering
 
+#### 렌더링이란 무엇인가?
+
+리액트에서 UI를 표현하기 위해서 쓴 HTML 표현은 변환하는 작업을 거쳐야 합니다.
+이 과정을 렌더링이라고 부릅니다.
+
+렌더링은 서버 또는 클라이언트에서 발생할 수 있습니다. 렌더링은 빌드시간에 일어날 수도 있고 모든 요청마다 일어날 수 있습니다.
+
+Next.js에서는 3가지 렌더링 메서드를 이용할 수 있습니다. **SSR(Server-Side Rendering)** , **SSG(Static Site Generation)** 그리고 **CSR(Client-Side Rendering)** 이 있습니다.
+
+**Pre-Rendering**
+
+SSR과 SSG는 Pre-rendering을 한다고 알려져 있습니다. 왜냐하면 클라이언트에서 결과를 보여주기 전에 외부 데이터를 패칭해서 React 구성 요소를 HTML로 변환하기 때문입니다.
+
+**CSR(Client-Side Rendering) vs Pre-rendering**
+일반적인 리액트 앱에서 , 브라우저는 UI를 구성하기 위해 서버로부터 빈 HTML과 JavaScript를 받습니다. 이것은 **CSR**이라고 불리는데 최초 렌더링 할때 유저의 device에서 일어나기 때문입니다.
+
+![](https://nextjs.org/static/images/learn/foundations/client-side-rendering.png)
+
+> **참고** : 만일 Next.js 앱에서 CSR 방식을 선택한다면 React `useEffect`를 사용하거나 [useSWR](https://swr.vercel.app/ko)과 같은 데이터 fetching hook을 사용할 수 있습니다.
+
+반대로 Next.js는 기본적으로 모든 페이지를 **사전 렌더링합니다.** Pre-rendering은 유저 device에서 JavaScript에 의해 모두 수행되는 대신 서버에서 미리 생성됨을 의미합니다.
+
+CSR(Client-Side-rendering)은 렌더링이 끝날때까지 유저는 빈 페이지를 볼 것 입니다. 반대로 Pre-rendering은 유저가 완성된 HTML을 볼 수 있습니다.
+
+![](https://nextjs.org/static/images/learn/foundations/pre-rendering.png)
+
+아래는 Pre-rendering하는 2가지 방식에 대해서 얘기해보겠습니다.
+
+**Server-Side Rendering**
+
+SSR(Server-Side Rendering)에서는 각 요청에 대해 서버에서 HTML 페이지를 만들어줍니다. 생성된 HTML과 , JSON data는 JavaScript에 의해 interactive한 페이지를 만들기 위해 client에게 보내집니다.
+
+Client에서 HTML은 non-interactive 페이지로 빠르게 보여지기 위해 사용된다. 반면에 React는 JSON 데이터와 JavaScript를 interactive한 컴포넌트를 만들기 위해 사용합니다. ( 예) 버튼에 event handler를 붙이기 ) 이 과정을 hydration 이라고 부릅니다.
+
+Next.js에서 [getServerSideProps](https://nextjs.org/docs/basic-features/data-fetching/get-server-side-props)를 사용하여 SSR을 할 수 있습니다.
+
+> **참고** : React18과 Next 12는 **React server components** 의 알파 버전이 도입되었습니다. Server components는 완벽하게 서버에서 렌더되고 , 자바스크립트에 의해 Client-Side에서 요구되지 않습니다. 또한 , Server components는 개발자들에게 서버에서 일부 logic을 허용하고 , Client에게 결과만 보냅니다. 이러한 방식은 클라이언트로 전송되는 번들 크기가 줄고 클라이언트 측 렌더링 성능이 향상됩니다. 여기서 [React server components](https://reactjs.org/blog/2020/12/21/data-fetching-with-react-server-components.html)에 대해 더 알아볼 수 있습니다.
+
+**Static Site Generation**
+
+SSG에서는 SSR과 달리 서버에서 HTML이 생성됩니다. 그리고 내용은 어플리케이션이 배포될 때 빌드 타임에 한번만 생성됩니다. 생성된 HTML은 [CDN](https://nextjs.org/learn/foundations/how-nextjs-works/cdns-and-edge)에 저장되고 매 요청마다 재사용됩니다.
+
+Next.js에서는 [getStaticProps](https://nextjs.org/docs/basic-features/data-fetching/get-static-props)를 사용하여 정적인 페이지를 만듭니다.
+
+> **참고**: [ISR](https://nextjs.org/docs/basic-features/data-fetching/incremental-static-regeneration)은 사이트를 빌드 한 이후에 정적인 페이지를 업데이트하고 생성할 수 있습니다. 이것은 데이터가 변했다면 전체 페이지를 다시 빌드하지 않아도 되는 것을 의미합니다.
+
+Next.js의 장점은 최적의 렌더링 방법을 페이지 마다 정할 수 있습니다. ( SSG , SSR , CSR ) 렌더링 방법을 더 배우려면 [data fetching 문서](https://nextjs.org/docs/basic-features/data-fetching/overview)를 참고해주세요!
+
+다음 챕터에서는 , 배포 후 코드를 저장하거나 실행할 수 있는 위치에 대해서 설명하겠습니다.
+
 #### 10) CDNs and the Edge
 
+#### 네트워크란 무엇인가?
+
+아래 내용은 애플리케이션 코드가 저장되고 네트워크에 배포된 후 실행되는 위치에 대한 정보를 제공합니다.
+
+네트워크를 자원을 공유 가능한 연결된 컴퓨터 ( 또는 서버 )라고 생각할 수 있습니다. Next.js는 **origin servers** , **CDN** , 그리고 **Edge**에 분산시킬 수 있습니다. 각각이 무엇인지 아래에서 살펴보겠습니다.
+
+**Origin servers**
+
+서버는 어플리케이션 코드의 원본 버전을 저장하고 운영할 수 있는 주된 컴퓨터로 알고 있습니다.
+
+Origin server는 다른 어플리케이션 코드 공간 ( CDN servers , Edge servers )과 구분하기 위해 origin 이라는 용어를 사용합니다.
+
+Origin server가 request를 받을때 , response를 보내기 전에 계산을 수행합니다. 이 작업의 결과는 CDN으로 이동할 수 있습니다.
+
+**CDN ( Content Delivery Network )**
+
+CDN은 전세계의 여러 위치에 정적인 컨텐츠( ex . HTML , image files)를 저장하고 클라이언트와 서버 사이에 배치됩니다. 새로운 요청이 왔을때 유저는 cach된 결과를 가까운 CDN에서 받을 수 있습니다.
+
+![](https://nextjs.org/static/images/learn/foundations/cdn.png)
+
+매 요청마다 계산이 일어나지 않기 때문에 origin은 부하가 줄어듭니다. 그리고 지리적으로 가깝기 때문에 유저에게 더 빠른 response를 제공합니다.
+
+Next.js에서는 사전 렌더링을 미리 수행할 수 있으므로 CDN은 작업의 정적 결과를 저장하는 데 적합하고 빠르게 전달합니다.
+
+**The Edge**
+
+Edge는 사용자에게 가장 가까운 네트워크 둘레( or Edge )에 일반화된 개념입니다. CDN은 네트워크 둘레에 정적인 컨텐츠를 저장하기 때문에 Edge에 일부분입니다.
+
+CDN과 유사하게 Edge 서버는 전세계 여러 위치에 분산되어 있습니다. 그러나 정적 컨텐츠를 저장하는 CDN과 달리 Edge 서버는 코드를 실행할 수 있습니다.
+
+이것은 **캐싱**과 **코드 실행** 모두 사용자에게 더 가까운 Edge에서 수행할 수 있음을 의미합니다.
+
+Edge에서 코드를 실행하면 전통적으로 클라이언트 , 서버 측에서 수행됐던 일부 작업을 Edge로 이동할 수 있습니다(ex. [Next js](https://vercel.com/features/edge-functions) ). 이것은 클라이언트에게 보내는 코드의 양이 줄고 사용자의 request가 서버로 다시 돌아갈 필요가 없기 때문에 어플리케이션을 더 우수하게 만듭니다.
+
+Next.js 에서는 [Middleware](https://nextjs.org/docs/advanced-features/middleware)에서 Edge 코드를 실행할 수 있고 , 곧 [React Server Component](https://nextjs.org/docs/advanced-features/react-18/overview#react-server-components-alpha)로 코드를 실행할 수 있습니다.
+
+**추가 자료**
+
+- [https://vercel.com/docs/concepts/edge-network/overview?utm_source=next-site&utm_medium=learnpages&utm_campaign=next-website](https://vercel.com/docs/concepts/edge-network/overview?utm_source=next-site&utm_medium=learnpages&utm_campaign=next-website)
+
 #### 11) Next Steps
+
+#### Next Steps
+
+Next.js 기초 강의를 마친것을 축하드립니다.
+
+Next.js를 계속 배우려면 주요 기능을 소개하는 자습서를 활용하여 첫번째 [Next.js 앱](https://nextjs.org/learn/basics/create-nextjs-app?utm_source=next-site&utm_medium=homepage-cta&utm_campaign=next-website)을 만들어보세요.
+
+[문서](https://nextjs.org/docs/getting-started)를 확인하고 광범위한 [예제 목록](https://nextjs.org/examples)을 탐색할 수 있습니다.
+
+**Join the conversation**
+
+질문이 있다면 , [디스코드](https://discord.gg/bUG2bvbtHy)나 [github Discusstions](https://github.com/vercel/next.js/discussions)에 와서 물어보는 것을 환영합니다!
 
 ## Create Your First App
 
