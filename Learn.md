@@ -175,7 +175,7 @@ HTML 파일 내부에서 JavaScript를 사용할 수 있게 `script` 태그를 �
 
 하지만 UI를 구성하는 것에 관해서는 개발 프로세스를 빠르게 만들 수 있기 때문에 선언적인 접근이 선호됩니다. DOM method를 적는 것 대신, 개발자가 보여주고 싶은 것을 선언할 수 있다면 더욱 도움이 될 수 있습니다.(위 예시의 경우, 몇가지 단어가 포함된 `h1` 태그).
 
-다시 말해, **선언형 프로그래밍**은 피자 만드는 방법을 하나하나 요리사가 지시하는 것과 같습니다. **명령형 프로그래밍**은 피자를 만드는 데 필요한 과정에 대해서는 생각하지 않고 그저 피자를 주문하는 것과 같습니다.
+다시 말해, **명령형 프로그래밍**은 피자 만드는 방법을 하나하나 요리사가 지시하는 것과 같습니다. **선언형 프로그래밍**은 피자를 만드는 데 필요한 과정에 대해서는 생각하지 않고 그저 피자를 주문하는 것과 같습니다.
 
 #### React: A declarative UI library
 
@@ -901,13 +901,21 @@ Managing State
 방금 리액트의 필수적인 개념인 컴포넌트, props, 상태에 대해 알아보았다. 해당 내용에 대해 강력한 기반을 갖추는 것은 리액트 애플리케이션을 구축하는 것을 시작하는 데 도움이 될 것이다. 해당 내용들에 대해 자신감을 가졌다면 아래와 같은 다른 리액트의 주제들도 확인하면 좋다.
 
 - [How React handles renders](https://beta.reactjs.org/learn/render-and-commit) and [how to use refs](https://beta.reactjs.org/learn/referencing-values-with-refs)
-  리액트에서 렌더링을 다루는 방법과 ref를 사용하는 방법
+
+리액트에서 렌더링을 다루는 방법과 ref를 사용하는 방법 
+    
 - [How to manage state](https://beta.reactjs.org/learn/managing-state)
-  상태를 다루는 방법
+  
+    상태를 다루는 방법 
+    
 - [How to use context for deeply nested data](https://beta.reactjs.org/learn/passing-data-deeply-with-context)
-  깊이 중첩된 데이터를 위해 context를 사용하는 방법
+  
+    깊이 중첩된 데이터를 위해 context를 사용하는 방법 
+    
 - [How to use React API hooks](https://beta.reactjs.org/reference) such as `useEffect()`
-  `useEffect()`와 같은 리액트 API 훅 사용 방법
+  
+    `useEffect()`와 같은 리액트 API 훅 사용 방법 
+    
 
 **React Resources**
 
@@ -933,19 +941,107 @@ Managing State
 
 #### 1) Introduction
 
+Next.js의 심화 내용을 배우기 전에 어떻게 Next.js가 동작하는 방식에 대한 기본적이 이해가 있다면 좋습니다.
+
+이 과정의 시작 부분에서 React가 애플리케이션을 build하는 다양한 방식이 있고 어떻게 애플리케이션을 구조화하고 구축하는지에 대해 이야기 했습니다. Next.js는 애플리케이션을 구조화할 수 있는 프레임워크와 개발 과정과 애플리케이션 모두 더욱 빠르게 만드는 데 도움이 되는 최적화를 제공합니다.
+
+다음 섹션에서는 아래의 보여주는 서로 다른 공간에서 애플리케이션의 코드에 어떤 일이 발생하는지를 알아볼 것입니다.
+
+- 코드가 작동하는 곳의 환경 : **Development vs. Production**
+- 코드가 작동할 때의 시점 : **Build Time vs. Runtime**
+- 어디에서 rendering이 발생하는가 : **Client vs. Server**
+
+이제 Next.js가 작동하는 동안 뒤에서 벌어지는 여러가지 process에 대해 논의하고 개념들을 깊게 공부해봅시다!
+
 #### 2) From Development to Production
+
+#### Development and Production Environments
+
+환경을 코드가 동작하는 Context로 생각할 수 있습니다.
+
+개발을 하는 동안 local machine에서 애플리케이션을 빌드하고 실행합니다. 프로덕션 환경으로 이동하는건 애플리케이션이 배포되고 유저들이 사용할 수 있도록 만드는 과정입니다.
+
+#### How this applies to Next.js
+
+Next.js는 애플리케이션의 development와 production 환경을 위한 여러 기능을 제공합니다. 예를 들어,
+
+- 개발 환경(Development)에서 Next.js는 애플리케이션 build에 대해 최적화된 경험을 제공합니다. Next.js는 [TypeScript](https://nextjs.org/docs/basic-features/typescript), [ESLint integration](https://nextjs.org/docs/basic-features/eslint), [Fast Refresh](https://nextjs.org/docs/basic-features/fast-refresh) 등과 같이 **Developer Experience(개발자 경험)** 을 향상시키는데 목적을 둔 기능들을 함께 제공합니다.
+- 배포 환경(Production)에서 Next.js는 최종 사용자와 애플리케이션을 사용하는 경험을 최적화합니다. Next.js는 성능과 접근성을 높이기 위해 코드를 변환하는 데 목적을 둡니다.
+
+각 환경마다 목표과 고려사항들이 다르기 때문에 애플리케이션을 development 환경에서 production 환경으로 옮기기 위해서는 완료되어야 되는 것들이 많습니다. 예를 들어, 애플리케이션의 코드는 [컴파일](https://nextjs.org/learn/foundations/how-nextjs-works/compiling), [번들링](https://nextjs.org/learn/foundations/how-nextjs-works/bundling), [축소](https://nextjs.org/learn/foundations/how-nextjs-works/minifying) 및 [코드 분할](https://nextjs.org/learn/foundations/how-nextjs-works/code-splitting)이 필요합니다.
+
+#### The Next.js Compiler
+
+Next.js는 수많은 코드 변환과 인프라 설정을 처리하여 더욱 수비게 애플리케이션을 production 환경으로 전환시켜줍니다.
+
+이것은 Next.js가 저수준 언어인 Rust로 만들어져 compilation, minification, bundling 등에 사용할 수 있는 플랫폼인  SWC라는 컴파일러를 가지고 있기 때문에 가능합니다.
 
 #### 3) Compiling
 
+개발자들은 JSX, TypeScript 그리고 현대적인 JavaScript 같이 더욱 개발자 친숙한 언어들로 코드를 작성합니다. 이런 변화는 개발자들의 효율성과 자신감을 높여줬지만 브라우저가 이해할 수 있게 JavaScript로 compile 해줄 필요가 있습니다.
+
+Compiling은 한 언어로 된 를 다른 언어 또는 해당 언어의 다른 버전으로 바꿔주는 과정을 의미합니다.
+
+<img src="https://nextjs.org/static/images/learn/foundations/compiling.png" />
+
+Next.js에서 **Compliation** 은 당신의 코드를 수정하거나 애플리케이션 배포를 위한 build의 일부 과정 동안 발생합니다.
+
 #### 4) Minifying
+
+개발자는 가독성을 높이는 코드를 작성합니다. 이러한 코드는 주석, 공백, 들여쓰기, 여러 줄 등의 코드를 동작시키는데 필요하지 않은 추가적인 정보들을 포함할 지도 모릅니다.
+
+<img src="https://nextjs.org/static/images/learn/foundations/minifying.png" />
+
+Minification(최소화) 코드 기능의 변화 없이 주석, 코드 포매팅과 같은 불필요한 코드를 제거하는 과정입니다. 파일 크기를 줄여 애플리케이션의 성능을 개선시키는 것이 Minification의 목표입니다. 
+
+Next.js에서 JavaScript와 CSS 파일은 배포 환경에서 자동적으로 최소화시킵니다.
 
 #### 5) Bundling
 
+#### What is Bundling?
+
+개발자들은 애플리케이션을 더 큰 애플리케이션을 구축하는 데 사용할 수 있는 module, components, function으로 분리합니다. 이러한 내부 모듈과 외부 패키지들을 내보내고 가져오게 되면 비로소 파일 종속성을 가진 복잡한 웹이 만들어집니다.
+
+<img src="https://nextjs.org/static/images/learn/foundations/bundling.png" />
+
+번들링은 유저가 웹 페이지를 방문할 때 파일에 대한 수많은 요청을 줄이기 위해 웹의 의존성들을 해결하고 파일이나 모듈을  브라우저의 최적화된 번들로 병합(또는 패키징)하는 과정을 말합니다.
+
 #### 6) Code Splitting
+
+개발자들은 보통 각기 다른 URL에서 접근할 수 있게 만들기 위해 여러 개의 페이지로 애플리케이션을 분리합니다. 그리고 이 각각의 페이지는 애플리케이션의 유일한 **entry point** 가 됩니다.
+
+<img src="https://nextjs.org/static/images/learn/foundations/code-splitting.png" />
+
+Next.js는 코드 스플리팅을 기본적으로 지원합니다. `pages/` 디렉토리 안의 각 파일은 build단계 동안 자동적으로 JavaScript 번들로 분리됩니다.
+
+추가사항:
+
+- 페이지들 간 공유되는 코드는 페이지 이동 간에 같은 코드를 다시 다운로드 받지 않기 위해 또다른 bundle로 분리됩니다.
+- 페이지 초기 로드 후, Next.js는 이동 가능한 다른 페이지의 코드를 [pre-loading](https://nextjs.org/docs/api-reference/next/link) 할 수 있습니다.
+- [Dynamic imports](https://nextjs.org/docs/advanced-features/dynamic-import) 는 초기에 로드된 코드를 명시적으로 분리하는 또 다른 방법입니다.
 
 #### 7) Build Time vs. Runtime
 
+**Build Time**(or build step)은 배포를 위해 애플리케이션의 코드를 준비하는 일련의 과정에 붙혀진 이름입니다.
+
+애플리케이션을 build 할 때, Next.js는 당신의 코드를 [서버](https://nextjs.org/learn/foundations/how-nextjs-works/client-and-server)에 배포하고 사용자들이 이용할 준비가 된 프로덕션에 최적화된 파일로 변경할 것입니다. 이 파일을 다음과 같은 것을 포함합니다.
+
+- 정적으로 생성된 페이지의 HTML 파일
+- [서버](https://nextjs.org/learn/foundations/how-nextjs-works/client-and-server)에서 페이지를 [렌더링](https://nextjs.org/learn/foundations/how-nextjs-works/rendering) 하기 위한 JavaScript 코드
+- [클라이언트](https://nextjs.org/learn/foundations/how-nextjs-works/client-and-server)에서 동적으로 만드는 페이지를 위한 JavaScript 코드
+- CSS 파일
+
+**Runtime**(or request time)은 애플리케이션이 빌드와 배포가 된 후 사용자의 요청에 대한 응답으로 애플리케이션이 실행하는 기간을 의미합니다.
+
+다음으로 클라이언트, 서버 그리고 렌더링에 대해서 이야기 해보도록 하겠습니다.
+
 #### 8) Client and Server
+
+웹 애플리케이션의 맥락에서 **Client**는 애플리케이션 코드를 위해 서버에 요청을 보내는 사용자 기기의 브라우저를 말합니다. 그리고 서버로부터 받은 응답을 사용자가 상호 작용할 수 있는 인터페이스로 바꿉니다.
+
+<img src="https://nextjs.org/static/images/learn/foundations/client-server.png" />
+
+**Server** 는 애플리케이션의 코드를 저장하고, Client로부터 요청을 받고, 몇가지의 연산을 진행하고, 적절한 응답을 보내주는 데이터 센터의 컴퓨터를 말합니다.
 
 #### 9) Rendering
 
@@ -1060,24 +1156,289 @@ Next.js를 계속 배우려면 주요 기능을 소개하는 자습서를 활용
 ### 1 Create a Next.js App
 
 #### 1) Introduction
+  
+  리액트로 완전한 웹 애플리케이션을 구축하기 위해서는 고려해야할 몇가지 중요한 세부사항들이 있습니다.
+
+- 코드는 웹팩과 같은 번들러로 번들되어야 하며 바벨과 같은 컴파일러를 사용하여 변환되어야 합니다.
+- 코드 분할과 같은 생산 최적화를 해야합니다.
+- 성능과 SEO를 위해 일부 페이지를 정적으로 pre-render 하고 싶을 수 있습니다. 서버 사이드 렌더링 또는 클라이언트 사이드 렌더링을 하고 싶을 수 있습니다.
+- 리액트액을 데이터 저장소와 연결하기 위해 서버 측 코드를 작성해야 할 수도 있습니다.
+
+프레임워크는 이러한 문제를 해결할 수 있습니다. 그러나 프레임워크는 적절한 수준의 추상화를 가져야 합니다. 그렇지 않을 경우 유용하지 않을 것입니다. 또한 코드를 작성하는 동안 여러분과 여러분의 팀이 놀라운 경험을 할 수 있도록 보장하는 좋은 “Developer Experience(개발자 경험)”을 갖추어야 합니다. 
+
+**Next.js : The React Framework** 
+
+이제 리액트 프레임워크인 Next.js에 대해 이야기해 봅시다. Next.js는 위의 모든 문제들에 대한 해결책을 제시합니다. 그러나 가장 중요한 점은 리액트 애플리케이션을 구축할 때 여러분과 여러분의 팀이 아주 성공적인 경험을 할 수 있을 것이라는 점입니다. 
+
+Next.js는 동급 최고의 개발자 경험을 목표로 하며 다음과 같은 많은 내장 기능을 제공합니다. 
+
+- 직관적인 페이지 기반 라우팅 시스템(dynamic routes 포함)
+- 페이지 단위로 지원되는 SSR, SSG가 모두 가능한 pre-rendering
+- 페이지 로드 속도 향상을 위한 자동 코드 분할
+- 최적화된 prefetching을 통한 클라이언트 측 라우팅
+- Built-in CSS 와 Sass 지원, CSS-in-JS 라이브러리를 지원
+- 빠른 refresh를 지원하는 개발환경
+- 서버리스 함수를 사용한 API endpoints를 구축하기 위한 API routes
+- 완전한 확장가능성
+
+Next.js는 수많은 세계 최대 브랜드들을 포함한 수만 개의 생산용 웹 사이트와 웹 애플리케이션에서 사용됩니다. 
+
+**And This Tutorial** 
+
+이 무료 과정은 Next.js를 시작하는 방법을 안내합니다. 이 튜토리얼에서 우리는 간단한 blog app을 만들어보면서 Next.js의 기초를 배울 것입니다.  
+
+**[https://next-learn-starter.vercel.app](https://next-learn-starter.vercel.app/)** ([source](https://github.com/vercel/next-learn/tree/master/basics/demo))
+
+> 해당 튜토리얼은 JavaScript와 React대한 기본 지식이 있다는 가정하에 설명하고 있습니다. 리액트 코드를 작성해본 적이 없다면 리액트의 공식 튜토리얼을 먼저 진행해주세요.
+> 
+
+튜토리얼 대신 문서를 찾는다면 Next.js의 문서에서 찾을 수 있습니다. 
+
+**Join the Conversation**
+
+만약 Next.js나 해당 코스와 관련된 질문이 있으시다면 디스코드에 있는 우리의 커뮤니티에 와서 질문해주세요. 
+
+시작합니다!  
+
 
 #### 2) Setup
 
+  **Setup**
+
+먼저 개발 환경이 준비되었는지 확인해봐야 합니다. 
+
+- Node.js가 설치되어 있지 않다면 [여기서 설치해 주세요.](https://nodejs.org/en/) Node.js 10.13 이후의 버전이 필요합니다.
+- 해당 튜토리얼에서는 자체 텍스트 편집기와 터미널 앱을 사용하게 됩니다.
+
+> 만약 윈도우 사용자라면 [downloading Git for Windows](https://gitforwindows.org/)을 다운로드하고 해당 튜토리얼에서 UNIX 관련 명령을 지원하는 Git Bash를 사용하는 것이 좋습니다. [Windows Subsystem for Linux (WSL)](https://docs.microsoft.com/en-us/windows/wsl/install-win10)를 사용해도 좋습니다.
+> 
+
+**Create a Next.js app**
+
+Next.js 앱을 만들기 위해서는 터미널을 열고 앱을 만들 디렉토리에 가서 아래의 명령어를 실행해주세요. 
+
+```bash
+npx create-next-app@latest nextjs-blog --use-npm --example "https://github.com/vercel/next-learn/tree/master/basics/learn-starter"
+```
+
+> 위의 코드는 Next.js 앱을 부팅하는 create-next-app이라는 도구를 사용합니다. —example 플래그를 통해 이 템플릿을 사용할 수 있습니다. 
+해당 기능이 작동하지 않는다면 [이 페이지](https://github.com/vercel/next-learn/blob/master/basics/errors/install.md)에 가서 확인해주세요.
+> 
+
+**Run the development server** 
+
+여러분은 이제 `nextjs-blog`라는 새로운 디렉토리를 확인할 수 있을 것입니다. `cd` 명령어를 통해 들어가 봅시다. 
+
+```bash
+cd nextjs-blog
+```
+
+그 후 아래의 명령어를 따라해주세요. 
+
+```bash
+npm run dev
+```
+
+이를 통해 여러분은 Next.js 앱의 개발 서버를 3000번 포트에서 시작할 수 있습니다. 
+
+해당 기능이 작동하는지 확인하기 위해 브라우저에서 [http://localhost:3000](http://localhost:3000)을 열어주세요.
+  
 #### 3) Welcome to Next.js
+  
+  [http://localhost:3000](http://localhost:3000)에 접근하면 아래와 같은 페이지를 확인하실 수 있습니다. 아래 페이지는 Next.js에 대한 유용한 정보를 보여주는 시작 템플릿 페이지입니다. 
+
+![image](https://user-images.githubusercontent.com/95066223/206178836-30554cc9-01af-45fb-8d51-3355e0833e2a.png)
+
+> Help is available : 막히면 [GitHub Discussions](https://github.com/vercel/next.js/discussions)에 있는 커뮤니티에 방문해주세요.
+> 
+
+이제 이 페이지를 편집해봅시다.
 
 #### 4) Editing the Page
+  
+  시작 페이지를 편집해봅시다. 
+
+- Next.js 개발 서버가 실행 중인지 확인해주세요.
+- 텍스트 편집기에서 `pages/index.js` 파일을 열어주세요.
+- `<h1>` 태그 안에 있는 “Welcome to”라는 글자를 찾아서 “Learn”으로 변경해주세요.
+- 파일을 저장해주세요.
+
+파일을 저장하면 브라우저가 새로운 글자를 가진 페이지로 자동으로 업데이트 될 것입니다. 
+
+![image](https://user-images.githubusercontent.com/95066223/206178790-e63c27bd-3303-4462-b136-d2e5383eddc4.png)
+
+Next.js의 개발 서버는 [Fast Refresh](https://nextjs.org/docs/basic-features/fast-refresh)가 가능합니다. 파일의 변경사항이 있으면 Next.js는 거의 즉시 자동으로 변경사항을 브라우저에 적용합니다. 새로고침을 할 필요가 없습니다! 이 기능은 앱을 빠르게 반복할 수 있도록 도와줍니다. 
+
+**Next Up: Creating Pages**
+
+아주 잘했습니다. 첫 번째 시간은 여기까지입니다. 
+
+다음 시간에는 더 많은 페이지를 만들어보고 페이지들 간에 이동하는 법에 대해 배울 것입니다. 
+
+> 개발 서버를 계속해서 작동시켜주세요. 재시작 하고 싶으시다면 Ctrl + c를 입력하면 종료됩니다.
+>
 
 ### 2. Navigate Between Pages
 
 #### 1) Introduction
 
+지금까지 Next.js app 에 하나의 페이지만 있다. 웹사이트들과 웹 어플리케이션들은 일반적으로 다수의 다른 페이지들을 가진다.
+application에 더 많은 페이지들을 추가하는 방법을 알아보자.
+
+**What You`ll learn in This Lesson**
+
+이 단원에서 할것:
+- 통합 file system routing을 사용하여 새로운 페이지 만들기
+- client-side navigation과 페이지들을 잇는 `Link` compoenent 사용법 배우기
+- code splitting 과 prefetching을 위한 built-in 지원에 대하여 배우기
+
+> 만약 Next.js routing 에 대한 자세한 문서를 찾는다면 여기를 봐라. routing documentation (차후 링크 필요)
+
 #### 2) Setup
+
+이전 단원부터 계속 진행중이라면 이 페이지를 넘어가도 된다. 아래의 버튼을 클릭해서 다음 페이지로 이동(버튼 없음)
+
+**Download Starter Code(Optional)**
+
+만약 이전 단원부터 진행중이지 않다면 이 단원 아래에 있는 starter code로 다운로드, 설치 그리고 실행할 수 있다. 이 코드는 이전 단원의 결과와 동일한 'nextjs-blog' 디렉토리를 설정한다.
+
+다시 말하지만 이전 단원을 마무리 했다면 이것은 필요치 않다.
+
+```bash
+npx create-next-app@latest nextjs-blog --use-npm --example "https://github.com/vercel/next-learn/tree/master/basics/navigate-between-pages-starter"
+```
+그런 다음 command output의 명령에 따른다.(`cd` directory 하고 development server 시작)
+
 
 #### 3) Pages in Next.js
 
+**Pages in Next.js**
+
+Next.js에선 페이지는 `pages` directory에 있는 파일로 부터 exported 된 React Component 이다.
+
+페이지들은 파일이름을 기반으로 된 route와 연결된다. 예를 들어, development에선:
+- `pages/index.js` 는 `/` route 와 연결되어있다.
+- `pages/posts/first-post.js`는 `/posts/first-post` route 와 연결되어있다.
+- 우리는 이미 `pages/index.js` 를 가지고 있어서 `pages/posts/first-post.js` 를 만들고 어떻게 작동하는지 보자. 
+
+**Create a New Page**
+
+`pages` 아래에 `posts` directory를 만든다.
+아래의 컨텐츠와 함께 `posts` directory안에 `first-post.js` 파일을 만든다.
+
+```js
+export default function FirstPost() {
+  return <h1>First Post</h1>;
+}
+```
+
+component는 다른이름을 가질 수 있지만 `default` export를 반드시 해야한다.
+
+지금, development server 가 실행되는지 확인하고 http://localhost:3000/posts/first-post 를 방문하자. 다음 페이지를 볼 수 있다.
+
+![image](https://nextjs.org/static/images/learn/navigate-between-pages/first-post.png)
+
+Next.js에서 다른 페이지를 만들수 있는 방법이다.
+
+간단히 `pages` directory 아래에 JS file을 만들면, 파일의 path가 URL path 가 된다.
+
+어떻게 보면, HTML 또는 PHP 파일들을 사용하여 웹사이트를 구축하는 것과 비슷하다. HTML을 작성하는 대신 JSX를 작성하고 React component를 사용한다.
+
+새롭게 추가된 페이지에 링크를 추가하여 홈페이지로 부터 이동이 가능하도록 하자.
+
 #### 4) Link Component
 
+웹페이지에 페이지들 사이를 연결할때 `<a>` HTML tag를 사용한다.
+
+Next.js는 application에선 `Link` Component `nest/link`를 사용하여 페이지들을 연결 할 수 있다. `<Link>`는 client-side navigation을 할 수 있고, navigation 동작을 통해 더 질 제어를 하는 props를 사용할 수 있다.
+
+**Using `<Link>`**
+
+첫번째, `pages/index.js`을 열고, 최상단에 `Link` component from `next/link`를 import 하는 라인을 추가해라.
+
+```js
+import Link from 'next/link';
+```
+
+그리고 나서 아래와 같이 생긴 `h1` tag 를 찾아라:
+
+```js
+<h1 className="title">
+  Welcome to <a href="https://nextjs.org">Next.js!</a>
+</h1>
+```
+
+그리고 아래와 같이 변경해라:
+
+```js
+<h1 className="title">
+  Read <Link href="/posts/first-post">this page!</Link>
+</h1>
+```
+
+다음, `pages/posts/first-post.js` 열고 아래와 같이 컨텐츠를 변경해라:
+
+```js
+import Link from 'next/link';
+
+export default function FirstPost() {
+  return (
+    <>
+      <h1>First Post</h1>
+      <h2>
+        <Link href="/">Back to home</Link>
+      </h2>
+    </>
+  );
+}
+```
+
+볼 수 있듯이, `Link` component 는 `<a>` tag 들을 사용하는 것과 비슷하지만 `<a href="…">`을 사용하는 대신 `<Link href="…">`를 사용한다.
+
+>Note: Next.js 12.2 버전 이전에는 `<a>` tag를 `<Link>` component를 감싸는 것이 필수였지만 12.2 이상부터는 필수가 아니다.
+> 
+
+작동하는지 확인하자. 각 페이지에 링크가 있고, 뒤와 앞으로 이동 할 수 있다.
+
+![image](https://nextjs.org/static/images/learn/navigate-between-pages/links.gif)
+
 #### 5) Client-Side Navigation
+`Link` component는 같은 Next.js app 의 두개의 페이지 사이에서 clint-side navigation 할 수 있게 한다.
+
+client-side navation의 의미는 javascript를 사용하여  브라우저가 수행하는 기본적인 navigation 보다 빠른 페이지의 transition(전환)을 일으키는 것을 말한다.
+
+이것을 간단히 증명할 수 있는 간단한 방법:
+- 브라우저의 개발 툴을 사용하여 `<html>`의 `background` CSS property를 `yellow`로 바꾼다.
+- 두 사이를 링크를 클릭하여 뒤 와 앞으로 이동한다.
+- 페이지 전환사이에 노란색 뒷배경이 지속되는 것을 볼 수 있다.
+
+이것은 브라우저가 전체 페이지를 load하지 않고 client-side navigation이 작동하는 것을 보여준다.
+
+![image](https://nextjs.org/static/images/learn/navigate-between-pages/client-side.gif)
+
+만약 `<Link href="…">` 대신 `<a href="…">`을 사용했다면, 브라우저는 full refresh를 하기에 백그라운드 색은 링크 클릭시 지워진다.
+
+**Code splitting and prefetching**
+
+Next.js는 code splitting이 자동적이고, 각 페이지는 그 페이지가 필요할 시에만 로드된다. 홈페이지가 render 되었을 때, 다른 페이지들의 코드는 초기에 전달되지 않는 것을 의미한다.
+
+이 것은 몇백개의 페이지들을 가지고 있어도 홈페이지 로드는 빠르다는 것을 증명한다.
+
+요청한 페이지의 코드만 로딩하는 것은 페이지들이 분리되는 것을 의미한다.
+만약 특정 페이지가 error가 나도 나머지 application은 동작한다.
+
+게다가, Next.js의 production build에서는 `Link` compoenents 는 browser의 viewport 안에서 나타날때 마다, Next.js는 자동적으로 백그라운드에서 연결된 페이지들의 코드를 prefetch합니다. 
+링크를 클릭할때까지 대상 페이지의 코드는 백그라운드에서 로드될 준비를 하고 있고, 페이지 전환은 거의 즉시 된다.
+
+**Summary**
+
+Next.js는 code splitting, client-side navigation, 그리고 prefetching(in production)에 의해 최고의 퍼포먼스를 위한 자동적 최적화를 한다.
+
+`pages` 아래의 파일과 같은 routes를 만들고 내장된 `Link` compoenent를 사용한다. 라우팅 라이브러리들은 필수가 아니다.
+
+` in the API reference for next/link` 에서 `Link` component,  `in the routing documentation.`에서 routing을 더 학습 수 있다. 
+
+>Note: 만약 Next.js app 바깥의 외부 페이지 링크가 필요하다면 `<Link>` 없이 `<a>` tag를 사용하면 된다.
 
 ### 3. Assets, Metadata, and CSS
 
