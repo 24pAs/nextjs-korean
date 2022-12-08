@@ -1058,12 +1058,127 @@ Next.js는 코드 스플리팅을 기본적으로 지원합니다. `pages/` 디�
 ### 1 Create a Next.js App
 
 #### 1) Introduction
+  
+  리액트로 완전한 웹 애플리케이션을 구축하기 위해서는 고려해야할 몇가지 중요한 세부사항들이 있습니다.
+
+- 코드는 웹팩과 같은 번들러로 번들되어야 하며 바벨과 같은 컴파일러를 사용하여 변환되어야 합니다.
+- 코드 분할과 같은 생산 최적화를 해야합니다.
+- 성능과 SEO를 위해 일부 페이지를 정적으로 pre-render 하고 싶을 수 있습니다. 서버 사이드 렌더링 또는 클라이언트 사이드 렌더링을 하고 싶을 수 있습니다.
+- 리액트액을 데이터 저장소와 연결하기 위해 서버 측 코드를 작성해야 할 수도 있습니다.
+
+프레임워크는 이러한 문제를 해결할 수 있습니다. 그러나 프레임워크는 적절한 수준의 추상화를 가져야 합니다. 그렇지 않을 경우 유용하지 않을 것입니다. 또한 코드를 작성하는 동안 여러분과 여러분의 팀이 놀라운 경험을 할 수 있도록 보장하는 좋은 “Developer Experience(개발자 경험)”을 갖추어야 합니다. 
+
+**Next.js : The React Framework** 
+
+이제 리액트 프레임워크인 Next.js에 대해 이야기해 봅시다. Next.js는 위의 모든 문제들에 대한 해결책을 제시합니다. 그러나 가장 중요한 점은 리액트 애플리케이션을 구축할 때 여러분과 여러분의 팀이 아주 성공적인 경험을 할 수 있을 것이라는 점입니다. 
+
+Next.js는 동급 최고의 개발자 경험을 목표로 하며 다음과 같은 많은 내장 기능을 제공합니다. 
+
+- 직관적인 페이지 기반 라우팅 시스템(dynamic routes 포함)
+- 페이지 단위로 지원되는 SSR, SSG가 모두 가능한 pre-rendering
+- 페이지 로드 속도 향상을 위한 자동 코드 분할
+- 최적화된 prefetching을 통한 클라이언트 측 라우팅
+- Built-in CSS 와 Sass 지원, CSS-in-JS 라이브러리를 지원
+- 빠른 refresh를 지원하는 개발환경
+- 서버리스 함수를 사용한 API endpoints를 구축하기 위한 API routes
+- 완전한 확장가능성
+
+Next.js는 수많은 세계 최대 브랜드들을 포함한 수만 개의 생산용 웹 사이트와 웹 애플리케이션에서 사용됩니다. 
+
+**And This Tutorial** 
+
+이 무료 과정은 Next.js를 시작하는 방법을 안내합니다. 이 튜토리얼에서 우리는 간단한 blog app을 만들어보면서 Next.js의 기초를 배울 것입니다.  
+
+**[https://next-learn-starter.vercel.app](https://next-learn-starter.vercel.app/)** ([source](https://github.com/vercel/next-learn/tree/master/basics/demo))
+
+> 해당 튜토리얼은 JavaScript와 React대한 기본 지식이 있다는 가정하에 설명하고 있습니다. 리액트 코드를 작성해본 적이 없다면 리액트의 공식 튜토리얼을 먼저 진행해주세요.
+> 
+
+튜토리얼 대신 문서를 찾는다면 Next.js의 문서에서 찾을 수 있습니다. 
+
+**Join the Conversation**
+
+만약 Next.js나 해당 코스와 관련된 질문이 있으시다면 디스코드에 있는 우리의 커뮤니티에 와서 질문해주세요. 
+
+시작합니다!  
+
 
 #### 2) Setup
 
+  **Setup**
+
+먼저 개발 환경이 준비되었는지 확인해봐야 합니다. 
+
+- Node.js가 설치되어 있지 않다면 [여기서 설치해 주세요.](https://nodejs.org/en/) Node.js 10.13 이후의 버전이 필요합니다.
+- 해당 튜토리얼에서는 자체 텍스트 편집기와 터미널 앱을 사용하게 됩니다.
+
+> 만약 윈도우 사용자라면 [downloading Git for Windows](https://gitforwindows.org/)을 다운로드하고 해당 튜토리얼에서 UNIX 관련 명령을 지원하는 Git Bash를 사용하는 것이 좋습니다. [Windows Subsystem for Linux (WSL)](https://docs.microsoft.com/en-us/windows/wsl/install-win10)를 사용해도 좋습니다.
+> 
+
+**Create a Next.js app**
+
+Next.js 앱을 만들기 위해서는 터미널을 열고 앱을 만들 디렉토리에 가서 아래의 명령어를 실행해주세요. 
+
+```bash
+npx create-next-app@latest nextjs-blog --use-npm --example "https://github.com/vercel/next-learn/tree/master/basics/learn-starter"
+```
+
+> 위의 코드는 Next.js 앱을 부팅하는 create-next-app이라는 도구를 사용합니다. —example 플래그를 통해 이 템플릿을 사용할 수 있습니다. 
+해당 기능이 작동하지 않는다면 [이 페이지](https://github.com/vercel/next-learn/blob/master/basics/errors/install.md)에 가서 확인해주세요.
+> 
+
+**Run the development server** 
+
+여러분은 이제 `nextjs-blog`라는 새로운 디렉토리를 확인할 수 있을 것입니다. `cd` 명령어를 통해 들어가 봅시다. 
+
+```bash
+cd nextjs-blog
+```
+
+그 후 아래의 명령어를 따라해주세요. 
+
+```bash
+npm run dev
+```
+
+이를 통해 여러분은 Next.js 앱의 개발 서버를 3000번 포트에서 시작할 수 있습니다. 
+
+해당 기능이 작동하는지 확인하기 위해 브라우저에서 [http://localhost:3000](http://localhost:3000)을 열어주세요.
+  
 #### 3) Welcome to Next.js
+  
+  [http://localhost:3000](http://localhost:3000)에 접근하면 아래와 같은 페이지를 확인하실 수 있습니다. 아래 페이지는 Next.js에 대한 유용한 정보를 보여주는 시작 템플릿 페이지입니다. 
+
+![image](https://user-images.githubusercontent.com/95066223/206178836-30554cc9-01af-45fb-8d51-3355e0833e2a.png)
+
+> Help is available : 막히면 [GitHub Discussions](https://github.com/vercel/next.js/discussions)에 있는 커뮤니티에 방문해주세요.
+> 
+
+이제 이 페이지를 편집해봅시다.
 
 #### 4) Editing the Page
+  
+  시작 페이지를 편집해봅시다. 
+
+- Next.js 개발 서버가 실행 중인지 확인해주세요.
+- 텍스트 편집기에서 `pages/index.js` 파일을 열어주세요.
+- `<h1>` 태그 안에 있는 “Welcome to”라는 글자를 찾아서 “Learn”으로 변경해주세요.
+- 파일을 저장해주세요.
+
+파일을 저장하면 브라우저가 새로운 글자를 가진 페이지로 자동으로 업데이트 될 것입니다. 
+
+![image](https://user-images.githubusercontent.com/95066223/206178790-e63c27bd-3303-4462-b136-d2e5383eddc4.png)
+
+Next.js의 개발 서버는 [Fast Refresh](https://nextjs.org/docs/basic-features/fast-refresh)가 가능합니다. 파일의 변경사항이 있으면 Next.js는 거의 즉시 자동으로 변경사항을 브라우저에 적용합니다. 새로고침을 할 필요가 없습니다! 이 기능은 앱을 빠르게 반복할 수 있도록 도와줍니다. 
+
+**Next Up: Creating Pages**
+
+아주 잘했습니다. 첫 번째 시간은 여기까지입니다. 
+
+다음 시간에는 더 많은 페이지를 만들어보고 페이지들 간에 이동하는 법에 대해 배울 것입니다. 
+
+> 개발 서버를 계속해서 작동시켜주세요. 재시작 하고 싶으시다면 Ctrl + c를 입력하면 종료됩니다.
+>
 
 ### 2. Navigate Between Pages
 
