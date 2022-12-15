@@ -1454,13 +1454,508 @@ Next.js는 code splitting, client-side navigation, 그리고 prefetching(in prod
 
 #### 6) CSS Styling
 
+**CSS styling**에 대해서 얘기해보자
+
+index 페이지([http://localhost:3000](http://localhost:3000/))가 이미 styling이 되어 있다는 것을 볼 수 있습니다. 만약 파일 구조를 본다면 , `style` 전역 스타일시트(`global.css`)와 CSS 모듈 (`Home.module.css` )이라는 두 개의 CSS 파일이 있는 폴더가 표시됩니다.
+
+프로젝트에 해당 파일이 없으면 여기에서 시작 코드를 다운로드 할 수 있습니다.
+
+```
+npx create-next-app nextjs-blog --use-npm --example "https://github.com/vercel/next-learn/tree/master/basics/assets-metadata-css-starter"
+```
+
+**CSS Modules**
+
+[CSS 모듈](https://nextjs.org/docs/basic-features/built-in-css-support)은 unique한 class 이름을 자동적으로 만들고 컴포넌트 level에서 CSS 범위를 로컬로 지정할 수 있습니다. 이것은 다양한 파일에서 클래스 이름의 충돌이 날 것을 걱정하지 않아도 됩니다.
+
+CSS 모듈 외에도 다음과 같은 다양한 방법으로 Next.js 애플리케이션의 스타일을 지정할 수 있습니다.
+
+- Sass는 `.css` 와 `.scss`를 import를 허용합니다.
+- PostCSS 라이브러리는 Tailwind CSS와 같습니다.
+- CSS-in-JS 라이브러리의 예 ) [styled-jsx](https://github.com/vercel/styled-jsx) , [styled-components](https://github.com/vercel/next.js/tree/canary/examples/with-styled-components) ,[ emotion](https://github.com/vercel/next.js/tree/canary/examples/with-emotion)
+
+이번 챕터에서는 , Next.js에서의 [CSS Modules](https://nextjs.org/docs/basic-features/built-in-css-support#adding-component-level-css)과 [Sass](https://nextjs.org/docs/basic-features/built-in-css-support#sass-support)에 대해서 배워보겠습니다.
+
 #### 7) Layout Component
+
+첫째로 , 모든 페이지에 표시되는 **Layout** 컴포넌트를 만들어보자 !
+
+- `Components` 폴더의 최상위에 만듭니다.
+- 아래를 따라서 Components 안쪽에 `layout.js` 라는 파일을 만듭니다.
+
+```javascript
+export default function Layout({ children }) {
+  return <div>{children}</div>;
+}
+```
+
+그리고 `pages/posts/first-post.js` 파일을 열고 `Layout` 컴포넌트를 import 해서 컴포넌트 가장 바깥쪽에 넣습니다.
+
+```javascript
+import Head from "next/head";
+import Link from "next/link";
+import Layout from "../../components/layout";
+
+export default function FirstPost() {
+  return (
+    <Layout>
+      <Head>
+        <title>First Post</title>
+      </Head>
+      <h1>First Post</h1>
+      <h2>
+        <Link href="/">← Back to home</Link>
+      </h2>
+    </Layout>
+  );
+}
+```
+
+#### Adding CSS
+
+`Layout` 컴포넌트에 몇가지의 styles을 추가하겠습니다. [CSS Modules](https://nextjs.org/docs/basic-features/built-in-css-support#adding-component-level-css)을 활용하여 리액트 컴포넌트 파일 안에 CSS를 import 할 수 있습니다.
+
+아래의 내용을 `components/layout.module.css` 파일에 작성합니다.
+
+```javascript
+.container {
+  max-width: 36rem;
+  padding: 0 1rem;
+  margin: 3rem auto 6rem;
+}
+```
+
+> 중요 : [CSS Modules](https://nextjs.org/docs/basic-features/built-in-css-support#adding-component-level-css)을 사용하기 위해서는 CSS 파일이름을 꼭 `/module.css`로 만듭니다.
+
+`components/layout.js` 안쪽에 `container` 클래스를 사용하기 위해서 필요한 것이 있습니다.
+
+- CSS 파일을 import하고 `styles` 라는 이름을 할당합니다.
+- `className`으로 `styles.container`를 사용하세요.
+
+아래 내용을 따라서 `components/layout.js` 파일을 바꿔보세요.
+
+```javascript
+import styles from "./layout.module.css";
+
+export default function Layout({ children }) {
+  return <div className={styles.container}>{children}</div>;
+}
+```
+
+[http://localhost:3000/posts/first-post](http://localhost:3000/posts/first-post)에 가보면 , 텍스트가 중앙 container 안쪽에 작성되어 있는 것을 확인할 수 있습니다.
+
+![](https://nextjs.org/static/images/learn/assets-metadata-css/layout.png)
+
+#### Automatically Generates Unique Class Names
+
+지금 브라우저 devtools안에 HTML을 보면 , `Layout` 컴포넌트에 의해 렌더링 된 `div`를 확인할 수 있고 `layout_container_...`라는 class name을 가진 것을 볼 수 있습니다.
+
+![](https://nextjs.org/static/images/learn/assets-metadata-css/devtools.png)
+
+[CSS Modules](https://nextjs.org/docs/basic-features/built-in-css-support#adding-component-level-css)은 고유한 class names를 자동적으로 생성합니다. CSS Modules을 사용하는 한 class name 충돌을 걱정할 필요가 없습니다.
+
+게다가 , Next.js는 [CSS Modules](https://nextjs.org/docs/basic-features/built-in-css-support#adding-component-level-css) 또한 code splitting 을 합니다. 각 페이지에 최소한의 CSS가 로드되도록 합니다. 그 결과 번들 크기는 더욱 작아집니다.
+
+CSS Modules은 빌드 시 JavaScript 번들에서 추출되며 생성된`.css` 파일은 Next.js에 의해 자동적으로 로드됩니다.
 
 #### 8) Global Styles
 
+#### Global Styles
+
+[CSS modules](https://nextjs.org/docs/basic-features/built-in-css-support#adding-component-level-css) 컴포넌트 level에서 유용한 style 입니다. 그러나 **모든 페이지**에 일부 CSS가 로드되는 것을 원한다면 Next.js는 이것 또한 지원하고 있습니다.
+
+어플리케이션에 [global CSS](https://nextjs.org/docs/basic-features/built-in-css-support#adding-a-global-stylesheet)를 로드하는 방법은 아래 내용을 따라서 `pages/_app.js` 파일을 만드세요.
+
+```javascript
+export default function App({ Component, pageProps }) {
+  return <Component {...pageProps} />;
+}
+```
+
+`_app.js` 의 default export는 애플리케이션의 모든 페이지를 래핑하는 최상위 수준의 React 컴포넌트입니다. App 컴포넌트는 페이지간에 이동할때 state를 유지할 수 있고 global stlyes 또한 여기서 할 수 있습니다.
+
+[`_app.js` 파일에 대해 더 배워보자](https://nextjs.org/docs/advanced-features/custom-app)
+
+#### Restart the Development Server
+
+**중요** : `pages/_app.js` 를 추가할 때 개발 서버를 재시작 해야합니다. `Ctrl + c` 를 눌러서 서버를 중지시키고 시작하세요.
+
+```
+npm run dev
+```
+
+#### Adding Global CSS
+
+Next.js에서 [`pages/_app.js`](https://nextjs.org/docs/advanced-features/custom-app)에서 [global CSS](https://nextjs.org/learn/basics/assets-metadata-css/global-styles) 파일을 import 해서 사용할 수 있습니다. 모든 곳에서 global CSS를 import 할 수는 없습니다.
+
+[global CSS](https://nextjs.org/learn/basics/assets-metadata-css/global-styles)가 페이지의 모든 요소에 영향을 끼치기 때문에 `pages/_app.js` 밖에서 import 할 수 없습니다.
+
+만약에 homepage에서 `/posts/first-post` 페이지로 이동해야 한다면 , homepage에 global styles은 의도적이지 않게 `/posts/first-post` 에 영향을 끼칠 것 입니다.
+
+전역 CSS 파일을 어디에나 배치하고 아무 이름이나 사용할 수 있습니다. 아래 내용을 따라 수행해보겠습니다.
+
+- 최상위에 styles 폴더를 만들고 `global.css` 파일을 추가합니다.
+- `styles/global.css` 안에 CSS를 추가하세요. 이 코드는 몇몇 스타일을 초기화하고 a 태그의 color를 변경합니다.
+
+```css
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu,
+    Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  line-height: 1.6;
+  font-size: 18px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: #0070f3;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+```
+
+마침내 `pages/_app.js` 파일 안쪽에 사전에 만든 CSS를 import 하세요.
+
+```javascript
+// `pages/_app.js`
+import "../styles/global.css";
+
+export default function App({ Component, pageProps }) {
+  return <Component {...pageProps} />;
+}
+```
+
+[http://localhost:3000/posts/first-post](http://localhost:3000/posts/first-post)에 접근하면 , style이 적용된 것을 볼 수 있을 것 입니다. `_app.js `에서 import된 모든 스타일은 전역적으로 적용될 것입니다.
+
+![](https://nextjs.org/static/images/learn/assets-metadata-css/global-styles.png)
+
+> 만약에 동작하지 않는다면 개발 서버를 재시작해서 `pages/_app.js` 파일을 업데이트하세요!
+
 #### 9) Polishing Layout
 
+#### Polishing Layout
+
+지금까지는 [CSS Modules](https://nextjs.org/docs/basic-features/built-in-css-support#adding-component-level-css)과 같은 개념을 설명하기 위해 최소한의 React 및 CSS 코드만 추가했습니다. 다음 레슨인 [data fetching](https://nextjs.org/docs/basic-features/data-fetching/overview)에 대해 배우기 전에 페이지를 스타일링 해보겠습니다.
+
+#### Update `components/layout.module.css`
+
+첫째로 , `components/layout.module.css`를 열고 아래 내용을 따라서 레이아웃 및 프로필 사진에 대한 세련된 스타일링으로 변경하세요.
+
+```css
+.container {
+  max-width: 36rem;
+  padding: 0 1rem;
+  margin: 3rem auto 6rem;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.backToHome {
+  margin: 3rem 0 0;
+}
+```
+
+#### Create `styles/utils.module.css`
+
+두번째로 , CSS utility 클래스 집합을 만드는 것은 여러 컴포넌트에서 재사용 가능합니다.
+
+아래 내용을 따라서 `styles/utils.module.css` 라고 불리는 새로운 CSS 파일을 추가합니다.
+
+```css
+.heading2Xl {
+  font-size: 2.5rem;
+  line-height: 1.2;
+  font-weight: 800;
+  letter-spacing: -0.05rem;
+  margin: 1rem 0;
+}
+
+.headingXl {
+  font-size: 2rem;
+  line-height: 1.3;
+  font-weight: 800;
+  letter-spacing: -0.05rem;
+  margin: 1rem 0;
+}
+
+.headingLg {
+  font-size: 1.5rem;
+  line-height: 1.4;
+  margin: 1rem 0;
+}
+
+.headingMd {
+  font-size: 1.2rem;
+  line-height: 1.5;
+}
+
+.borderCircle {
+  border-radius: 9999px;
+}
+
+.colorInherit {
+  color: inherit;
+}
+
+.padding1px {
+  padding-top: 1px;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.listItem {
+  margin: 0 0 1.25rem;
+}
+
+.lightText {
+  color: #666;
+}
+```
+
+> `global.css` 파일에서 사용하더라도 Utility 클래스는 어플리케이션 전체에서 재사용 가능합니다. Utility 클래스는 메서드(e.g. global styles , CSS modules , Sass , etc)가 아니라 CSS 선택자를 작성하는 접근 방식으로 나타냅니다. Utility-first CSS에 대해서 자세히 알아보세요.
+
+#### Update components/layout.js
+
+셋째로 , `components/layout.js` 파일을 열고 아래의 내용을 따라 `Your name` 을 실제 이름으로 변경하세요.
+
+```jsx
+import Head from "next/head";
+import Image from "next/image";
+import styles from "./layout.module.css";
+import utilStyles from "../styles/utils.module.css";
+import Link from "next/link";
+
+const name = "Your Name";
+export const siteTitle = "Next.js Sample Website";
+
+export default function Layout({ children, home }) {
+  return (
+    <div className={styles.container}>
+      <Head>
+        <link rel="icon" href="/favicon.ico" />
+        <meta
+          name="description"
+          content="Learn how to build a personal website using Next.js"
+        />
+        <meta
+          property="og:image"
+          content={`https://og-image.vercel.app/${encodeURI(
+            siteTitle
+          )}.png?theme=light&md=0&fontSize=75px&images=https%3A%2F%2Fassets.vercel.com%2Fimage%2Fupload%2Ffront%2Fassets%2Fdesign%2Fnextjs-black-logo.svg`}
+        />
+        <meta name="og:title" content={siteTitle} />
+        <meta name="twitter:card" content="summary_large_image" />
+      </Head>
+      <header className={styles.header}>
+        {home ? (
+          <>
+            <Image
+              priority
+              src="/images/profile.jpg"
+              className={utilStyles.borderCircle}
+              height={144}
+              width={144}
+              alt=""
+            />
+            <h1 className={utilStyles.heading2Xl}>{name}</h1>
+          </>
+        ) : (
+          <>
+            <Link href="/">
+              <Image
+                priority
+                src="/images/profile.jpg"
+                className={utilStyles.borderCircle}
+                height={108}
+                width={108}
+                alt=""
+              />
+            </Link>
+            <h2 className={utilStyles.headingLg}>
+              <Link href="/" className={utilStyles.colorInherit}>
+                {name}
+              </Link>
+            </h2>
+          </>
+        )}
+      </header>
+      <main>{children}</main>
+      {!home && (
+        <div className={styles.backToHome}>
+          <Link href="/">← Back to home</Link>
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+새로운 기능은 다음과 같습니다.
+
+- 페이지 내용을 묘사하기 위해 사용된 [meta 태그](https://en.wikipedia.org/wiki/Meta_element)( 예. og:image )
+- Boolean 값인 `home ` prop은 이미지와 타이틀의 사이즈 조정
+- `home `이 false면 하단의 '홈으로 돌아가기' 링크
+- `next/image` 로 추가된 이미지는 [priority](https://nextjs.org/docs/api-reference/next/image#priority) 속성으로 preloaded 된다.
+
+#### Update `pages/index.js`
+
+마침내 , homepage를 업데이트합니다.
+
+`pages/index.js` 를 열고 아래 내용으로 바꿉니다.
+
+```jsx
+import Head from "next/head";
+import Layout, { siteTitle } from "../components/layout";
+import utilStyles from "../styles/utils.module.css";
+
+export default function Home() {
+  return (
+    <Layout home>
+      <Head>
+        <title>{siteTitle}</title>
+      </Head>
+      <section className={utilStyles.headingMd}>
+        <p>[Your Self Introduction]</p>
+        <p>
+          (This is a sample website - you’ll be building a site like this on{" "}
+          <a href="https://nextjs.org/learn">our Next.js tutorial</a>.)
+        </p>
+      </section>
+    </Layout>
+  );
+}
+```
+
+다음은 작성자 프로필의 예입니다.
+
+![](https://nextjs.org/static/images/learn/assets-metadata-css/example.png)
+
+우리는 layout 코드를 세련되게 바꿨고 우리는 data fetching 레슨을 준비해야 합니다.
+
+이 강의를 마무리하기 전에 다음 페이지에서 Next.js의 CSS 지원과 관련된 몇 가지 유용한 기술에 대해 이야기해 보겠습니다.
+
 #### 10) Styling Tips
+
+다음은 도움이 될 수 있는 몇가지 스타일링 팁이 있습니다.
+
+```
+우리가 만든 앱을 변경시키지 않고 아래 섹션을 따라 읽을 수 있습니다.
+```
+
+#### Using `clsx` library to toggle classes
+
+[`clsx` ](https://www.npmjs.com/package/clsx)는 클래스 이름을 쉽게 전환할 수 있는 간단한 라이브러리 입니다. `npm install clsx` or `yarn add clsx` 를 사용하여 설치 할 수 있습니다.
+
+자세한 내용은 [설명서](https://github.com/lukeed/clsx)를 참조하세요. 기본 사용법은 다음과 같습니다.
+
+- `type` 이 `success` or `error` 인 `Alert` 컴포넌트를 만드는 것을 원한다고 가정해봅니다.
+- 만일 `success`라면 text가 green이고 `error` 라면 text가 red입니다.
+
+아래의 CSS module(`alert.module.css`)을 만들어 봅니다.
+
+```css
+.success {
+  color: green;
+}
+.error {
+  color: red;
+}
+```
+
+그리고 `clsx`를 사용합니다.
+
+```jsx
+import styles from "./alert.module.css";
+import clsx from "clsx";
+
+export default function Alert({ children, type }) {
+  return (
+    <div
+      className={cn({
+        [styles.success]: type === "success",
+        [styles.error]: type === "error",
+      })}
+    >
+      {children}
+    </div>
+  );
+}
+```
+
+#### Customizing PostCSS Config
+
+환경 설정 없이 바로 사용할 수 있는 Next.js는 [PostCSS](https://postcss.org/)를 사용하여 CSS를 컴파일합니다.
+
+PostCSS config를 customize 하기 위해 `postcss.config.js` 파일을 최상위에 만들 수 있습니다. 이는 [Tailwind CSS](https://tailwindcss.com/)와 같은 라이브러리를 사용하는 경우에 유용합니다.
+
+다음은 [Tailwind CSS](https://tailwindcss.com/)를 추가하는 단계입니다. 먼저 패키지를 설치합니다.
+
+```bash
+npm install -D tailwindcss autoprefixer postcss
+```
+
+그리고 [postcss.config.js](https://nextjs.org/docs/advanced-features/customizing-postcss-config#customizing-plugins)를 만듭니다.
+
+```javascript
+// postcss.config.js
+module.exports = {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
+};
+```
+
+`tailwind.config.js`에 configuring content sources 옵션을 명시하는 것을 추천합니다.
+
+```javascript
+// tailwind.config.js
+module.exports = {
+  content: [
+    "./pages/**/*.{js,ts,jsx,tsx}",
+    "./components/**/*.{js,ts,jsx,tsx}",
+    // For the best performance and to avoid false positives,
+    // be as specific as possible with your content configuration.
+  ],
+};
+```
+
+> PostCSS configuration을 custom하는 것에 대해 더 알고 싶다면 PostCSS 공식문서를 확인하세요.
+
+> Tailwind CSS를 쉽게 시작하기 위해 [example](https://github.com/vercel/next.js/tree/canary/examples/with-tailwindcss)을 확인하세요.
+
+#### Using Sass
+
+Next.js는 `.scss` and `.sass` extensions 둘 다 [Sass](https://nextjs.org/docs/basic-features/built-in-css-support#sass-support)를 import 해야합니다. [CSS 모듈](https://nextjs.org/docs/basic-features/built-in-css-support#adding-component-level-css) 및 `.module.scss` or `.module.sass` extension을 통해 컴포넌트 level에서 Sass를 사용할 수 있습니다.
+
+Next.js의 내장 Sass 지원을 사용하기 전에 아래와 같이 [`sass`](https://github.com/sass/sass) 를 설치해야합니다.
+
+```bash
+npm install -D sass
+```
+
+Next.js에 내장되어 있는 CSS Support and CSS Modules을 더 배우고 싶다면 [CSS 문서](https://nextjs.org/docs/basic-features/built-in-css-support)를 확인해주세요.
 
 ### 4. Pre-rendering and Data Fetching
 
