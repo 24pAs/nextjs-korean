@@ -1960,14 +1960,160 @@ Next.js에 내장되어 있는 CSS Support and CSS Modules을 더 배우고 싶�
 ### 4. Pre-rendering and Data Fetching
 
 #### 1) Introduction
+  우리는 블로그 페이지를 만들었지만(여기에 [결과가 있습니다](https://next-learn-starter.vercel.app/)) 블로그 내용을 아직 추가하지 못했습니다. 이번 과정에서 우리는 어떻게 외부의 블로그 데이터를 우리의 앱 안으로 들고 와야 할지에 대해 배울 예정입니다. 우리는 파일 시스템에 블로그 내용을 저장할 예정이지만 콘텐츠는 어디에 저장되어 있어도 상관없습니다.(e.g. database 혹은 Headless CMS)
+
+**What You’ll Learn In This Lesson**
+
+이번 과정에서 우리가 배울 내용은 아래와 같습니다: 
+
+- Next.js의 [pre-rendering](https://nextjs.org/docs/basic-features/pages#pre-rendering)의 특징
+- 두 가지 형태의 pre-rendering:  [Static Generation](https://nextjs.org/docs/basic-features/pages#static-generation-recommended)과 [Server-side Rendering](https://nextjs.org/docs/basic-features/pages#server-side-rendering)
+- [데이터가 있는](https://nextjs.org/docs/basic-features/pages#static-generation-with-data) Static Generation과 [데이터가 없는](https://nextjs.org/docs/basic-features/pages#static-generation-without-data) Static Generation
+- `[getStaticProps](https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation)` 와 index page에 외부 블로그 데이터를 가져오는 방법
+- `[getStaticProps](https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation)` 와 관련된 몇가지 유용한 정보
+
+만약 이전 과정부터 이어서 듣고 있다면 이 페이지는 넘어가도 좋습니다. 아래 버튼을 눌러 다음 페이지로 이동해주세요.
 
 #### 2) Setup
+  만약 이전 과정부터 이어서 듣고 있다면 이 페이지는 넘어가도 좋습니다. 아래 버튼을 눌러 다음 페이지로 이동해주세요. 
+
+**Download Starter Code(Optional)** 
+
+만약 이전 과정을 듣지 않았다면  아래에 있는 starter code를 다운받고 설치해서 실행해주세요. `nextjs-blog` 폴더는 이전 수업을 잘 들었다면 결과로 가지고 있을 코드입니다. 
+
+다시한번 말하지만 지금 하는 작업은 이전 과정을 완료했다면 불필요한 작업입니다. 
+
+```bash
+npx create-next-app@latest nextjs-blog --use-npm --example "https://github.com/vercel/next-learn/tree/master/basics/data-fetching-starter"
+```
+
+아래의 지시를 따라주세요. (`cd` 명령어를 통해 폴더로 들어가 개발 서버를 시작해주세요.)
+
+그리고 아래의 파일들 또한 업데이트해주세요. 
+
+- `public/images/profile.jpg` 에 여러분의 사진을 넣어주세요. (추천: 400px width/height).
+- `components/layout.js` 에 있는 `const name = '[Your Name]'` 에 여러분의 이름을 적어주세요.
+- `pages/index.js` 에 있는  `<p>[Your Self Introduction]</p>` 에 자기소개를 적어주세요.
 
 #### 3) Pre-Rendering
+  **Pre-rendering** 
+
+[Data fetching](https://nextjs.org/docs/basic-features/data-fetching)에 대해서 이야기 하기 전에 Next.js의 가장 중요한 개념 중에 하나인 [Pre-rendering](https://nextjs.org/docs/basic-features/pages#pre-rendering)에 대해 이야기 해봅시다.
+
+기본적으로 Next.js는 모든 페이지를 사전에 렌더링합니다. 즉 클라이언트 사이드에서 JavaScript가 모든 것을 하는 대신에 Next.js는 사전에 각각의 페이지를 위한 HTML을 생성한다는 뜻입니다.  Pre-rendering은 더 좋은 성능과 SEO를 가집니다. 
+
+각각의 생성된 HTML은 페이지를 구성하는데 필요한 최소한의 JavaScript로 구성되어 있습니다. 브라우저에 의해 페이지가 로드되면 JavaScript 코드는 실행되며 페이지 전체에 상호작용을 할 수 있도록 만들어줍니다.(이 과정을 hydration이라고 합니다.) 
+
+**Check That Pre-rendering Is Happening** 
+
+아래와 같은 단계를 통해 pre-rendring이 일어났는지 확인할 수 있습니다.  
+
+1. 브라우저에 JavaScript를 비활성화로 설정해주세요. ([Here's how in Chrome](https://developer.chrome.com/docs/devtools/javascript/disable/))
+2. [이 페이지](https://next-learn-starter.vercel.app/) 접근에 시도해보세요.(튜토리얼의 최종 결과물입니다.)
+
+여러분은 여러분의 앱이 JavaScript 없이도 렌더링되는 것을 확인할 수 있을 것입니다. Next.js는 정적인 HTML을 사전에 렌더링하므로 JavaScript  실행 없이도 앱의 UI가 화면에 보이는 것을 확인할 수 있습니다. 
+
+> 참고 : 위 과정에서 `localhost`에 접속해서 시도해볼수도 있습니다. 하지만 Javascript가 비활성화 되어 있을 경우 CSS는 확인되지 않습니다.
+> 
+
+만약 여러분의 앱이 순수한 React.js로 구성되어 있다면(Next.js 없이) pre-rendering은 일어나지 않을 것입니다. 그리고 JavaScript를 비활성화 한다면 여러분의 앱에서는 아무것도 볼 수 없을 것입니다.
+
+예를 들어: 
+
+- 브라우저에서 JavaScript를 활성화하고 [이 페이지](https://create-react-template.vercel.app/)를 확인해보세요. 이 페이지는 [Create React App](https://create-react-app.dev/)으로 구축된 순수한 React.js 앱입니다.
+- 이제 JavaScript를 비활성화하고 [동일한 페이지](https://create-react-template.vercel.app/)에 다시 접속해보세요.
+- 더 이상 앱을 볼 수 없고 대신에 “앱을 실행하려면 JavaScript를 활성화해주세요.”라는 문구를 보실 수 있을 것입니다. 이는 해당 앱이 정적 HTML로 pre-rendering되지 않기 때문입니다.
+
+**Summary: Pre-rendering vs No Pre-rendering** 
+
+다음은 그림으로 요약한 것입니다. 
+
+![image](https://user-images.githubusercontent.com/95066223/207740356-5c05f70f-7693-41ee-8163-c741d0dcac31.png)
+![image](https://user-images.githubusercontent.com/95066223/207740407-304887cd-8ae1-4f8f-bbff-ba537d6b8866.png)
+
+다음으로는 Next.js에서 pre-rendering의 두가지 형태에 대해서 이야기해봅시다.
 
 #### 4) Two Forms of Pre-rendering
+  Next.js는  [Static Generation](https://nextjs.org/docs/basic-features/pages#static-generation-recommended) 과 [Server-side Rendering](https://nextjs.org/docs/basic-features/pages#server-side-rendering)이라는 두 가지 형태의 pre-rendering이 있습니다. 둘의 차이점은 페이지를 위한 HTML을 언제 생성하는 지 입니다. 
+
+- [Static Generation](https://nextjs.org/docs/basic-features/pages#static-generation-recommended)은 빌드 타임에 HTML을 생성하는 pre-rendering 메서드입니다. 사전에 생성된 HTML은 매 요청마다 재 요청됩니다.
+- [Server-side Rendering](https://nextjs.org/docs/basic-features/pages#server-side-rendering)은 매 요청 전에 HTML을 생성하는 pre-rendering 메서드입니다.
+
+![image](https://user-images.githubusercontent.com/95066223/207740464-a6eeae30-d57f-45ba-96a5-f649a7d7e619.png)
+
+![image](https://user-images.githubusercontent.com/95066223/207740491-d3242de7-66ba-4685-983b-4f6e909ede99.png)
+
+> 개발모드(npm run dev 혹은 yarn dev 실행 시)에서는 모든 요청에 대해 페이지가 [pre-rendered](https://nextjs.org/docs/basic-features/pages#pre-rendering)됩니다. 이는 Static Generation에도 적용되며 이는 개발을 더 편하게 만들어줍니다. Production으로 이동 시 [Static Generation](https://nextjs.org/docs/basic-features/data-fetching/get-static-props#runs-on-every-request-in-development)은 모든 요청마다 일어나는 게 아니라 빌드 타임에 한번만 실행됩니다.
+> 
+
+**Per-page Basis** 
+
+중요한 것은 Next.js를 사용하면 각 페이지에 사용할 사전 렌더링 형태를 선택할 수 있다는 점입니다. [Static Generation](https://nextjs.org/docs/basic-features/pages#static-generation-recommended)을 대부분의 페이지에 사용하고 [Server-side Rendering](https://nextjs.org/docs/basic-features/pages#server-side-rendering)을 다른 페이지에 사용하면 “hybrid” Next.js 앱을 만들 수 있습니다. 
+
+![image](https://user-images.githubusercontent.com/95066223/207740544-77702aa1-692f-491e-ae53-3fe8d0204f9f.png)
+
+**When to Use [Static Generation](https://nextjs.org/docs/basic-features/pages#static-generation-recommended) v.s. [Server-side Rendering](https://nextjs.org/docs/basic-features/pages#server-side-rendering)**
+
+가능하다면 [Static Generation](https://nextjs.org/docs/basic-features/pages#static-generation-recommended)(데이터의 유무에 상관없이)을 사용하는 것을 추천드립니다. 왜냐하면 여러분의 페이지는 한 번 빌드된 후 CDN에 의해 제공되므로 모든 요청에 대해 서버가 페이지를 렌더링하는 것보다 훨씬 더 빠르기 때문입니다. 
+
+[Static Generation](https://nextjs.org/docs/basic-features/pages#static-generation-recommended)은 다음을 포함한 여러 유형의 페이지에 사용할 수 있습니다. 
+
+- 마케팅 페이지
+- 블로그 게시물
+- E-commerce 제품 목록
+- 도움말 및 설명서
+
+“사용자 요청에 앞서 이 페이지를 미리 렌더링할 수 있습니까?”라고 자문해야 합니다. 만약 질문의 답이 예라면 [Static Generation](https://nextjs.org/docs/basic-features/pages#static-generation-recommended)을 선택해야 합니다. 
+
+반면에 만약 사용자의 요청 전에 페이지를 사전 렌더링할 수 없다면 [Static Generation](https://nextjs.org/docs/basic-features/pages#static-generation-recommended)은 좋은 선택이 아닙니다.  아마 여러분의 페이지는 데이터를 빈번하게 업데이트하여 보여주고 페이지의 내용은 매 요청마다 바뀔 것입니다. 
+
+이 경우에는 [Server-side Rendering](https://nextjs.org/docs/basic-features/pages#server-side-rendering)을 사용할 수 있습니다. 좀 더 느릴 수 있지만 사전에 렌더링된 페이지는 항상 업데이트 될 것입니다. 혹은 프리 렌더링은 건너뛰고 클라이언트 측 자바스크립트를 사용하여 자주 업데이트되는 데이터를 채울 수 있습니다. 
+
+**We’ll Focus in Static Generation**
+
+이 과정에서는 [Static Generation](https://nextjs.org/docs/basic-features/pages#static-generation-recommended)에 집중해서 이야기해 볼 것입니다. 다음 페이지에서는 데이터가 있을 때와 없을 때의 [Static Generation](https://nextjs.org/docs/basic-features/pages#static-generation-recommended)에 대해 이야기 해 볼 예정입니다.
 
 #### 5) Static Generation with and without Data
+  [Static Generation](https://nextjs.org/docs/basic-features/pages#static-generation-recommended)은 데이터가 있을 때와 없을 때 모두 구현 가능합니다. 
+
+지금까지 우리가 만든 모든 페이지는 외부 데이터를 가지고 올 필요가 없었습니다. 이 페이지들은 production을 위해 앱을 빌드할 때 자동으로 정적으로 생성될 것입니다. 
+
+![image](https://user-images.githubusercontent.com/95066223/207740591-8d4aa399-2da6-44c2-939a-162b6cf6f689.png)
+
+하지만 일부 페이지의 경우 먼저 외부 데이터를 가져오지 않고서는 HTML을 렌더링할 수 없습니다. 아마 파일시스템에 접근하거나 외부 API를 가져오거나 빌드 시 데이터베이스 쿼리를 작성해야 할 수 있습니다. Next.js는 이 경우([데이터가 포함된 Static Generation](https://nextjs.org/docs/basic-features/pages#static-generation-with-data) )를 즉시 지원합니다. 
+
+![image](https://user-images.githubusercontent.com/95066223/207740618-44eedd7b-48cb-4795-884c-55d839c539df.png)
+
+**Static Generation with Data using `getStaticProps`**
+
+어떻게 동작하는 걸까요? Next.js에서는 페이지 컴포넌트를 내보낼 때 getStaticProps라는 비동기 함수도 내보낼 수 있습니다. 이 과정을 진행한다면 아래와 같은 과정이 진행됩니다.
+
+- 프로덕션에서 빌드 타임에 StaticProps를 실행합니다.
+- 함수 내부에서 외부 데이터를 가져와 페이지에 props로 보낼 수 있습니다.
+
+```jsx
+export default function Home(props) { ... }
+
+export async function getStaticProps() {
+  // Get external data from the file system, API, DB, etc.
+  const data = ...
+
+  // The value of the `props` key will be
+  //  passed to the `Home` component
+  return {
+    props: ...
+  }
+}
+```
+
+기본적으로 `[getStaticProps](https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation)`를 사용하면 Next.js에게 다음과 같이 전달할 수 있습니다.. “이 페이지에는 몇 가지 데이터 종속성이 있습니다. 따라서 빌드 시 이 페이지를 pre-render 할 때 먼저 그 문제를 해결하십시오!” 
+
+> 참고: 개발 모드에서는 `[getStaticProps](https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation)`가 각 요청에 대해 대신 실행됩니다.
+> 
+
+**Let’s Use `getStaticProps`**
+
+사용하는 것을 배우면 더 쉽게 이해할 수 있을 것입니다. 그럼 다음페이지에서는 `[getStaticProps](https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation)`를 사용하여 블로그를 구현해보겠습니다.
 
 #### 6) Blog Data
 **Creating a simple blog architecture**
