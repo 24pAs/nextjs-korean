@@ -1156,7 +1156,7 @@ Next.js를 계속 배우려면 주요 기능을 소개하는 자습서를 활용
 ### 1 Create a Next.js App
 
 #### 1) Introduction
-  
+
   리액트로 완전한 웹 애플리케이션을 구축하기 위해서는 고려해야할 몇가지 중요한 세부사항들이 있습니다.
 
 - 코드는 웹팩과 같은 번들러로 번들되어야 하며 바벨과 같은 컴파일러를 사용하여 변환되어야 합니다.
@@ -1242,9 +1242,9 @@ npm run dev
 이를 통해 여러분은 Next.js 앱의 개발 서버를 3000번 포트에서 시작할 수 있습니다. 
 
 해당 기능이 작동하는지 확인하기 위해 브라우저에서 [http://localhost:3000](http://localhost:3000)을 열어주세요.
-  
+
 #### 3) Welcome to Next.js
-  
+
   [http://localhost:3000](http://localhost:3000)에 접근하면 아래와 같은 페이지를 확인하실 수 있습니다. 아래 페이지는 Next.js에 대한 유용한 정보를 보여주는 시작 템플릿 페이지입니다. 
 
 ![image](https://user-images.githubusercontent.com/95066223/206178836-30554cc9-01af-45fb-8d51-3355e0833e2a.png)
@@ -1255,7 +1255,7 @@ npm run dev
 이제 이 페이지를 편집해봅시다.
 
 #### 4) Editing the Page
-  
+
   시작 페이지를 편집해봅시다. 
 
 - Next.js 개발 서버가 실행 중인지 확인해주세요.
@@ -1444,13 +1444,227 @@ Next.js는 code splitting, client-side navigation, 그리고 prefetching(in prod
 
 #### 1) Introduction
 
+우리가 만든 두 번째 페이즈는 현재 스타일링이 되어있지 않습니다. 페이지에 CSS를 이용해 스타일링을 추가해봅시다!
+Next.js는 [CSS](https://nextjs.org/docs/basic-features/built-in-css-support) 와 [Sass](https://nextjs.org/docs/basic-features/built-in-css-support#sass-support) 가 내장되어 있습니다. 이번에는 CSS를 사용할 예정입니다.
+이번 강의에서는 Next.js가 이미지 같은 정적 assets과 `<title>` 태그와 같은 페이지의 메타 데이터를 어떻게 다루는지 이야기해 볼 예정입니다.
+
+**What You’ll Learn in This Lesson**
+
+이번 강의에서 배우게 될 내용
+
+- Next.js에 [정적 파일](https://nextjs.org/docs/basic-features/static-file-serving 들을 추가하는 방법
+- 각 페이지의 `<head>` 태그 내부를 커스텀하는 방법
+- [CSS Modules](https://nextjs.org/docs/basic-features/built-in-css-support#adding-component-level-css) 를 사용해서 스타일이 지정된 재사용 가능한 리액트 컴포넌트를 만드는 방법
+- `pages/_app.js` 경로에 [global CSS](https://nextjs.org/docs/basic-features/built-in-css-support#adding-a-global-stylesheet)를 추가하는 방
+- Next.js에서 스타일링을 하기 위한 몇가지 유용한 팁들
+
+**사전 지식**
+
+- 기본적인 CSS 관련 지식. 이번 강의는 CSS 기초를 설명하는 것이 아닌 Next.js 애플리케이션에서 CSS를 추가하는 방법에 대해서 알아볼 예정입니다.
+
+> 만약 Next.js 스타일링에 대한 자세한 문서를 보고 싶다면, [여기](https://nextjs.org/docs/basic-features/built-in-css-support)를 살펴보세요!
+
 #### 2) Setup
+
+이전 강의부터 계속해서 진행하고 있다면 이 페이지는 넘어가도 됩니다.
+
+**Download Starter Code (Optional)**
+
+만약 이전 강의를 듣지 않았다면, 아래와 같이 코드를 다운받고 실행할 수 있습니다. 이것은 이전 강의와 동일한 내용의 `nextjs-blog` 디렉토리를 설정합니다.
+다시 말하지만, 이전 강의를 완료했다면 이 과정을 할 필요가 없습니다.
+
+> $ npx create-next-app nextjs-blog --use-npm --example "https://github.com/vercel/next-learn/tree/master/basics/assets-metadata-css-starter"
+
+설치한 다음 해당 디렉토리로 이동하여 개발 서버를 시작합니다.
 
 #### 3) Assets
 
+**Assets**
+
+Next.js는 이미지와 같은 **static assets** 를 최상위 `public` 디렉토리 아래에서 제공합니다. `public` 폴더 안에 파일들을 `pages` 폴더와 비슷하게 애플리케이션의 root로부터 참조될 수 있습니다.
+`public` 폴더는 `robots.txt`, Google SIte Verification 그리고 다른 static assets에도 유용합니다.  [Static File Serving](https://nextjs.org/docs/basic-features/static-file-serving)(정적 파일 제공)에 대해서 더 알아보려면 문서를 참고하세요.
+
+**Download Your Profile Picture**
+
+먼저, 프로필 사진을 검색해봅시다.
+
+- Jpg 확장자를 가진 프로필 사진을 다운로드하세요.(또는 [이 파일](https://github.com/vercel/next-learn/blob/master/basics/basics-final/public/images/profile.jpg)을 이용하세요)
+- `public` 폴더 안에 `images` 폴더를 만드세요.
+- `public/images` 폴더 안에 `profile.jpg` 파일을 저장하세요.
+- 이미지의 크기는 약 400 x 400입니다.
+- [`public`](https://nextjs.org/docs/basic-features/static-file-serving) 폴더 아래에 존재하는 사용하지 않을 SVG logo를 지울 수 있습니다.
+
+하지만, 이것은 아래 사항을 명시적으로 다뤄줘야 한다는 것을 의미합니다.
+
+- 이미지가 서로 다른 화면 크기에 대응하는지 확인
+- 써드파티 툴이나 라이브러리로 최적화되는 이미지인지 확인
+- viewport에 들어갔을 때 이미지를 로딩 
+
+**Image Component and Image Optimization**
+
+[`next/image`](https://nextjs.org/docs/api-reference/next/image) 는 현대적인 웹을 위해 진화된 `<img>` 태그의 확장입니다. 
+
+또한 Next.js는 기본적으로 이미지 최적화를 지원합니다. 이것은 브라우저가 지원하는 경우 resizing, optimizing와 [WebP](https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Image_types#webp) 와 같은 현대적인 이미지 포맷를 사용할 수 있습니다. 이러한 기능은 작은 viewport에 큰 이미지가 올라가는 것을 피할 수 있습니다. 또한 Next.js는 자동적으로 향후의 이미지 포맷에 채택하고 해당 이미지 포맷을 지원하는 브라우저에게 제공할 수 있습니다.
+
+자동 이미지 최적화는 어떠한 이미지 파일에도 작동합니다. 이미지가 CMS와 같은 외부 데이터 소스에서 호스팅 될지라도 최적화될 수 있습니다.
+
+**Using the Image Component**
+
+build time에 이미지를 최적화하는 대신에 Next.js는 유저가 요청할 때 이미지 최적화를 진행합니다. 정적 사이트 생성기 또는 정적 솔루션과 달리 10개의 이미지든 1000만개의 이미지를 적재하더라도 build time이 늘어나지 않습니다.
+
+이미지는 기본적으로 지연 로드됩니다. 즉, 표시 영역 외부의 이미지에 대해 페이지 속도가 저하되지 않습니다. 이미지는 화면의 스크롤에 따라 로드됩니다.
+
+이미지는 항상 Google이 [search ranking](https://developers.google.com/search/blog/2020/05/evaluating-page-experience)에 사용하는 [Core Web Vital](https://web.dev/vitals/#core-web-vitals)  [Cumulative Layout Shift(누적 레이아웃 이동)](https://web.dev/cls/)을 피하는 방식으로 렌더링됩니다.
+
+여기 [`next/image`](https://nextjs.org/docs/api-reference/next/image)를 사용해 프로필 사진을 보여주는 예시가 있습니다. 넓이와 높이 속성은 이미지의 종횡비가 동일한 원하는 렌더링 사이즈가 되어야 합니다.
+
+> Note: 추후에 "Polishing Layout"에서 이 컴포넌트를 사용할 것이므로 아직 복사할 필요가 없습니다.
+
+```javascript
+import Image from 'next/image';
+
+const YourComponent = () => (
+  <Image
+    src="/images/profile.jpg" // Route of the image file
+    height={144} // Desired size with correct aspect ratio
+    width={144} // Desired size with correct aspect ratio
+    alt="Your Name"
+  />
+);
+```
+
+> - 자동 이미지 최적화를 더 살펴보고 싶다면 [여기](https://nextjs.org/docs/basic-features/image-optimization)를 확인하세요.
+>
+> - `Image` 컴포넌트에 대해 더 살펴보고 싶다면 [여기](https://nextjs.org/docs/api-reference/next/image)를 확인하세요.
+
 #### 4) Metadata
 
+**Metadata**
+
+`<title>` 태그와 같은 페이지 메타 데이터를 수정하려면 어떻게 해야 할까요?
+
+`<title>` 은 `<head>` 태그의 일부분입니다. Next.js 페이지에서 `<head>` 태그를 수정하는 방법에 대해서 알아보도록 하겠습니다.
+
+`page/index.js` 파일을 열고 아래 코드를 찾아보세요.
+
+```react
+<Head>
+  <title>Create Next App</title>
+  <link rel="icon" href="/favicon.ico" />
+</Head>
+```
+
+소문자 `<head>` 대신 `<Head>`를 사용한 것을 주의하세요. `<Head>` 는 Next.js에 내장된 리액트 컴포넌트입니다. 이 컴포넌트는 페이지의 `<head>`를 수정할 수 있게 해줍니다.
+
+`<Head>` 컴포넌트는 [`next/head`](https://nextjs.org/docs/api-reference/next/head) 모듈에서 불러올 수 있습니다.
+
+**Adding `Head` to `first-post.js`**
+
+`/posts/first-post` 경로에 `<title>`을 추가하지 않았습니다. 한번 추가해봅시다.
+
+`pages/posts/first-post.js` 파일을 열고  [`next/head`](https://nextjs.org/docs/api-reference/next/head) 모듈에서 `<Head>` 컴포넌트를 불러오세요.
+
+```react
+import Head from 'next/head';
+```
+
+그런 다음, `<Head>` 컴포넌트를 포함한 `<FirstPost>` 컴포넌트를 export 하도록 변경하세요. 지금은 `<title>` 태그만 추가하도록 하겠습니다.
+
+```react
+export default function FirstPost() {
+  return (
+    <>
+      <Head>
+        <title>First Post</title>
+      </Head>
+      <h1>First Post</h1>
+      <h2>
+        <Link href="/">← Back to home</Link>
+      </h2>
+    </>
+  );
+}
+```
+
+http://localhost:3000/posts/first-post에 접근하세요. 이제 브라우저 탭은 "First Post"를 표시됩니다. 브라우저의 개발자 도구를 사용하면 `<head>` 태그에 `<title>` 태그가 추가된 것을 확인할 수 있습니다.
+
+> - Head Component에 대해서 더 살펴보고 싶다면 [여기](https://nextjs.org/docs/api-reference/next/head)를 확인하세요.
+> - 만약 `<lang>` 속성을 추가하는 것처럼  `<html>` 태그를 커스텀하고 싶다면 `pages/_document.js` 파일을 만들어서 이용할 수 있습니다. 자세한 사항을 [여기](https://nextjs.org/docs/advanced-features/custom-document)를 확인하세요.
+
 #### 5) Third-Party JavaScript
+
+**Third-Party JavaScript**
+
+Third-Party JavaScript란 외부 소스에서 추가된 모든 스크립트를 나타냅니다. 일반적으로 분석, 광고 및 고객 지원 위젯과 같이 처음부터 작성할 필요가 없는 최신 기능을 사이트에 도입하기 위해 Third-Party script가 포함됩니다.
+
+**Adding Third-Party JavaScript**
+
+Next.js 페이지에서 Third-Party script를 추가하는 방법에 대해서 알아보겠습니다.
+
+`page/posts/first-post.js` 파일을 열고 아래 코드를 찾아보세요.
+
+```react
+<Head>
+  <title>First Post</title>
+</Head>
+```
+
+메타데이터 외에도 가능한 한 빨리 로드하고 실행해야 하는 스크립트는 일반적으로 `<head>`페이지 내에 추가됩니다. 일반 HTML `<script>`요소를 사용하면 다음과 같이 외부 스크립트가 추가됩니다.
+
+```react
+<Head>
+  <title>First Post</title>
+  <script src="https://connect.facebook.net/en_US/sdk.js" />
+</Head>
+```
+
+이 스크립트에는 Facebook 소셜 플러그인 및 기타 기능을 소개하는 데 일반적으로 사용되는 [Facebook SDK ](https://developers.facebook.com/docs/javascript/quickstart) 가 포함되어 있습니다. 이 접근 방식은 작동하지만 이 방식으로 스크립트를 포함하면 동일한 페이지에서 가져온 다른 JavaScript 코드와 관련하여 언제 로드될지 명확하게 알 수 없습니다. 특정 스크립트가 렌더링을 차단하고 페이지 콘텐츠 로드를 지연시킬 수 있는 경우 성능에 상당한 영향을 미칠 수 있습니다.
+
+**Using the Script Component**
+
+[`next/script`](https://nextjs.org/docs/api-reference/next/script)HTML `<script>`요소의 확장이며 추가 스크립트를 가져와 실행할 때 최적화를 진행합니다. 
+
+같은 파일 시작 부분에 아래와 같이 입력합니다.
+
+```react
+import Script from 'next/script';
+```
+
+이제 `FirstPost` 컴포넌트는 `Script` 컴포넌트를 사용하는 방식으로 바꿔줍니다.
+
+```react
+export default function FirstPost() {
+  return (
+    <>
+      <Head>
+        <title>First Post</title>
+      </Head>
+      <Script
+        src="https://connect.facebook.net/en_US/sdk.js"
+        strategy="lazyOnload"
+        onLoad={() =>
+          console.log(`script loaded correctly, window.FB has been populated`)
+        }
+      />
+      <h1>First Post</h1>
+      <h2>
+        <Link href="/">← Back to home</Link>
+      </h2>
+    </>
+  );
+}
+```
+
+`Script` 컴포넌트에 정의된 몇가지 추가적인 속성이 있습니다.
+
+- `strategy`는 third-party script가 로드되야 하는 시기를 조절합니다. `lazyOnload` 값은 특정 스크립트를 브라우저 idle time동안 지연 로딩되도록 Next.js에게 말해줍니다.
+- `onLoad` 는 스크립트 로딩이 끝난 직후 자바스크립트 코드를 실행하는 데 사용합니다. 위 예시에서는 스크립트가 올바르게 로드되었음을 콘솔에 보여주는 메세지를 출력하고 있습니다.
+
+ http://localhost:3000/posts/first-post에 접근하세요. 개발자 도구를 사용하면 `Console` 창에 위 메세지가 나온 것을 확인할 수 있습니다. 추가적으로 스크립트가 전역 변수를 채웠는지 확인하기 위해 `window.FB`를 실행할 수 있습니다.
+
+**참고:** Facebook SDK는 제3자 스크립트를 애플리케이션에 효과적인 방식으로 추가하는 방법을 보여주기 위한 고안된 예제로만 사용되었습니다. 이제 Next.js에 third-party functionality를 포함하는 기본 사항을 이해했으므로 `FirstPost`계속하기 전에 스크립트 구성 요소를 제거할 수 있습니다.
+
+> - Script 컴포넌트에 대해 더 살펴보고 싶다면 [여기](https://nextjs.org/docs/basic-features/script)를 확인하세요.
 
 #### 6) CSS Styling
 
