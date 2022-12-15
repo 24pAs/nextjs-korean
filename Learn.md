@@ -2183,8 +2183,8 @@ Next.js에 내장되어 있는 CSS Support and CSS Modules을 더 배우고 싶�
 - Next.js의 [pre-rendering](https://nextjs.org/docs/basic-features/pages#pre-rendering)의 특징
 - 두 가지 형태의 pre-rendering:  [Static Generation](https://nextjs.org/docs/basic-features/pages#static-generation-recommended)과 [Server-side Rendering](https://nextjs.org/docs/basic-features/pages#server-side-rendering)
 - [데이터가 있는](https://nextjs.org/docs/basic-features/pages#static-generation-with-data) Static Generation과 [데이터가 없는](https://nextjs.org/docs/basic-features/pages#static-generation-without-data) Static Generation
-- `[getStaticProps](https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation)` 와 index page에 외부 블로그 데이터를 가져오는 방법
-- `[getStaticProps](https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation)` 와 관련된 몇가지 유용한 정보
+- [getStaticProps](https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation) 와 index page에 외부 블로그 데이터를 가져오는 방법
+- [getStaticProps](https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation) 와 관련된 몇가지 유용한 정보
 
 만약 이전 과정부터 이어서 듣고 있다면 이 페이지는 넘어가도 좋습니다. 아래 버튼을 눌러 다음 페이지로 이동해주세요.
 
@@ -2327,7 +2327,7 @@ export async function getStaticProps() {
 
 **Let’s Use `getStaticProps`**
 
-사용하는 것을 배우면 더 쉽게 이해할 수 있을 것입니다. 그럼 다음페이지에서는 `[getStaticProps](https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation)`를 사용하여 블로그를 구현해보겠습니다.
+사용하는 것을 배우면 더 쉽게 이해할 수 있을 것입니다. 그럼 다음페이지에서는 [getStaticProps](https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation)를 사용하여 블로그를 구현해보겠습니다.
 
 #### 6) Blog Data
 **Creating a simple blog architecture**
@@ -2578,7 +2578,7 @@ export async function getSortedPostsData() {
 
 ![image](https://nextjs.org/static/images/learn/data-fetching/server-side-rendering-with-data.png)
 
-[Server-side Rendering](https://nextjs.org/docs/basic-features/pages#server-side-rendering)을 사용하기 위해, 페이지에서 `[getStaticProps](https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation)` 대신 `[getServerSideProps](https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering)`을 export 해야한다.
+[Server-side Rendering](https://nextjs.org/docs/basic-features/pages#server-side-rendering)을 사용하기 위해, 페이지에서 [getStaticProps](https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation) 대신 [getServerSideProps](https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering)을 export 해야한다.
 
 **Using `getServerSideProps`**
 [getServerSideProps](https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering)을 위한 코드이다. 블로그 예제에서는 필요치 않아서, 이것을 실행하지는 않는다.
@@ -2628,7 +2628,7 @@ function Profile() {
 
 **That’s It!**
 다음 학습에서는 dynamic routes 를 사용하여 각 블로그 게시물을 위한 페이지들을 만들자.
->[Data Fetching documentation](https://nextjs.org/docs/basic-features/data-fetching) 에서 `[getStaticProps](https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation)`와 `[getServerSideProps](https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering)`에 대하여 더 깊은 정보를 얻을 수 있다.
+>[Data Fetching documentation](https://nextjs.org/docs/basic-features/data-fetching) 에서 [getStaticProps](https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation)와 [getServerSideProps](https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering)에 대하여 더 깊은 정보를 얻을 수 있다.
 
 ### 5. Dynamic Routes
 
