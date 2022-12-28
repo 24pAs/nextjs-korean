@@ -1651,12 +1651,94 @@ export async function getStaticProps() {
 ### 6. API Routes
 
 #### 1) Introduction
-
+  
+Next.js는 [API Routes](https://nextjs.org/docs/api-routes/introduction)를 지원하여 API 엔드포인트를 Node.js 서버리스 기능으로 쉽게 생성할 수 있습니다. 비록 우리의 블로그 앱에는 필요하지는 않지만 이번 과정에서는 해당 기능을 어떻게 사용할 수 있는지 간단하게 이야기해봅시다.
+  
 #### 2) Setup
+  이전과정부터 계속해서 진행하고 있다면 해당 페이지는 건너 뛰어도 좋습니다. 아래의 버튼을 눌러 다음 페이지로 이동해 주세요. 
+
+**Download Starter Code(Optional)** 
+
+만약 이전 과정을 듣지 않았다면  아래에 있는 starter code를 다운받고 설치해서 실행해주세요. `nextjs-blog` 폴더는 이전 수업을 잘 들었다면 결과로 가지고 있을 코드입니다. 
+
+다시한번 말하지만 지금 하는 작업은 이전 과정을 완료했다면 불필요한 작업입니다. 
+
+```bash
+npx create-next-app@latest nextjs-blog --use-npm --example "https://github.com/vercel/next-learn/tree/master/basics/api-routes-starter"
+```
+
+아래의 지시를 따라주세요. (`cd` 명령어를 통해 폴더로 들어가 개발 서버를 시작해주세요.)
+
+그리고 아래의 파일들 또한 업데이트해주세요. 
+
+- `public/images/profile.jpg` 에 여러분의 사진을 넣어주세요. (추천: 400px width/height).
+- `components/layout.js` 에 있는 `const name = '[Your Name]'` 에 여러분의 이름을 적어주세요.
+- `pages/index.js` 에 있는  `<p>[Your Self Introduction]</p>` 에 자기소개를 적어주세요.
 
 #### 3) Creating API Routes
+  [API Routes](https://nextjs.org/docs/api-routes/introduction)는 Next.js 앱 안에서 API endpoint를 만들 수 있도록 해줍니다. 아래와 같은 형식으로 `page/api` 디렉토리 내에 함수를 만들어서 해당 과정을 수행할 수 있습니다. 
+
+```tsx
+// req = HTTP incoming message, res = HTTP server response
+export default function handler(req, res) {
+  // ...
+}
+```
+
+> 위 코드의 request handler에 대해 더 알아보고 싶다면 [API Routes documentation](https://nextjs.org/docs/api-routes/introduction)을 살펴보세요.
+> 
+
+서버리스 함수(Lambdas로도 불린다)로 배포할 수 있습니다.
+  **Creating a simple API endpoint**
+
+한 번 시도해 봅시다. `pages/api` 폴더 안에 `hello.js`라는 파일을 만들어 아래의 코드를 작성해주세요. 
+
+```tsx
+export default function handler(req, res) {
+  res.status(200).json({ text: 'Hello' });
+}
+```
+
+이제 [http://localhost:3000/api/hello](http://localhost:3000/api/hello)에 접근해봅시다. 아마 `{ "text" : "Hello" }` 라고 나와있는 것을 볼 수 있을 것입니다. 
+
+- `req` 는 [http.IncomingMessage](https://nodejs.org/api/http.html#http_class_http_incomingmessage)의 인스턴스와 일부 사전에 빌드된 [middlewares](https://nextjs.org/docs/api-routes/api-middlewares)입니다.
+- `res`는 [http.ServerResponse](https://nodejs.org/api/http.html#http_class_http_serverresponse)의 인스턴스와 일부 [helper functions](https://nextjs.org/docs/api-routes/response-helpers)입니다.
+
+이제 다 됐습니다. 이 과정을 마무리하기 전에 다음 페이지에서는 API Routes를 사용하기 위한 몇 가지 팁에 대해 알아보겠습니다.
 
 #### 4) API Routes Details
+  다음은 [API Routes](https://nextjs.org/docs/api-routes/introduction)와 관련하여 여러분이 필수적으로 알아야 할 몇가지 정보입니다. 
+
+**Do Not Fetch an API Route from `getStaticProps` or `getStaticPaths`**
+
+[getStaticProp](https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation)s 나 [getStaticPaths](https://nextjs.org/docs/basic-features/data-fetching#getstaticpaths-static-generation)를 사용할 경우 API Route로 데이터를 가져와서는 안됩니다. 대신 [getStaticProp](https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation)s 나 [getStaticPaths](https://nextjs.org/docs/basic-features/data-fetching#getstaticpaths-static-generation) (혹은 헬퍼 함수라고 부릅니다.) 를 서버측에서 바로 작성하여야 합니다.
+
+그 이유는 다음과 같습니다. [getStaticProp](https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation)s 와 [getStaticPaths](https://nextjs.org/docs/basic-features/data-fetching#getstaticpaths-static-generation) 는 서버측에서만 동작하는 코드로 클라이언트 측에서는 동작하지 않습니다. 게다가 이 함수들은 브라우저를 위한 자바스크립트 번들에 포함되지 않습니다. 이는 직접 데이터베이스 쿼리와 같은 코드를 브라우저로 보내지 않고도 작성할 수 있다는 의미입니다. [Writing Server-Side code](https://nextjs.org/docs/basic-features/data-fetching/get-static-props#write-server-side-code-directly) 문서를 읽으면 더 자세한 내용을 알 수 있습니다. 
+
+**A Good Use Case: Handling Form Input**
+
+API Routes를 사용하는 좋은 예중에 하나는 form input을 다루는 것입니다. 예를 들어 페이지에 form을 만들어서 API Route로 `POST` 요청을 보낼 수 있습니다. 그리고 요청을 바로 데이터베이스에 저장할 수 있도록 코드를 작성할 수 있습니다. API Route 코드는 클라이언트 번들에 포함되지 않으므로 서버측 코드를 안전하게 작성할 수 있습니다. 
+
+```tsx
+export default function handler(req, res) {
+  const email = req.body.email;
+  // Then save email to your database, etc...
+}
+```
+
+**Preview Mode**
+
+[Static Generation](https://nextjs.org/docs/basic-features/pages#static-generation-recommended)은 데이터를 headless CMS로부터 받아올 때 유용합니다. 그러나 headless CMS에 초안을 작성하거나 해당 페이지에서 초안을 즉시 미리보기 하고 싶을 때는 적합하지 않습니다. 아마 여러분은 Next.js가 해당 페이지들을 빌드시가 아닌 요청 시에 렌더하고 게시된 내용 대신에 초안 내용을 가져오는 것을 원할 것입니다. 이 특정한 경우에만 Next.js가 Static Generation을 우회하기를 원할 것입니다. 
+
+Next.js는 위와 같은 문제를 해결하고 [API Routes](https://nextjs.org/docs/api-routes/introduction)를 활용할 수 있는 **Preview Mode**라 불리는 특성을 가지고 있습니다. 해당 내용에 대해서 더 학습하고 싶다면 [Preview Mode](https://nextjs.org/docs/advanced-features/preview-mode)문서를 참고해보세요. 
+
+**Dynamic API Routes**
+
+API Routes는 일반적인 페이지에서 동적으로 사용할 수 있습니다. 해당 내용에 대해 더 학습하고 싶다면 [Dynamic API Routes](https://nextjs.org/docs/api-routes/dynamic-api-routes) 문서를 참고해보세요. 
+
+**That’s It!**
+
+이제 마지막 과정인 다음부분에서는 Next.js 앱을 배포하는 방법에 대해서 이야기해 볼 것입니다.
 
 ### 7. Deploying Your Next.js App
 
@@ -1679,13 +1761,97 @@ export async function getStaticProps() {
 ### 1. Introduction to SEO
 
 #### 1) Introduction
+  **What is SEO?**
+
+SEO는 Search Engine Optimization의 약자입니다. SEO의 목적은 검색 엔진 결과에서 순위를 증가시키기 위한 전략을 만들기 위합니다. 높은 순위는 사이트의 트래픽을 증가시키고 궁극적으로 더 많은 비즈니스를 가져오게 될 것입니다. 
+
+**What You’ll Learn in This Course**
+
+이번 과정에서 우리가 배울 내용은 아래와 같습니다. 
+
+- 검색 시스템과 Googlebot과 같은 검색 엔진 로봇
+- 사이트에 SEO 전략을 적용했을 때의 효과
+- Next.js에서의 Crawling, indexing, rendering, ranking
+- Core Web Vital을 포함한 웹 성능
+
+**Join the Conversation**
+
+만약 Next.js와 해당 과정에 대한 질문이 있으시다면 [Discord](https://discord.gg/Q3AsD4efFC)에 있는 커뮤니티에 와서 의견을 남겨주세요. 
+
+그럼 시작해봅시다.
 
 #### 2) Importance of SEO
+  **Why is SEO so important?**
+
+SEO는 여러분의 브랜드에 대한 전환과 신뢰는 높이는 열쇠입니다. 높은 검색 순위에 위치한다는 것은 더 많은 유기적인 방문자가 있다는 것과 같습니다. **Search engine organic traffic** - 검색 엔진에서 결과를 클릭하여 사이트를 방문하는 방문자 - 는 아래와 같은 이유로 많은 비즈니스에서 매우 중요한 열쇠입니다. 
+
+1. **Qualitative** - 방문자가 고객이 될 기회가 더 많아집니다. 
+2. **Trustable** - 브랜드 혹은 과제에 대한 신뢰도가 향상됩니다. 
+3. **Low-Cost** - 시간과 노력을 들이는 것 이외에 검색 엔진 순위를 높일 수 있는 좋은 SEO를 만드는 것은 무료입니다. 
+    
+    검색엔진 최적화는 sponsored 라벨이 붙은 채로 검색 결과 상단에 노출되는 100% 유료화 된 유기적인 결과와 구분되는 [Search Engine Marketing (SEM)](https://learndigital.withgoogle.com/digitalgarage/course/promote-business-online/lesson/54)과는 다릅니다. 
+    
+
+****Three Pillars of Optimization****
+
+웹 사이트를 최적화하는 과정은 크게 세 가지로 나눌 수 있습니다. 
+
+1. Technical - 크롤링 및 웹 성능을 위해 웹 사이트를 최적화합니다. 
+2. Creation - 특정 키워드를 대상으로 하는 콘텐츠 전략을 만듭니다. 
+3. Popularity - 검색엔진이 신뢰할만한 출저임을 알 수 있도록 웹 사이트의 온라인 인지도를 향상시킵니다. 이는 사이트로 다시 연결되는 타사의 사이트인 [backlinks](https://moz.com/learn/seo/backlinks)를 사용하여 수행됩니다. 
+
+SEO 분야는 매우 넓고 많은 측면이 있습니다. 하지만 Next.js 개발자로서 첫 번째로 알아야 할 것은 몇 가지 모범 사례를 통해 웹 앱의 SEO를 대비할 수 있는 방법을 이해하는 것입니다.
 
 #### 3) Search Systems
+  **Why is SEO so important?**
+
+SEO는 여러분의 브랜드에 대한 전환과 신뢰는 높이는 열쇠입니다. 높은 검색 순위에 위치한다는 것은 더 많은 유기적인 방문자가 있다는 것과 같습니다. **Search engine organic traffic** - 검색 엔진에서 결과를 클릭하여 사이트를 방문하는 방문자 - 는 아래와 같은 이유로 많은 비즈니스에서 매우 중요한 열쇠입니다. 
+
+1. **Qualitative** - 방문자가 고객이 될 기회가 더 많아집니다. 
+2. **Trustable** - 브랜드 혹은 과제에 대한 신뢰도가 향상됩니다. 
+3. **Low-Cost** - 시간과 노력을 들이는 것 이외에 검색 엔진 순위를 높일 수 있는 좋은 SEO를 만드는 것은 무료입니다. 
+    
+    검색엔진 최적화는 sponsored 라벨이 붙은 채로 검색 결과 상단에 노출되는 100% 유료화 된 유기적인 결과와 구분되는 [Search Engine Marketing (SEM)](https://learndigital.withgoogle.com/digitalgarage/course/promote-business-online/lesson/54)과는 다릅니다. 
+    
+
+****Three Pillars of Optimization****
+
+웹 사이트를 최적화하는 과정은 크게 세 가지로 나눌 수 있습니다. 
+
+1. Technical - 크롤링 및 웹 성능을 위해 웹 사이트를 최적화합니다. 
+2. Creation - 특정 키워드를 대상으로 하는 콘텐츠 전략을 만듭니다. 
+3. Popularity - 검색엔진이 신뢰할만한 출저임을 알 수 있도록 웹 사이트의 온라인 인지도를 향상시킵니다. 이는 사이트로 다시 연결되는 타사의 사이트인 [backlinks](https://moz.com/learn/seo/backlinks)를 사용하여 수행됩니다. 
+
+SEO 분야는 매우 넓고 많은 측면이 있습니다. 하지만 Next.js 개발자로서 첫 번째로 알아야 할 것은 몇 가지 모범 사례를 통해 웹 앱의 SEO를 대비할 수 있는 방법을 이해하는 것입니다.
 
 #### 4) What are Webcrawlers?
+  **What are Web Crawlers?**
 
+웹 사이트를 검색 결과에 표시하기 위해서 구글(Bing, Yandex, Baidu, Naver, Yahoo, DuckDuckGo와 같은 다른 검색 엔진을 포함하여)은 웹 크롤러를 사용하여 웹 사이트를 탐색하고 웹 사이트와 해당 웹 페이지를 검색합니다. 
+
+서로 다른 검색엔진들은 각 나라마다 다른 [시장 점유율](https://gs.statcounter.com/search-engine-market-share)을 가집니다. 
+
+이 가이드에서는 대부분의 국가에서 가장 큰 검색엔진인 구글에 대해 다룹니다. 즉 특히 대상 고객이 중국, 러시아, 일본 또는 한국인 경우 다른 검색 엔진과 그들의 가이드를 확인하는 것이 좋을 것입니다. 
+
+Ranking과 Rendering과정에서 약간의 차이가 있지만 대부분의 검색 엔진들은 Crawling과 Indexing에서는 비슷한 방식으로 작동합니다. 
+
+웹 크롤러는 사용자를 모방하고 웹 사이트에서 찾은 링크를 탐색하여 페이지를 인덱싱하는 일종의 봇입니다. 웹 크롤러는 custom [user-agents](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent)를 사용하여 자신을 식별합니다. 구글은 [여러 웹 크롤러](https://developers.google.com/search/docs/advanced/crawling/overview-google-crawlers)가 있지만 가장 자주 사용되는 것은 Googlebot Desktop과 Googlebot Smartphone입니다.
+**How Does Googlebot Work?**
+![image](https://user-images.githubusercontent.com/95066223/209816803-3568aef5-0fe0-42f0-bb0e-2338e6b70feb.png)
+프로세스의 일반적인 개요는 다음과 같습니다:
+
+1. Find URLs:구글은 Google Search Console, 웹 사이트 간 링크 또는 XML 사이트맵을 비롯한 여러 위치의 URL을 가져옵니다. 
+2. Add to Crawl Queue: 수집된 URL들은 Googlebot이 처리할 Crawl Queue에 추가됩니다. Crawl Queue에 있는 URL들은 일반적으로 몇 초동안 지속되지만 경우에 따라 특히 페이지를 렌더링, 인덱싱해야 하거나 URL이 이미 인덱싱되어 있는 경우 새로 고쳐야 하는 경우에는 며칠까지 지속될 수 있습니다. 해당 페이지들은 Render Queue로 들어가게 됩니다. 
+3. HTTP Request: 크롤러는 헤더를 가져오기 위해 HTTP 요청을 만들고 반환된 상태 코드에 따라 작동합니다. 
+    - 200 - HTML을 크롤링하고 분석합니다.
+    - 30X - 리디렉션을 따릅니다.
+    - 40X - 에러를 기록하고 HTML을 로드하지 않습니다.
+    - 50X - 상태 코드가 변경되었는지 확인하기 위해 추후에 다시 접속할 수 있습니다.
+4. Render Queue: 검색 시스템의 다양한 서비스 및 구성 요소가 HTML을 처리하고 콘텐츠를 분석합니다. 만약 페이지의 일부가 자바스크립트 클라이언트 기반 콘텐츠를 가지고 있을 경우 URL이 Render Queue에 추가될 수 있습니다. Render Queue는 자바스크립트를 렌더링하기 위해 더 많은 자원을 사용해야 하므로 구글에게 더 많은 비용이 듭니다. 일부 다른 검색 엔진들은 아마 구글과 같ㅇㄴ 렌더링 용량을 가지고 있지 않을 수 있으므로 여기서 Next.js는 렌더링 전략에 도움이 될 수 있습니다. 
+5. Ready to be indexed: 만약 모든 기준이 충족되었다면 페이지를 인덱싱하여 검색 결과로 보여줄 수 있습니다. 
+
+다음으로 있을 몇 가지 과정에서는 검색 시스템 프로세스의 각 주요 구성 요소(크롤링 및 인덱싱, 렌더링 순위 지정)에 대해 자세히 살펴보겠습니다.
+  
 ### 2. Crawling and Indexing
 
 #### 1) Introduction
