@@ -2115,7 +2115,7 @@ export default function Alert({ children, type }) {
 
 #### Customizing PostCSS Config
 
-환경 설정 없이 바로 사용할 수 있는 Next.js는 [PostCSS](https://postcss.org/)를 사용하여 CSS를 컴파일합니다.
+#### 환경 설정 없이 바로 사용할 수 있는 Next.js는 [PostCSS](https://postcss.org/)를 사용하여 CSS를 컴파일합니다.
 
 PostCSS config를 customize 하기 위해 `postcss.config.js` 파일을 최상위에 만들 수 있습니다. 이는 [Tailwind CSS](https://tailwindcss.com/)와 같은 라이브러리를 사용하는 경우에 유용합니다.
 
@@ -2640,13 +2640,253 @@ function Profile() {
 
 #### 1) Introduction
 
+블로그 데이터로 index 페이지를 채웠지만 아직 개별 블로그 페이지를 만들지 않았습니다( [원하는 결과](https://next-learn-starter.vercel.app/) 는 다음과 같습니다 ). 우리는 이러한 페이지의 URL이 블로그 데이터에 의존하기를 원합니다. 다시 말해, [dynamic routes(동적 경로)](https://nextjs.org/docs/routing/dynamic-routes) 를 사용해야 합니다 .
+
+**What You’ll Learn in This Lesson**
+
+이번 강의에서 배울 내용
+
+- [`dynamic routes`](https://nextjs.org/learn/basics/dynamic-routes)를 이용하는 [`getStaticPaths`](https://nextjs.org/docs/basic-features/data-fetching/overview#getstaticpaths-static-generation) 를 사용해서 정적인 페이지를 만드는 방법
+- [`getStaticProps`](https://nextjs.org/docs/basic-features/data-fetching/overview#getstaticprops-static-generation)를 통해 각각의 블로그 포스트에 맞는 데이터를 가져오기 위해 작성하는 방법
+- [`remark`](https://github.com/remarkjs/remark)를 사용해 마크다운을 렌더링하는 방법
+- date 문자열을 이쁘게 출력하는 방법
+- [`dynamic routes`](https://nextjs.org/learn/basics/dynamic-routes) 가 있는 페이지에 연결하는 방법
+- [`dynamic routes`](https://nextjs.org/learn/basics/dynamic-routes)에 관한 몇가지 유용한 정보
+
 #### 2) Setup
+
+이전 강의부터 계속해서 진행하고 있다면 이 페이지는 넘어가도 됩니다.
+
+**Download Starter Code (Optional)**
+
+만약 이전 강의를 듣지 않았다면, 아래와 같이 코드를 다운받고 실행할 수 있습니다. 이것은 이전 강의와 동일한 내용의 `nextjs-blog` 디렉토리를 설정합니다.
+다시 말하지만, 이전 강의를 완료했다면 이 과정을 할 필요가 없습니다.
+
+> $ npx create-next-app nextjs-blog --use-npm --example "https://github.com/vercel/next-learn/tree/master/basics/assets-metadata-css-starter"
+
+설치한 다음 해당 디렉토리로 이동하여 개발 서버를 시작합니다.
 
 #### 3) Page Path Depends on External Data
 
+이전 강의에서는 **페이지의 콘텐츠** 가 외부 데이터에 의존하는 경우를 다루었습니다. 인덱스 페이지를 렌더링하는 데 필요한 데이터를 [`getStaticProps`](https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation)를 통해 가져오곤 했습니다 
+
+이번 강의에서는 페이지의 경로가 외부 데이터에 의존하는 경우에 대해서 다뤄보겠습니다. Next.js는 외부 데이터에 의존하는 경로를 가진 페이지를 정적으로 생성하는 것을 가능하게 해줍니다. 이것은 Next.js 내에서 동적 URL이 가능하도록 만들어줍니다.
+
+<img src="https://nextjs.org/static/images/learn/dynamic-routes/page-path-external-data.png" />
+
+#### How to Statically Generate Pages with Dynamic Routes
+
+우리의 경우 블로그 게시물에 대한 [동적 경로](https://nextjs.org/docs/routing/dynamic-routes)를 만드려고 합니다.
+
+- 우리는 각 게시물이  `/posts/<id>` 경로를 갖기를 원합니다. 여기서 `<id>`는 최상위 `posts`디렉토리 아래의 마크다운 파일 이름입니다.
+- 우리는 `ssg-ssr.md`, `pre-rendering.md`가 있으므로 경로가 `/posts/ssg-ssr`과 `/posts/pre-rendering` 가 되었으면 합니다
+
+#### Overview of the Steps
+
+다음 단계에서 이 모든 것을 할 수 있지만 다음 페이지에서 해볼 것이니 아직 할 필요는 없습니다. 
+
+먼저 `/pages/posts` 아래에 `[id].js`라고 불리는 페이지는 만들겠습니다. `[]` 로 감싸진 경로는 Next.js가 안의 [동적 경로](https://nextjs.org/docs/routing/dynamic-routes)입니다. 
+
+`pages/posts/[id].js` 안에서 이전에 만들었던 다른 페이지들과 동일하게 페이지를 렌더링하는 코드를 작성합니다.
+
+```react
+import Layout from '../../components/layout';
+
+export default function Post() {
+  return <Layout>...</Layout>;
+}
+```
+
+자 이제 여기서 새로운 것이 등장합니다. 우리는 [`getStaticPaths`](https://nextjs.org/docs/basic-features/data-fetching#getstaticpaths-static-generation) 라고 불리는 비동기 함수를 내보낼 것입니다. 이 함수에서는 `id`가 될 수 있는 배열을 반환해야만 합니다.
+
+```react
+import Layout from '../../components/layout';
+
+export default function Post() {
+  return <Layout>...</Layout>;
+}
+
+export async function getStaticPaths() {
+  // Return a list of possible value for id
+}
+```
+
+그리고 마지막으로  [`getStaticProps`](https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation) 를 다시 한 번 수행할 필요가 있습니다 - 이 시간 동안 주어진 `id`를 가지고 블로그 게시물에 필요한 데이터를 받아옵니다. 파일 이름이 `[id].js` 이기 때문에   [`getStaticProps`](https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation) 는 `id` 를 포함한 `params`를 전달받습니다. 
+
+```react
+import Layout from '../../components/layout';
+
+export default function Post() {
+  return <Layout>...</Layout>;
+}
+
+export async function getStaticPaths() {
+  // Return a list of possible value for id
+}
+
+export async function getStaticProps({ params }) {
+  // Fetch necessary data for the blog post using params.id
+}
+```
+
+방금 이야기한 내용을 그림으로 보여주면 아래와 같습니다.
+
+<img src="https://nextjs.org/static/images/learn/dynamic-routes/how-to-dynamic-routes.png" />
+
 #### 4) Implement getStaticPaths
 
+먼저, 파일을 세팅하겠습니다.
+
+- `pages/posts` 폴더 내부에 `[id].js` 로 파일을 생성하세요.
+- 또한 `pages/posts` 폴더 내부에  더이상 사용하지 않을  `first-post.js` 를 제거하세요.
+
+그런 다음 에디터를 열어 아래 코드를 붙여넣으세요. `...` 으로 된 부분은 추후에 채워넣을 것입니다.
+
+```react
+import Layout from '../../components/layout';
+
+export default function Post() {
+  return <Layout>...</Layout>;
+}
+```
+
+그런 다음, `lib/posts.js` 파일을 열고 하단의 `getAllPostIds` 함수를 추가하세요. 이 함수는 `posts` 폴더 내에서 `.md`를 포함한 파일 이름 배열을 반환해줄 것입니다.
+
+```react
+export function getAllPostIds() {
+  const fileNames = fs.readdirSync(postsDirectory);
+
+  // Returns an array that looks like this:
+  // [
+  //   {
+  //     params: {
+  //       id: 'ssg-ssr'
+  //     }
+  //   },
+  //   {
+  //     params: {
+  //       id: 'pre-rendering'
+  //     }
+  //   }
+  // ]
+  return fileNames.map((fileName) => {
+    return {
+      params: {
+        id: fileName.replace(/\.md$/, ''),
+      },
+    };
+  });
+}
+```
+
+**중요** : 반환된 목록은 단순한 문자열 배열이 아니라 위 주석처럼 보이는 객체 배열이어야 합니다 .  각 개체에는 `params` 키가 있어야 하며 파일 이름에 `id`사용하기 때문에 `id` 키가 있는 개체를 포함 해야 합니다. 그렇지 않으면 `getStaticPaths`는 정상적으로 동작하지 않습니다.
+
+마지막으로 `getAllPostIds`를 가져와 [`getStaticPaths`](https://nextjs.org/docs/basic-features/data-fetching#getstaticpaths-static-generation) 내부에서 사용합니다. `pages/posts/[id].js` 를 열고 아래의 코드를 붙여넣습니다.
+
+```react
+import { getAllPostIds } from '../../lib/posts';
+
+export async function getStaticPaths() {
+  const paths = getAllPostIds();
+  return {
+    paths,
+    fallback: false,
+  };
+}
+```
+
+- `paths`는 `pages/posts/[id].js` 에 정의된 `params`를 포함한  `getAllPostIds`가 반환하는 알려진 경로 배열을 반환합니다.  보다 자세한 내용은 [여기](https://nextjs.org/docs/basic-features/data-fetching/overview#the-paths-key-required)를 참고하세요.
+-  [`fallback: false` ](https://nextjs.org/docs/basic-features/data-fetching/overview#fallback-false)는 당장은 무시하셔도 됩니다. 추후에 자세히 학습할 예정입니다.
+
+거의 다 했지만 [`getStaticProps`](https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation) 수행해야할 필요가 있습니다. 다음 장에서 진행하겠습니다!
+
 #### 5) Implement getStaticProps
+
+우리는 주어진 `id`를 가진 페이지를 렌더링하기 위한 필수 데이터를 가져와야할 필요가 있습니다.
+
+그렇게 하기 위해 `lib/posts.js` 안에 아래의 `getPostData` 함수를 추가해줍니다. 이 함수는 `id`에 기반하여 게시물 데이터를 반환해줄 것입니다.
+
+```react
+export function getPostData(id) {
+  const fullPath = path.join(postsDirectory, `${id}.md`);
+  const fileContents = fs.readFileSync(fullPath, 'utf8');
+
+  // Use gray-matter to parse the post metadata section
+  const matterResult = matter(fileContents);
+
+  // Combine the data with the id
+  return {
+    id,
+    ...matterResult.data,
+  };
+}
+```
+
+그런 다음 `pages/posts/[id].js`를 열고 해당 라인을 변경합니다.
+
+```react
+import { getAllPostIds } from '../../lib/posts';
+```
+
+```react
+import { getAllPostIds, getPostData } from '../../lib/posts';
+
+export async function getStaticProps({ params }) {
+  const postData = getPostData(params.id);
+  return {
+    props: {
+      postData,
+    },
+  };
+}
+```
+
+현재 게시글 페이지는 게시글 데이터를 받아오기 위해 `getStaticProps` 함수 내에서 `getPostData` 함수를 사용하고 있고 이는 `props`로 반환될 것입니다.
+
+자, `Post` 컴포넌트를 `postData`를 사용하도록 바꿔봅시다. `pages/posts/[id].js` 안에서 `Post` 컴포넌트를 아래와 같이 변경해줍니다.
+
+```react
+export default function Post({ postData }) {
+  return (
+    <Layout>
+      {postData.title}
+      <br />
+      {postData.id}
+      <br />
+      {postData.date}
+    </Layout>
+  );
+}
+```
+
+아래 사이트에서 결과를 확인해보세요.
+
+- http://localhost:3000/posts/ssg-ssr
+- http://localhost:3000/posts/pre-rendering
+
+여러분은 각각의 페이지에서 블로그 데이터를 확인할 수 있어야 합니다.
+
+<img src="https://nextjs.org/static/images/learn/dynamic-routes/blog-data-post-page.png" />
+
+훌륭합니다. 우리는 성공적으로 [동적 경로](https://nextjs.org/docs/routing/dynamic-routes)를 생성했습니다.
+
+#### Something Wrong?
+
+만약 오류가 발생했다면 코드를 정확히 입력했는지 확인해보세요.
+
+- `pages/posts/[id].js`를 [이것](https://github.com/vercel/next-learn/blob/master/basics/dynamic-routes-step-1/pages/posts/%5Bid%5D.js)과 같아야 합니다.
+- `lib/posts.js` 는 [이것](https://github.com/vercel/next-learn/blob/master/basics/dynamic-routes-step-1/lib/posts.js)과 같아야 합니다.
+- 여전히 오류가 발생한다면, 다른 코드가 [이것](https://github.com/vercel/next-learn/tree/master/basics/dynamic-routes-step-1)과 같아야 합니다.
+
+그래도 안된다면  [GitHub Discussions](https://github.com/vercel/next.js/discussions) 커뮤니티에 말해주세요. 다른 사람들이 볼 수 있도록 코드를 GitHub에 푸시하고 링크할 수 있다면 도움이 될 것입니다.
+
+다시 말해, 우리가 수행한 것을 그림으로 요약하면 아래와 같습니다.
+
+<img src="https://nextjs.org/static/images/learn/dynamic-routes/how-to-dynamic-routes.png" />
+
+우리는 여전히 마크다운 컨텐츠를 블로그에 보여주고 있지 않습니다. 다음 장에서 해봅시다.
+
+
 
 #### 6) Render Markdown
 
@@ -2975,9 +3215,9 @@ export default function Custom404() {
 ### 6. API Routes
 
 #### 1) Introduction
-  
+
 Next.js는 [API Routes](https://nextjs.org/docs/api-routes/introduction)를 지원하여 API 엔드포인트를 Node.js 서버리스 기능으로 쉽게 생성할 수 있습니다. 비록 우리의 블로그 앱에는 필요하지는 않지만 이번 과정에서는 해당 기능을 어떻게 사용할 수 있는지 간단하게 이야기해봅시다.
-  
+
 #### 2) Setup
   이전과정부터 계속해서 진행하고 있다면 해당 페이지는 건너 뛰어도 좋습니다. 아래의 버튼을 눌러 다음 페이지로 이동해 주세요. 
 
@@ -3112,7 +3352,7 @@ SEO는 여러분의 브랜드에 대한 전환과 신뢰는 높이는 열쇠입�
 1. **Qualitative** - 방문자가 고객이 될 기회가 더 많아집니다. 
 2. **Trustable** - 브랜드 혹은 과제에 대한 신뢰도가 향상됩니다. 
 3. **Low-Cost** - 시간과 노력을 들이는 것 이외에 검색 엔진 순위를 높일 수 있는 좋은 SEO를 만드는 것은 무료입니다. 
-    
+   
     검색엔진 최적화는 sponsored 라벨이 붙은 채로 검색 결과 상단에 노출되는 100% 유료화 된 유기적인 결과와 구분되는 [Search Engine Marketing (SEM)](https://learndigital.withgoogle.com/digitalgarage/course/promote-business-online/lesson/54)과는 다릅니다. 
     
 
@@ -3134,7 +3374,7 @@ SEO는 여러분의 브랜드에 대한 전환과 신뢰는 높이는 열쇠입�
 1. **Qualitative** - 방문자가 고객이 될 기회가 더 많아집니다. 
 2. **Trustable** - 브랜드 혹은 과제에 대한 신뢰도가 향상됩니다. 
 3. **Low-Cost** - 시간과 노력을 들이는 것 이외에 검색 엔진 순위를 높일 수 있는 좋은 SEO를 만드는 것은 무료입니다. 
-    
+   
     검색엔진 최적화는 sponsored 라벨이 붙은 채로 검색 결과 상단에 노출되는 100% 유료화 된 유기적인 결과와 구분되는 [Search Engine Marketing (SEM)](https://learndigital.withgoogle.com/digitalgarage/course/promote-business-online/lesson/54)과는 다릅니다. 
     
 
@@ -3175,7 +3415,7 @@ Ranking과 Rendering과정에서 약간의 차이가 있지만 대부분의 검�
 5. Ready to be indexed: 만약 모든 기준이 충족되었다면 페이지를 인덱싱하여 검색 결과로 보여줄 수 있습니다. 
 
 다음으로 있을 몇 가지 과정에서는 검색 시스템 프로세스의 각 주요 구성 요소(크롤링 및 인덱싱, 렌더링 순위 지정)에 대해 자세히 살펴보겠습니다.
-  
+
 ### 2. Crawling and Indexing
 
 #### 1) Introduction
