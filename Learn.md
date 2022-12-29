@@ -2115,7 +2115,7 @@ export default function Alert({ children, type }) {
 
 #### Customizing PostCSS Config
 
-환경 설정 없이 바로 사용할 수 있는 Next.js는 [PostCSS](https://postcss.org/)를 사용하여 CSS를 컴파일합니다.
+#### 환경 설정 없이 바로 사용할 수 있는 Next.js는 [PostCSS](https://postcss.org/)를 사용하여 CSS를 컴파일합니다.
 
 PostCSS config를 customize 하기 위해 `postcss.config.js` 파일을 최상위에 만들 수 있습니다. 이는 [Tailwind CSS](https://tailwindcss.com/)와 같은 라이브러리를 사용하는 경우에 유용합니다.
 
@@ -2640,7 +2640,31 @@ function Profile() {
 
 #### 1) Introduction
 
+블로그 데이터로 index 페이지를 채웠지만 아직 개별 블로그 페이지를 만들지 않았습니다( [원하는 결과](https://next-learn-starter.vercel.app/) 는 다음과 같습니다 ). 우리는 이러한 페이지의 URL이 블로그 데이터에 의존하기를 원합니다. 다시 말해, [dynamic routes(동적 경로)](https://nextjs.org/docs/routing/dynamic-routes) 를 사용해야 합니다 .
+
+**What You’ll Learn in This Lesson**
+
+이번 강의에서 배울 내용
+
+- [`dynamic routes`](https://nextjs.org/learn/basics/dynamic-routes)를 이용하는 [`getStaticPaths`](https://nextjs.org/docs/basic-features/data-fetching/overview#getstaticpaths-static-generation) 를 사용해서 정적인 페이지를 만드는 방법
+- [`getStaticProps`](https://nextjs.org/docs/basic-features/data-fetching/overview#getstaticprops-static-generation)를 통해 각각의 블로그 포스트에 맞는 데이터를 가져오기 위해 작성하는 방법
+- [`remark`](https://github.com/remarkjs/remark)를 사용해 마크다운을 렌더링하는 방법
+- date 문자열을 이쁘게 출력하는 방법
+- [`dynamic routes`](https://nextjs.org/learn/basics/dynamic-routes) 가 있는 페이지에 연결하는 방법
+- [`dynamic routes`](https://nextjs.org/learn/basics/dynamic-routes)에 관한 몇가지 유용한 정보
+
 #### 2) Setup
+
+이전 강의부터 계속해서 진행하고 있다면 이 페이지는 넘어가도 됩니다.
+
+**Download Starter Code (Optional)**
+
+만약 이전 강의를 듣지 않았다면, 아래와 같이 코드를 다운받고 실행할 수 있습니다. 이것은 이전 강의와 동일한 내용의 `nextjs-blog` 디렉토리를 설정합니다.
+다시 말하지만, 이전 강의를 완료했다면 이 과정을 할 필요가 없습니다.
+
+> $ npx create-next-app nextjs-blog --use-npm --example "https://github.com/vercel/next-learn/tree/master/basics/assets-metadata-css-starter"
+
+설치한 다음 해당 디렉토리로 이동하여 개발 서버를 시작합니다.
 
 #### 3) Page Path Depends on External Data
 
@@ -2975,9 +2999,9 @@ export default function Custom404() {
 ### 6. API Routes
 
 #### 1) Introduction
-  
+
 Next.js는 [API Routes](https://nextjs.org/docs/api-routes/introduction)를 지원하여 API 엔드포인트를 Node.js 서버리스 기능으로 쉽게 생성할 수 있습니다. 비록 우리의 블로그 앱에는 필요하지는 않지만 이번 과정에서는 해당 기능을 어떻게 사용할 수 있는지 간단하게 이야기해봅시다.
-  
+
 #### 2) Setup
   이전과정부터 계속해서 진행하고 있다면 해당 페이지는 건너 뛰어도 좋습니다. 아래의 버튼을 눌러 다음 페이지로 이동해 주세요. 
 
@@ -3112,7 +3136,7 @@ SEO는 여러분의 브랜드에 대한 전환과 신뢰는 높이는 열쇠입�
 1. **Qualitative** - 방문자가 고객이 될 기회가 더 많아집니다. 
 2. **Trustable** - 브랜드 혹은 과제에 대한 신뢰도가 향상됩니다. 
 3. **Low-Cost** - 시간과 노력을 들이는 것 이외에 검색 엔진 순위를 높일 수 있는 좋은 SEO를 만드는 것은 무료입니다. 
-    
+   
     검색엔진 최적화는 sponsored 라벨이 붙은 채로 검색 결과 상단에 노출되는 100% 유료화 된 유기적인 결과와 구분되는 [Search Engine Marketing (SEM)](https://learndigital.withgoogle.com/digitalgarage/course/promote-business-online/lesson/54)과는 다릅니다. 
     
 
@@ -3134,7 +3158,7 @@ SEO는 여러분의 브랜드에 대한 전환과 신뢰는 높이는 열쇠입�
 1. **Qualitative** - 방문자가 고객이 될 기회가 더 많아집니다. 
 2. **Trustable** - 브랜드 혹은 과제에 대한 신뢰도가 향상됩니다. 
 3. **Low-Cost** - 시간과 노력을 들이는 것 이외에 검색 엔진 순위를 높일 수 있는 좋은 SEO를 만드는 것은 무료입니다. 
-    
+   
     검색엔진 최적화는 sponsored 라벨이 붙은 채로 검색 결과 상단에 노출되는 100% 유료화 된 유기적인 결과와 구분되는 [Search Engine Marketing (SEM)](https://learndigital.withgoogle.com/digitalgarage/course/promote-business-online/lesson/54)과는 다릅니다. 
     
 
@@ -3175,7 +3199,7 @@ Ranking과 Rendering과정에서 약간의 차이가 있지만 대부분의 검�
 5. Ready to be indexed: 만약 모든 기준이 충족되었다면 페이지를 인덱싱하여 검색 결과로 보여줄 수 있습니다. 
 
 다음으로 있을 몇 가지 과정에서는 검색 시스템 프로세스의 각 주요 구성 요소(크롤링 및 인덱싱, 렌더링 순위 지정)에 대해 자세히 살펴보겠습니다.
-  
+
 ### 2. Crawling and Indexing
 
 #### 1) Introduction
