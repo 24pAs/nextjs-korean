@@ -902,20 +902,19 @@ Managing State
 
 - [How React handles renders](https://beta.reactjs.org/learn/render-and-commit) and [how to use refs](https://beta.reactjs.org/learn/referencing-values-with-refs)
 
-리액트에서 렌더링을 다루는 방법과 ref를 사용하는 방법 
-    
+리액트에서 렌더링을 다루는 방법과 ref를 사용하는 방법
+
 - [How to manage state](https://beta.reactjs.org/learn/managing-state)
-  
-    상태를 다루는 방법 
-    
+
+  상태를 다루는 방법
+
 - [How to use context for deeply nested data](https://beta.reactjs.org/learn/passing-data-deeply-with-context)
-  
-    깊이 중첩된 데이터를 위해 context를 사용하는 방법 
-    
+
+  깊이 중첩된 데이터를 위해 context를 사용하는 방법
+
 - [How to use React API hooks](https://beta.reactjs.org/reference) such as `useEffect()`
-  
-    `useEffect()`와 같은 리액트 API 훅 사용 방법 
-    
+
+  `useEffect()`와 같은 리액트 API 훅 사용 방법
 
 **React Resources**
 
@@ -974,7 +973,7 @@ Next.js는 애플리케이션의 development와 production 환경을 위한 여�
 
 Next.js는 수많은 코드 변환과 인프라 설정을 처리하여 더욱 수비게 애플리케이션을 production 환경으로 전환시켜줍니다.
 
-이것은 Next.js가 저수준 언어인 Rust로 만들어져 compilation, minification, bundling 등에 사용할 수 있는 플랫폼인  SWC라는 컴파일러를 가지고 있기 때문에 가능합니다.
+이것은 Next.js가 저수준 언어인 Rust로 만들어져 compilation, minification, bundling 등에 사용할 수 있는 플랫폼인 SWC라는 컴파일러를 가지고 있기 때문에 가능합니다.
 
 #### 3) Compiling
 
@@ -992,7 +991,7 @@ Next.js에서 **Compliation** 은 당신의 코드를 수정하거나 애플리�
 
 <img src="https://nextjs.org/static/images/learn/foundations/minifying.png" />
 
-Minification(최소화) 코드 기능의 변화 없이 주석, 코드 포매팅과 같은 불필요한 코드를 제거하는 과정입니다. 파일 크기를 줄여 애플리케이션의 성능을 개선시키는 것이 Minification의 목표입니다. 
+Minification(최소화) 코드 기능의 변화 없이 주석, 코드 포매팅과 같은 불필요한 코드를 제거하는 과정입니다. 파일 크기를 줄여 애플리케이션의 성능을 개선시키는 것이 Minification의 목표입니다.
 
 Next.js에서 JavaScript와 CSS 파일은 배포 환경에서 자동적으로 최소화시킵니다.
 
@@ -1004,7 +1003,7 @@ Next.js에서 JavaScript와 CSS 파일은 배포 환경에서 자동적으로 �
 
 <img src="https://nextjs.org/static/images/learn/foundations/bundling.png" />
 
-번들링은 유저가 웹 페이지를 방문할 때 파일에 대한 수많은 요청을 줄이기 위해 웹의 의존성들을 해결하고 파일이나 모듈을  브라우저의 최적화된 번들로 병합(또는 패키징)하는 과정을 말합니다.
+번들링은 유저가 웹 페이지를 방문할 때 파일에 대한 수많은 요청을 줄이기 위해 웹의 의존성들을 해결하고 파일이나 모듈을 브라우저의 최적화된 번들로 병합(또는 패키징)하는 과정을 말합니다.
 
 #### 6) Code Splitting
 
@@ -1157,20 +1156,20 @@ Next.js를 계속 배우려면 주요 기능을 소개하는 자습서를 활용
 
 #### 1) Introduction
 
-  리액트로 완전한 웹 애플리케이션을 구축하기 위해서는 고려해야할 몇가지 중요한 세부사항들이 있습니다.
+리액트로 완전한 웹 애플리케이션을 구축하기 위해서는 고려해야할 몇가지 중요한 세부사항들이 있습니다.
 
 - 코드는 웹팩과 같은 번들러로 번들되어야 하며 바벨과 같은 컴파일러를 사용하여 변환되어야 합니다.
 - 코드 분할과 같은 생산 최적화를 해야합니다.
 - 성능과 SEO를 위해 일부 페이지를 정적으로 pre-render 하고 싶을 수 있습니다. 서버 사이드 렌더링 또는 클라이언트 사이드 렌더링을 하고 싶을 수 있습니다.
 - 리액트액을 데이터 저장소와 연결하기 위해 서버 측 코드를 작성해야 할 수도 있습니다.
 
-프레임워크는 이러한 문제를 해결할 수 있습니다. 그러나 프레임워크는 적절한 수준의 추상화를 가져야 합니다. 그렇지 않을 경우 유용하지 않을 것입니다. 또한 코드를 작성하는 동안 여러분과 여러분의 팀이 놀라운 경험을 할 수 있도록 보장하는 좋은 “Developer Experience(개발자 경험)”을 갖추어야 합니다. 
+프레임워크는 이러한 문제를 해결할 수 있습니다. 그러나 프레임워크는 적절한 수준의 추상화를 가져야 합니다. 그렇지 않을 경우 유용하지 않을 것입니다. 또한 코드를 작성하는 동안 여러분과 여러분의 팀이 놀라운 경험을 할 수 있도록 보장하는 좋은 “Developer Experience(개발자 경험)”을 갖추어야 합니다.
 
-**Next.js : The React Framework** 
+**Next.js : The React Framework**
 
-이제 리액트 프레임워크인 Next.js에 대해 이야기해 봅시다. Next.js는 위의 모든 문제들에 대한 해결책을 제시합니다. 그러나 가장 중요한 점은 리액트 애플리케이션을 구축할 때 여러분과 여러분의 팀이 아주 성공적인 경험을 할 수 있을 것이라는 점입니다. 
+이제 리액트 프레임워크인 Next.js에 대해 이야기해 봅시다. Next.js는 위의 모든 문제들에 대한 해결책을 제시합니다. 그러나 가장 중요한 점은 리액트 애플리케이션을 구축할 때 여러분과 여러분의 팀이 아주 성공적인 경험을 할 수 있을 것이라는 점입니다.
 
-Next.js는 동급 최고의 개발자 경험을 목표로 하며 다음과 같은 많은 내장 기능을 제공합니다. 
+Next.js는 동급 최고의 개발자 경험을 목표로 하며 다음과 같은 많은 내장 기능을 제공합니다.
 
 - 직관적인 페이지 기반 라우팅 시스템(dynamic routes 포함)
 - 페이지 단위로 지원되는 SSR, SSG가 모두 가능한 pre-rendering
@@ -1181,102 +1180,96 @@ Next.js는 동급 최고의 개발자 경험을 목표로 하며 다음과 같�
 - 서버리스 함수를 사용한 API endpoints를 구축하기 위한 API routes
 - 완전한 확장가능성
 
-Next.js는 수많은 세계 최대 브랜드들을 포함한 수만 개의 생산용 웹 사이트와 웹 애플리케이션에서 사용됩니다. 
+Next.js는 수많은 세계 최대 브랜드들을 포함한 수만 개의 생산용 웹 사이트와 웹 애플리케이션에서 사용됩니다.
 
-**And This Tutorial** 
+**And This Tutorial**
 
-이 무료 과정은 Next.js를 시작하는 방법을 안내합니다. 이 튜토리얼에서 우리는 간단한 blog app을 만들어보면서 Next.js의 기초를 배울 것입니다.  
+이 무료 과정은 Next.js를 시작하는 방법을 안내합니다. 이 튜토리얼에서 우리는 간단한 blog app을 만들어보면서 Next.js의 기초를 배울 것입니다.
 
 **[https://next-learn-starter.vercel.app](https://next-learn-starter.vercel.app/)** ([source](https://github.com/vercel/next-learn/tree/master/basics/demo))
 
 > 해당 튜토리얼은 JavaScript와 React대한 기본 지식이 있다는 가정하에 설명하고 있습니다. 리액트 코드를 작성해본 적이 없다면 리액트의 공식 튜토리얼을 먼저 진행해주세요.
-> 
 
-튜토리얼 대신 문서를 찾는다면 Next.js의 문서에서 찾을 수 있습니다. 
+튜토리얼 대신 문서를 찾는다면 Next.js의 문서에서 찾을 수 있습니다.
 
 **Join the Conversation**
 
-만약 Next.js나 해당 코스와 관련된 질문이 있으시다면 디스코드에 있는 우리의 커뮤니티에 와서 질문해주세요. 
+만약 Next.js나 해당 코스와 관련된 질문이 있으시다면 디스코드에 있는 우리의 커뮤니티에 와서 질문해주세요.
 
-시작합니다!  
-
+시작합니다!
 
 #### 2) Setup
 
-  **Setup**
+**Setup**
 
-먼저 개발 환경이 준비되었는지 확인해봐야 합니다. 
+먼저 개발 환경이 준비되었는지 확인해봐야 합니다.
 
 - Node.js가 설치되어 있지 않다면 [여기서 설치해 주세요.](https://nodejs.org/en/) Node.js 10.13 이후의 버전이 필요합니다.
 - 해당 튜토리얼에서는 자체 텍스트 편집기와 터미널 앱을 사용하게 됩니다.
 
 > 만약 윈도우 사용자라면 [downloading Git for Windows](https://gitforwindows.org/)을 다운로드하고 해당 튜토리얼에서 UNIX 관련 명령을 지원하는 Git Bash를 사용하는 것이 좋습니다. [Windows Subsystem for Linux (WSL)](https://docs.microsoft.com/en-us/windows/wsl/install-win10)를 사용해도 좋습니다.
-> 
 
 **Create a Next.js app**
 
-Next.js 앱을 만들기 위해서는 터미널을 열고 앱을 만들 디렉토리에 가서 아래의 명령어를 실행해주세요. 
+Next.js 앱을 만들기 위해서는 터미널을 열고 앱을 만들 디렉토리에 가서 아래의 명령어를 실행해주세요.
 
 ```bash
 npx create-next-app@latest nextjs-blog --use-npm --example "https://github.com/vercel/next-learn/tree/master/basics/learn-starter"
 ```
 
-> 위의 코드는 Next.js 앱을 부팅하는 create-next-app이라는 도구를 사용합니다. —example 플래그를 통해 이 템플릿을 사용할 수 있습니다. 
-해당 기능이 작동하지 않는다면 [이 페이지](https://github.com/vercel/next-learn/blob/master/basics/errors/install.md)에 가서 확인해주세요.
-> 
+> 위의 코드는 Next.js 앱을 부팅하는 create-next-app이라는 도구를 사용합니다. —example 플래그를 통해 이 템플릿을 사용할 수 있습니다.
+> 해당 기능이 작동하지 않는다면 [이 페이지](https://github.com/vercel/next-learn/blob/master/basics/errors/install.md)에 가서 확인해주세요.
 
-**Run the development server** 
+**Run the development server**
 
-여러분은 이제 `nextjs-blog`라는 새로운 디렉토리를 확인할 수 있을 것입니다. `cd` 명령어를 통해 들어가 봅시다. 
+여러분은 이제 `nextjs-blog`라는 새로운 디렉토리를 확인할 수 있을 것입니다. `cd` 명령어를 통해 들어가 봅시다.
 
 ```bash
 cd nextjs-blog
 ```
 
-그 후 아래의 명령어를 따라해주세요. 
+그 후 아래의 명령어를 따라해주세요.
 
 ```bash
 npm run dev
 ```
 
-이를 통해 여러분은 Next.js 앱의 개발 서버를 3000번 포트에서 시작할 수 있습니다. 
+이를 통해 여러분은 Next.js 앱의 개발 서버를 3000번 포트에서 시작할 수 있습니다.
 
 해당 기능이 작동하는지 확인하기 위해 브라우저에서 [http://localhost:3000](http://localhost:3000)을 열어주세요.
 
 #### 3) Welcome to Next.js
 
-  [http://localhost:3000](http://localhost:3000)에 접근하면 아래와 같은 페이지를 확인하실 수 있습니다. 아래 페이지는 Next.js에 대한 유용한 정보를 보여주는 시작 템플릿 페이지입니다. 
+[http://localhost:3000](http://localhost:3000)에 접근하면 아래와 같은 페이지를 확인하실 수 있습니다. 아래 페이지는 Next.js에 대한 유용한 정보를 보여주는 시작 템플릿 페이지입니다.
 
 ![image](https://user-images.githubusercontent.com/95066223/206178836-30554cc9-01af-45fb-8d51-3355e0833e2a.png)
 
 > Help is available : 막히면 [GitHub Discussions](https://github.com/vercel/next.js/discussions)에 있는 커뮤니티에 방문해주세요.
-> 
 
 이제 이 페이지를 편집해봅시다.
 
 #### 4) Editing the Page
 
-  시작 페이지를 편집해봅시다. 
+시작 페이지를 편집해봅시다.
 
 - Next.js 개발 서버가 실행 중인지 확인해주세요.
 - 텍스트 편집기에서 `pages/index.js` 파일을 열어주세요.
 - `<h1>` 태그 안에 있는 “Welcome to”라는 글자를 찾아서 “Learn”으로 변경해주세요.
 - 파일을 저장해주세요.
 
-파일을 저장하면 브라우저가 새로운 글자를 가진 페이지로 자동으로 업데이트 될 것입니다. 
+파일을 저장하면 브라우저가 새로운 글자를 가진 페이지로 자동으로 업데이트 될 것입니다.
 
 ![image](https://user-images.githubusercontent.com/95066223/206178790-e63c27bd-3303-4462-b136-d2e5383eddc4.png)
 
-Next.js의 개발 서버는 [Fast Refresh](https://nextjs.org/docs/basic-features/fast-refresh)가 가능합니다. 파일의 변경사항이 있으면 Next.js는 거의 즉시 자동으로 변경사항을 브라우저에 적용합니다. 새로고침을 할 필요가 없습니다! 이 기능은 앱을 빠르게 반복할 수 있도록 도와줍니다. 
+Next.js의 개발 서버는 [Fast Refresh](https://nextjs.org/docs/basic-features/fast-refresh)가 가능합니다. 파일의 변경사항이 있으면 Next.js는 거의 즉시 자동으로 변경사항을 브라우저에 적용합니다. 새로고침을 할 필요가 없습니다! 이 기능은 앱을 빠르게 반복할 수 있도록 도와줍니다.
 
 **Next Up: Creating Pages**
 
-아주 잘했습니다. 첫 번째 시간은 여기까지입니다. 
+아주 잘했습니다. 첫 번째 시간은 여기까지입니다.
 
-다음 시간에는 더 많은 페이지를 만들어보고 페이지들 간에 이동하는 법에 대해 배울 것입니다. 
+다음 시간에는 더 많은 페이지를 만들어보고 페이지들 간에 이동하는 법에 대해 배울 것입니다.
 
 > 개발 서버를 계속해서 작동시켜주세요. 재시작 하고 싶으시다면 Ctrl + c를 입력하면 종료됩니다.
->
 
 ### 2. Navigate Between Pages
 
@@ -1288,6 +1281,7 @@ application에 더 많은 페이지들을 추가하는 방법을 알아보자.
 **What You`ll learn in This Lesson**
 
 이 단원에서 할것:
+
 - 통합 file system routing을 사용하여 새로운 페이지 만들기
 - client-side navigation과 페이지들을 잇는 `Link` compoenent 사용법 배우기
 - code splitting 과 prefetching을 위한 built-in 지원에 대하여 배우기
@@ -1307,8 +1301,8 @@ application에 더 많은 페이지들을 추가하는 방법을 알아보자.
 ```bash
 npx create-next-app@latest nextjs-blog --use-npm --example "https://github.com/vercel/next-learn/tree/master/basics/navigate-between-pages-starter"
 ```
-그런 다음 command output의 명령에 따른다.(`cd` directory 하고 development server 시작)
 
+그런 다음 command output의 명령에 따른다.(`cd` directory 하고 development server 시작)
 
 #### 3) Pages in Next.js
 
@@ -1317,9 +1311,10 @@ npx create-next-app@latest nextjs-blog --use-npm --example "https://github.com/v
 Next.js에선 페이지는 `pages` directory에 있는 파일로 부터 exported 된 React Component 이다.
 
 페이지들은 파일이름을 기반으로 된 route와 연결된다. 예를 들어, development에선:
+
 - `pages/index.js` 는 `/` route 와 연결되어있다.
 - `pages/posts/first-post.js`는 `/posts/first-post` route 와 연결되어있다.
-- 우리는 이미 `pages/index.js` 를 가지고 있어서 `pages/posts/first-post.js` 를 만들고 어떻게 작동하는지 보자. 
+- 우리는 이미 `pages/index.js` 를 가지고 있어서 `pages/posts/first-post.js` 를 만들고 어떻게 작동하는지 보자.
 
 **Create a New Page**
 
@@ -1357,7 +1352,7 @@ Next.js는 application에선 `Link` Component `nest/link`를 사용하여 페이
 첫번째, `pages/index.js`을 열고, 최상단에 `Link` component from `next/link`를 import 하는 라인을 추가해라.
 
 ```js
-import Link from 'next/link';
+import Link from "next/link";
 ```
 
 그리고 나서 아래와 같이 생긴 `h1` tag 를 찾아라:
@@ -1379,7 +1374,7 @@ import Link from 'next/link';
 다음, `pages/posts/first-post.js` 열고 아래와 같이 컨텐츠를 변경해라:
 
 ```js
-import Link from 'next/link';
+import Link from "next/link";
 
 export default function FirstPost() {
   return (
@@ -1395,19 +1390,20 @@ export default function FirstPost() {
 
 볼 수 있듯이, `Link` component 는 `<a>` tag 들을 사용하는 것과 비슷하지만 `<a href="…">`을 사용하는 대신 `<Link href="…">`를 사용한다.
 
->Note: Next.js 12.2 버전 이전에는 `<a>` tag를 `<Link>` component를 감싸는 것이 필수였지만 12.2 이상부터는 필수가 아니다.
-> 
+> Note: Next.js 12.2 버전 이전에는 `<a>` tag를 `<Link>` component를 감싸는 것이 필수였지만 12.2 이상부터는 필수가 아니다.
 
 작동하는지 확인하자. 각 페이지에 링크가 있고, 뒤와 앞으로 이동 할 수 있다.
 
 ![image](https://nextjs.org/static/images/learn/navigate-between-pages/links.gif)
 
 #### 5) Client-Side Navigation
+
 `Link` component는 같은 Next.js app 의 두개의 페이지 사이에서 clint-side navigation 할 수 있게 한다.
 
-client-side navation의 의미는 javascript를 사용하여  브라우저가 수행하는 기본적인 navigation 보다 빠른 페이지의 transition(전환)을 일으키는 것을 말한다.
+client-side navation의 의미는 javascript를 사용하여 브라우저가 수행하는 기본적인 navigation 보다 빠른 페이지의 transition(전환)을 일으키는 것을 말한다.
 
 이것을 간단히 증명할 수 있는 간단한 방법:
+
 - 브라우저의 개발 툴을 사용하여 `<html>`의 `background` CSS property를 `yellow`로 바꾼다.
 - 두 사이를 링크를 클릭하여 뒤 와 앞으로 이동한다.
 - 페이지 전환사이에 노란색 뒷배경이 지속되는 것을 볼 수 있다.
@@ -1427,7 +1423,7 @@ Next.js는 code splitting이 자동적이고, 각 페이지는 그 페이지가 
 요청한 페이지의 코드만 로딩하는 것은 페이지들이 분리되는 것을 의미한다.
 만약 특정 페이지가 error가 나도 나머지 application은 동작한다.
 
-게다가, Next.js의 production build에서는 `Link` compoenents 는 browser의 viewport 안에서 나타날때 마다, Next.js는 자동적으로 백그라운드에서 연결된 페이지들의 코드를 prefetch 한다. 
+게다가, Next.js의 production build에서는 `Link` compoenents 는 browser의 viewport 안에서 나타날때 마다, Next.js는 자동적으로 백그라운드에서 연결된 페이지들의 코드를 prefetch 한다.
 링크를 클릭할때까지 대상 페이지의 코드는 백그라운드에서 로드될 준비를 하고 있고, 페이지 전환은 거의 즉시 된다.
 
 **Summary**
@@ -1436,9 +1432,9 @@ Next.js는 code splitting, client-side navigation, 그리고 prefetching(in prod
 
 `pages` 아래의 파일과 같은 routes를 만들고 내장된 `Link` compoenent를 사용한다. 라우팅 라이브러리들은 필수가 아니다.
 
-` in the API reference for next/link` 에서 `Link` component,  `in the routing documentation.`에서 routing을 더 학습 할수 있다. 
+` in the API reference for next/link` 에서 `Link` component, `in the routing documentation.`에서 routing을 더 학습 할수 있다.
 
->Note: 만약 Next.js app 바깥의 외부 페이지 링크가 필요하다면 `<Link>` 없이 `<a>` tag를 사용하면 된다.
+> Note: 만약 Next.js app 바깥의 외부 페이지 링크가 필요하다면 `<Link>` 없이 `<a>` tag를 사용하면 된다.
 
 ### 3. Assets, Metadata, and CSS
 
@@ -1482,7 +1478,7 @@ Next.js는 [CSS](https://nextjs.org/docs/basic-features/built-in-css-support) �
 **Assets**
 
 Next.js는 이미지와 같은 **static assets** 를 최상위 `public` 디렉토리 아래에서 제공합니다. `public` 폴더 안에 파일들을 `pages` 폴더와 비슷하게 애플리케이션의 root로부터 참조될 수 있습니다.
-`public` 폴더는 `robots.txt`, Google SIte Verification 그리고 다른 static assets에도 유용합니다.  [Static File Serving](https://nextjs.org/docs/basic-features/static-file-serving)(정적 파일 제공)에 대해서 더 알아보려면 문서를 참고하세요.
+`public` 폴더는 `robots.txt`, Google SIte Verification 그리고 다른 static assets에도 유용합니다. [Static File Serving](https://nextjs.org/docs/basic-features/static-file-serving)(정적 파일 제공)에 대해서 더 알아보려면 문서를 참고하세요.
 
 **Download Your Profile Picture**
 
@@ -1498,11 +1494,11 @@ Next.js는 이미지와 같은 **static assets** 를 최상위 `public` 디렉�
 
 - 이미지가 서로 다른 화면 크기에 대응하는지 확인
 - 써드파티 툴이나 라이브러리로 최적화되는 이미지인지 확인
-- viewport에 들어갔을 때 이미지를 로딩 
+- viewport에 들어갔을 때 이미지를 로딩
 
 **Image Component and Image Optimization**
 
-[`next/image`](https://nextjs.org/docs/api-reference/next/image) 는 현대적인 웹을 위해 진화된 `<img>` 태그의 확장입니다. 
+[`next/image`](https://nextjs.org/docs/api-reference/next/image) 는 현대적인 웹을 위해 진화된 `<img>` 태그의 확장입니다.
 
 또한 Next.js는 기본적으로 이미지 최적화를 지원합니다. 이것은 브라우저가 지원하는 경우 resizing, optimizing와 [WebP](https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Image_types#webp) 와 같은 현대적인 이미지 포맷를 사용할 수 있습니다. 이러한 기능은 작은 viewport에 큰 이미지가 올라가는 것을 피할 수 있습니다. 또한 Next.js는 자동적으로 향후의 이미지 포맷에 채택하고 해당 이미지 포맷을 지원하는 브라우저에게 제공할 수 있습니다.
 
@@ -1514,14 +1510,14 @@ build time에 이미지를 최적화하는 대신에 Next.js는 유저가 요청
 
 이미지는 기본적으로 지연 로드됩니다. 즉, 표시 영역 외부의 이미지에 대해 페이지 속도가 저하되지 않습니다. 이미지는 화면의 스크롤에 따라 로드됩니다.
 
-이미지는 항상 Google이 [search ranking](https://developers.google.com/search/blog/2020/05/evaluating-page-experience)에 사용하는 [Core Web Vital](https://web.dev/vitals/#core-web-vitals)  [Cumulative Layout Shift(누적 레이아웃 이동)](https://web.dev/cls/)을 피하는 방식으로 렌더링됩니다.
+이미지는 항상 Google이 [search ranking](https://developers.google.com/search/blog/2020/05/evaluating-page-experience)에 사용하는 [Core Web Vital](https://web.dev/vitals/#core-web-vitals) [Cumulative Layout Shift(누적 레이아웃 이동)](https://web.dev/cls/)을 피하는 방식으로 렌더링됩니다.
 
 여기 [`next/image`](https://nextjs.org/docs/api-reference/next/image)를 사용해 프로필 사진을 보여주는 예시가 있습니다. 넓이와 높이 속성은 이미지의 종횡비가 동일한 원하는 렌더링 사이즈가 되어야 합니다.
 
 > Note: 추후에 "Polishing Layout"에서 이 컴포넌트를 사용할 것이므로 아직 복사할 필요가 없습니다.
 
 ```javascript
-import Image from 'next/image';
+import Image from "next/image";
 
 const YourComponent = () => (
   <Image
@@ -1562,7 +1558,7 @@ const YourComponent = () => (
 
 `/posts/first-post` 경로에 `<title>`을 추가하지 않았습니다. 한번 추가해봅시다.
 
-`pages/posts/first-post.js` 파일을 열고  [`next/head`](https://nextjs.org/docs/api-reference/next/head) 모듈에서 `<Head>` 컴포넌트를 불러오세요.
+`pages/posts/first-post.js` 파일을 열고 [`next/head`](https://nextjs.org/docs/api-reference/next/head) 모듈에서 `<Head>` 컴포넌트를 불러오세요.
 
 ```react
 import Head from 'next/head';
@@ -1589,7 +1585,7 @@ export default function FirstPost() {
 http://localhost:3000/posts/first-post에 접근하세요. 이제 브라우저 탭은 "First Post"를 표시됩니다. 브라우저의 개발자 도구를 사용하면 `<head>` 태그에 `<title>` 태그가 추가된 것을 확인할 수 있습니다.
 
 > - Head Component에 대해서 더 살펴보고 싶다면 [여기](https://nextjs.org/docs/api-reference/next/head)를 확인하세요.
-> - 만약 `<lang>` 속성을 추가하는 것처럼  `<html>` 태그를 커스텀하고 싶다면 `pages/_document.js` 파일을 만들어서 이용할 수 있습니다. 자세한 사항을 [여기](https://nextjs.org/docs/advanced-features/custom-document)를 확인하세요.
+> - 만약 `<lang>` 속성을 추가하는 것처럼 `<html>` 태그를 커스텀하고 싶다면 `pages/_document.js` 파일을 만들어서 이용할 수 있습니다. 자세한 사항을 [여기](https://nextjs.org/docs/advanced-features/custom-document)를 확인하세요.
 
 #### 5) Third-Party JavaScript
 
@@ -1622,7 +1618,7 @@ Next.js 페이지에서 Third-Party script를 추가하는 방법에 대해서 �
 
 **Using the Script Component**
 
-[`next/script`](https://nextjs.org/docs/api-reference/next/script)HTML `<script>`요소의 확장이며 추가 스크립트를 가져와 실행할 때 최적화를 진행합니다. 
+[`next/script`](https://nextjs.org/docs/api-reference/next/script)HTML `<script>`요소의 확장이며 추가 스크립트를 가져와 실행할 때 최적화를 진행합니다.
 
 같은 파일 시작 부분에 아래와 같이 입력합니다.
 
@@ -1660,7 +1656,7 @@ export default function FirstPost() {
 - `strategy`는 third-party script가 로드되야 하는 시기를 조절합니다. `lazyOnload` 값은 특정 스크립트를 브라우저 idle time동안 지연 로딩되도록 Next.js에게 말해줍니다.
 - `onLoad` 는 스크립트 로딩이 끝난 직후 자바스크립트 코드를 실행하는 데 사용합니다. 위 예시에서는 스크립트가 올바르게 로드되었음을 콘솔에 보여주는 메세지를 출력하고 있습니다.
 
- http://localhost:3000/posts/first-post에 접근하세요. 개발자 도구를 사용하면 `Console` 창에 위 메세지가 나온 것을 확인할 수 있습니다. 추가적으로 스크립트가 전역 변수를 채웠는지 확인하기 위해 `window.FB`를 실행할 수 있습니다.
+http://localhost:3000/posts/first-post에 접근하세요. 개발자 도구를 사용하면 `Console` 창에 위 메세지가 나온 것을 확인할 수 있습니다. 추가적으로 스크립트가 전역 변수를 채웠는지 확인하기 위해 `window.FB`를 실행할 수 있습니다.
 
 **참고:** Facebook SDK는 제3자 스크립트를 애플리케이션에 효과적인 방식으로 추가하는 방법을 보여주기 위한 고안된 예제로만 사용되었습니다. 이제 Next.js에 third-party functionality를 포함하는 기본 사항을 이해했으므로 `FirstPost`계속하기 전에 스크립트 구성 요소를 제거할 수 있습니다.
 
@@ -2174,11 +2170,12 @@ Next.js에 내장되어 있는 CSS Support and CSS Modules을 더 배우고 싶�
 ### 4. Pre-rendering and Data Fetching
 
 #### 1) Introduction
-  우리는 블로그 페이지를 만들었지만(여기에 [결과가 있습니다](https://next-learn-starter.vercel.app/)) 블로그 내용을 아직 추가하지 못했습니다. 이번 과정에서 우리는 어떻게 외부의 블로그 데이터를 우리의 앱 안으로 들고 와야 할지에 대해 배울 예정입니다. 우리는 파일 시스템에 블로그 내용을 저장할 예정이지만 콘텐츠는 어디에 저장되어 있어도 상관없습니다.(e.g. database 혹은 Headless CMS)
+
+우리는 블로그 페이지를 만들었지만(여기에 [결과가 있습니다](https://next-learn-starter.vercel.app/)) 블로그 내용을 아직 추가하지 못했습니다. 이번 과정에서 우리는 어떻게 외부의 블로그 데이터를 우리의 앱 안으로 들고 와야 할지에 대해 배울 예정입니다. 우리는 파일 시스템에 블로그 내용을 저장할 예정이지만 콘텐츠는 어디에 저장되어 있어도 상관없습니다.(e.g. database 혹은 Headless CMS)
 
 **What You’ll Learn In This Lesson**
 
-이번 과정에서 우리가 배울 내용은 아래와 같습니다: 
+이번 과정에서 우리가 배울 내용은 아래와 같습니다:
 
 - Next.js의 [pre-rendering](https://nextjs.org/docs/basic-features/pages#pre-rendering)의 특징
 - 두 가지 형태의 pre-rendering:  [Static Generation](https://nextjs.org/docs/basic-features/pages#static-generation-recommended)과 [Server-side Rendering](https://nextjs.org/docs/basic-features/pages#server-side-rendering)
@@ -2189,13 +2186,14 @@ Next.js에 내장되어 있는 CSS Support and CSS Modules을 더 배우고 싶�
 만약 이전 과정부터 이어서 듣고 있다면 이 페이지는 넘어가도 좋습니다. 아래 버튼을 눌러 다음 페이지로 이동해주세요.
 
 #### 2) Setup
-  만약 이전 과정부터 이어서 듣고 있다면 이 페이지는 넘어가도 좋습니다. 아래 버튼을 눌러 다음 페이지로 이동해주세요. 
 
-**Download Starter Code(Optional)** 
+만약 이전 과정부터 이어서 듣고 있다면 이 페이지는 넘어가도 좋습니다. 아래 버튼을 눌러 다음 페이지로 이동해주세요.
 
-만약 이전 과정을 듣지 않았다면  아래에 있는 starter code를 다운받고 설치해서 실행해주세요. `nextjs-blog` 폴더는 이전 수업을 잘 들었다면 결과로 가지고 있을 코드입니다. 
+**Download Starter Code(Optional)**
 
-다시한번 말하지만 지금 하는 작업은 이전 과정을 완료했다면 불필요한 작업입니다. 
+만약 이전 과정을 듣지 않았다면 아래에 있는 starter code를 다운받고 설치해서 실행해주세요. `nextjs-blog` 폴더는 이전 수업을 잘 들었다면 결과로 가지고 있을 코드입니다.
+
+다시한번 말하지만 지금 하는 작업은 이전 과정을 완료했다면 불필요한 작업입니다.
 
 ```bash
 npx create-next-app@latest nextjs-blog --use-npm --example "https://github.com/vercel/next-learn/tree/master/basics/data-fetching-starter"
@@ -2203,44 +2201,44 @@ npx create-next-app@latest nextjs-blog --use-npm --example "https://github.com/v
 
 아래의 지시를 따라주세요. (`cd` 명령어를 통해 폴더로 들어가 개발 서버를 시작해주세요.)
 
-그리고 아래의 파일들 또한 업데이트해주세요. 
+그리고 아래의 파일들 또한 업데이트해주세요.
 
 - `public/images/profile.jpg` 에 여러분의 사진을 넣어주세요. (추천: 400px width/height).
 - `components/layout.js` 에 있는 `const name = '[Your Name]'` 에 여러분의 이름을 적어주세요.
-- `pages/index.js` 에 있는  `<p>[Your Self Introduction]</p>` 에 자기소개를 적어주세요.
+- `pages/index.js` 에 있는 `<p>[Your Self Introduction]</p>` 에 자기소개를 적어주세요.
 
 #### 3) Pre-Rendering
-  **Pre-rendering** 
+
+**Pre-rendering**
 
 [Data fetching](https://nextjs.org/docs/basic-features/data-fetching)에 대해서 이야기 하기 전에 Next.js의 가장 중요한 개념 중에 하나인 [Pre-rendering](https://nextjs.org/docs/basic-features/pages#pre-rendering)에 대해 이야기 해봅시다.
 
-기본적으로 Next.js는 모든 페이지를 사전에 렌더링합니다. 즉 클라이언트 사이드에서 JavaScript가 모든 것을 하는 대신에 Next.js는 사전에 각각의 페이지를 위한 HTML을 생성한다는 뜻입니다.  Pre-rendering은 더 좋은 성능과 SEO를 가집니다. 
+기본적으로 Next.js는 모든 페이지를 사전에 렌더링합니다. 즉 클라이언트 사이드에서 JavaScript가 모든 것을 하는 대신에 Next.js는 사전에 각각의 페이지를 위한 HTML을 생성한다는 뜻입니다. Pre-rendering은 더 좋은 성능과 SEO를 가집니다.
 
-각각의 생성된 HTML은 페이지를 구성하는데 필요한 최소한의 JavaScript로 구성되어 있습니다. 브라우저에 의해 페이지가 로드되면 JavaScript 코드는 실행되며 페이지 전체에 상호작용을 할 수 있도록 만들어줍니다.(이 과정을 hydration이라고 합니다.) 
+각각의 생성된 HTML은 페이지를 구성하는데 필요한 최소한의 JavaScript로 구성되어 있습니다. 브라우저에 의해 페이지가 로드되면 JavaScript 코드는 실행되며 페이지 전체에 상호작용을 할 수 있도록 만들어줍니다.(이 과정을 hydration이라고 합니다.)
 
-**Check That Pre-rendering Is Happening** 
+**Check That Pre-rendering Is Happening**
 
-아래와 같은 단계를 통해 pre-rendring이 일어났는지 확인할 수 있습니다.  
+아래와 같은 단계를 통해 pre-rendring이 일어났는지 확인할 수 있습니다.
 
 1. 브라우저에 JavaScript를 비활성화로 설정해주세요. ([Here's how in Chrome](https://developer.chrome.com/docs/devtools/javascript/disable/))
 2. [이 페이지](https://next-learn-starter.vercel.app/) 접근에 시도해보세요.(튜토리얼의 최종 결과물입니다.)
 
-여러분은 여러분의 앱이 JavaScript 없이도 렌더링되는 것을 확인할 수 있을 것입니다. Next.js는 정적인 HTML을 사전에 렌더링하므로 JavaScript  실행 없이도 앱의 UI가 화면에 보이는 것을 확인할 수 있습니다. 
+여러분은 여러분의 앱이 JavaScript 없이도 렌더링되는 것을 확인할 수 있을 것입니다. Next.js는 정적인 HTML을 사전에 렌더링하므로 JavaScript 실행 없이도 앱의 UI가 화면에 보이는 것을 확인할 수 있습니다.
 
 > 참고 : 위 과정에서 `localhost`에 접속해서 시도해볼수도 있습니다. 하지만 Javascript가 비활성화 되어 있을 경우 CSS는 확인되지 않습니다.
-> 
 
 만약 여러분의 앱이 순수한 React.js로 구성되어 있다면(Next.js 없이) pre-rendering은 일어나지 않을 것입니다. 그리고 JavaScript를 비활성화 한다면 여러분의 앱에서는 아무것도 볼 수 없을 것입니다.
 
-예를 들어: 
+예를 들어:
 
 - 브라우저에서 JavaScript를 활성화하고 [이 페이지](https://create-react-template.vercel.app/)를 확인해보세요. 이 페이지는 [Create React App](https://create-react-app.dev/)으로 구축된 순수한 React.js 앱입니다.
 - 이제 JavaScript를 비활성화하고 [동일한 페이지](https://create-react-template.vercel.app/)에 다시 접속해보세요.
 - 더 이상 앱을 볼 수 없고 대신에 “앱을 실행하려면 JavaScript를 활성화해주세요.”라는 문구를 보실 수 있을 것입니다. 이는 해당 앱이 정적 HTML로 pre-rendering되지 않기 때문입니다.
 
-**Summary: Pre-rendering vs No Pre-rendering** 
+**Summary: Pre-rendering vs No Pre-rendering**
 
-다음은 그림으로 요약한 것입니다. 
+다음은 그림으로 요약한 것입니다.
 
 ![image](https://user-images.githubusercontent.com/95066223/207740356-5c05f70f-7693-41ee-8163-c741d0dcac31.png)
 ![image](https://user-images.githubusercontent.com/95066223/207740407-304887cd-8ae1-4f8f-bbff-ba537d6b8866.png)
@@ -2248,7 +2246,8 @@ npx create-next-app@latest nextjs-blog --use-npm --example "https://github.com/v
 다음으로는 Next.js에서 pre-rendering의 두가지 형태에 대해서 이야기해봅시다.
 
 #### 4) Two Forms of Pre-rendering
-  Next.js는  [Static Generation](https://nextjs.org/docs/basic-features/pages#static-generation-recommended) 과 [Server-side Rendering](https://nextjs.org/docs/basic-features/pages#server-side-rendering)이라는 두 가지 형태의 pre-rendering이 있습니다. 둘의 차이점은 페이지를 위한 HTML을 언제 생성하는 지 입니다. 
+
+Next.js는 [Static Generation](https://nextjs.org/docs/basic-features/pages#static-generation-recommended) 과 [Server-side Rendering](https://nextjs.org/docs/basic-features/pages#server-side-rendering)이라는 두 가지 형태의 pre-rendering이 있습니다. 둘의 차이점은 페이지를 위한 HTML을 언제 생성하는 지 입니다.
 
 - [Static Generation](https://nextjs.org/docs/basic-features/pages#static-generation-recommended)은 빌드 타임에 HTML을 생성하는 pre-rendering 메서드입니다. 사전에 생성된 HTML은 매 요청마다 재 요청됩니다.
 - [Server-side Rendering](https://nextjs.org/docs/basic-features/pages#server-side-rendering)은 매 요청 전에 HTML을 생성하는 pre-rendering 메서드입니다.
@@ -2258,43 +2257,43 @@ npx create-next-app@latest nextjs-blog --use-npm --example "https://github.com/v
 ![image](https://user-images.githubusercontent.com/95066223/207740491-d3242de7-66ba-4685-983b-4f6e909ede99.png)
 
 > 개발모드(npm run dev 혹은 yarn dev 실행 시)에서는 모든 요청에 대해 페이지가 [pre-rendered](https://nextjs.org/docs/basic-features/pages#pre-rendering)됩니다. 이는 Static Generation에도 적용되며 이는 개발을 더 편하게 만들어줍니다. Production으로 이동 시 [Static Generation](https://nextjs.org/docs/basic-features/data-fetching/get-static-props#runs-on-every-request-in-development)은 모든 요청마다 일어나는 게 아니라 빌드 타임에 한번만 실행됩니다.
-> 
 
-**Per-page Basis** 
+**Per-page Basis**
 
-중요한 것은 Next.js를 사용하면 각 페이지에 사용할 사전 렌더링 형태를 선택할 수 있다는 점입니다. [Static Generation](https://nextjs.org/docs/basic-features/pages#static-generation-recommended)을 대부분의 페이지에 사용하고 [Server-side Rendering](https://nextjs.org/docs/basic-features/pages#server-side-rendering)을 다른 페이지에 사용하면 “hybrid” Next.js 앱을 만들 수 있습니다. 
+중요한 것은 Next.js를 사용하면 각 페이지에 사용할 사전 렌더링 형태를 선택할 수 있다는 점입니다. [Static Generation](https://nextjs.org/docs/basic-features/pages#static-generation-recommended)을 대부분의 페이지에 사용하고 [Server-side Rendering](https://nextjs.org/docs/basic-features/pages#server-side-rendering)을 다른 페이지에 사용하면 “hybrid” Next.js 앱을 만들 수 있습니다.
 
 ![image](https://user-images.githubusercontent.com/95066223/207740544-77702aa1-692f-491e-ae53-3fe8d0204f9f.png)
 
 **When to Use [Static Generation](https://nextjs.org/docs/basic-features/pages#static-generation-recommended) v.s. [Server-side Rendering](https://nextjs.org/docs/basic-features/pages#server-side-rendering)**
 
-가능하다면 [Static Generation](https://nextjs.org/docs/basic-features/pages#static-generation-recommended)(데이터의 유무에 상관없이)을 사용하는 것을 추천드립니다. 왜냐하면 여러분의 페이지는 한 번 빌드된 후 CDN에 의해 제공되므로 모든 요청에 대해 서버가 페이지를 렌더링하는 것보다 훨씬 더 빠르기 때문입니다. 
+가능하다면 [Static Generation](https://nextjs.org/docs/basic-features/pages#static-generation-recommended)(데이터의 유무에 상관없이)을 사용하는 것을 추천드립니다. 왜냐하면 여러분의 페이지는 한 번 빌드된 후 CDN에 의해 제공되므로 모든 요청에 대해 서버가 페이지를 렌더링하는 것보다 훨씬 더 빠르기 때문입니다.
 
-[Static Generation](https://nextjs.org/docs/basic-features/pages#static-generation-recommended)은 다음을 포함한 여러 유형의 페이지에 사용할 수 있습니다. 
+[Static Generation](https://nextjs.org/docs/basic-features/pages#static-generation-recommended)은 다음을 포함한 여러 유형의 페이지에 사용할 수 있습니다.
 
 - 마케팅 페이지
 - 블로그 게시물
 - E-commerce 제품 목록
 - 도움말 및 설명서
 
-“사용자 요청에 앞서 이 페이지를 미리 렌더링할 수 있습니까?”라고 자문해야 합니다. 만약 질문의 답이 예라면 [Static Generation](https://nextjs.org/docs/basic-features/pages#static-generation-recommended)을 선택해야 합니다. 
+“사용자 요청에 앞서 이 페이지를 미리 렌더링할 수 있습니까?”라고 자문해야 합니다. 만약 질문의 답이 예라면 [Static Generation](https://nextjs.org/docs/basic-features/pages#static-generation-recommended)을 선택해야 합니다.
 
-반면에 만약 사용자의 요청 전에 페이지를 사전 렌더링할 수 없다면 [Static Generation](https://nextjs.org/docs/basic-features/pages#static-generation-recommended)은 좋은 선택이 아닙니다.  아마 여러분의 페이지는 데이터를 빈번하게 업데이트하여 보여주고 페이지의 내용은 매 요청마다 바뀔 것입니다. 
+반면에 만약 사용자의 요청 전에 페이지를 사전 렌더링할 수 없다면 [Static Generation](https://nextjs.org/docs/basic-features/pages#static-generation-recommended)은 좋은 선택이 아닙니다. 아마 여러분의 페이지는 데이터를 빈번하게 업데이트하여 보여주고 페이지의 내용은 매 요청마다 바뀔 것입니다.
 
-이 경우에는 [Server-side Rendering](https://nextjs.org/docs/basic-features/pages#server-side-rendering)을 사용할 수 있습니다. 좀 더 느릴 수 있지만 사전에 렌더링된 페이지는 항상 업데이트 될 것입니다. 혹은 프리 렌더링은 건너뛰고 클라이언트 측 자바스크립트를 사용하여 자주 업데이트되는 데이터를 채울 수 있습니다. 
+이 경우에는 [Server-side Rendering](https://nextjs.org/docs/basic-features/pages#server-side-rendering)을 사용할 수 있습니다. 좀 더 느릴 수 있지만 사전에 렌더링된 페이지는 항상 업데이트 될 것입니다. 혹은 프리 렌더링은 건너뛰고 클라이언트 측 자바스크립트를 사용하여 자주 업데이트되는 데이터를 채울 수 있습니다.
 
 **We’ll Focus in Static Generation**
 
 이 과정에서는 [Static Generation](https://nextjs.org/docs/basic-features/pages#static-generation-recommended)에 집중해서 이야기해 볼 것입니다. 다음 페이지에서는 데이터가 있을 때와 없을 때의 [Static Generation](https://nextjs.org/docs/basic-features/pages#static-generation-recommended)에 대해 이야기 해 볼 예정입니다.
 
 #### 5) Static Generation with and without Data
-  [Static Generation](https://nextjs.org/docs/basic-features/pages#static-generation-recommended)은 데이터가 있을 때와 없을 때 모두 구현 가능합니다. 
 
-지금까지 우리가 만든 모든 페이지는 외부 데이터를 가지고 올 필요가 없었습니다. 이 페이지들은 production을 위해 앱을 빌드할 때 자동으로 정적으로 생성될 것입니다. 
+[Static Generation](https://nextjs.org/docs/basic-features/pages#static-generation-recommended)은 데이터가 있을 때와 없을 때 모두 구현 가능합니다.
+
+지금까지 우리가 만든 모든 페이지는 외부 데이터를 가지고 올 필요가 없었습니다. 이 페이지들은 production을 위해 앱을 빌드할 때 자동으로 정적으로 생성될 것입니다.
 
 ![image](https://user-images.githubusercontent.com/95066223/207740591-8d4aa399-2da6-44c2-939a-162b6cf6f689.png)
 
-하지만 일부 페이지의 경우 먼저 외부 데이터를 가져오지 않고서는 HTML을 렌더링할 수 없습니다. 아마 파일시스템에 접근하거나 외부 API를 가져오거나 빌드 시 데이터베이스 쿼리를 작성해야 할 수 있습니다. Next.js는 이 경우([데이터가 포함된 Static Generation](https://nextjs.org/docs/basic-features/pages#static-generation-with-data) )를 즉시 지원합니다. 
+하지만 일부 페이지의 경우 먼저 외부 데이터를 가져오지 않고서는 HTML을 렌더링할 수 없습니다. 아마 파일시스템에 접근하거나 외부 API를 가져오거나 빌드 시 데이터베이스 쿼리를 작성해야 할 수 있습니다. Next.js는 이 경우([데이터가 포함된 Static Generation](https://nextjs.org/docs/basic-features/pages#static-generation-with-data) )를 즉시 지원합니다.
 
 ![image](https://user-images.githubusercontent.com/95066223/207740618-44eedd7b-48cb-4795-884c-55d839c539df.png)
 
@@ -2320,29 +2319,29 @@ export async function getStaticProps() {
 }
 ```
 
-기본적으로 `[getStaticProps](https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation)`를 사용하면 Next.js에게 다음과 같이 전달할 수 있습니다.. “이 페이지에는 몇 가지 데이터 종속성이 있습니다. 따라서 빌드 시 이 페이지를 pre-render 할 때 먼저 그 문제를 해결하십시오!” 
+기본적으로 `[getStaticProps](https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation)`를 사용하면 Next.js에게 다음과 같이 전달할 수 있습니다.. “이 페이지에는 몇 가지 데이터 종속성이 있습니다. 따라서 빌드 시 이 페이지를 pre-render 할 때 먼저 그 문제를 해결하십시오!”
 
 > 참고: 개발 모드에서는 `[getStaticProps](https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation)`가 각 요청에 대해 대신 실행됩니다.
-> 
 
 **Let’s Use `getStaticProps`**
 
 사용하는 것을 배우면 더 쉽게 이해할 수 있을 것입니다. 그럼 다음페이지에서는 [getStaticProps](https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation)를 사용하여 블로그를 구현해보겠습니다.
 
 #### 6) Blog Data
+
 **Creating a simple blog architecture**
 
 블로그 포스터들은 로컬 마크다운 파일들로 어플리케이션 디렉토리에 저장될 것이고, 파일 시스템에서 데이터를 읽을 것이다.
 이 섹션에서, 파일 시스템으로부터 마크다운 데이터를 읽는 블로그를 만드는 단계를 살펴보자.
 
 **Creating the markdown files**
-루트 폴더에 `posts`라는 top-level 디렉토리를 만든다. `posts` 안에서 두개 파일을 만든다: `pre-rendering.md`, `ssg-ssr.md` 
+루트 폴더에 `posts`라는 top-level 디렉토리를 만든다. `posts` 안에서 두개 파일을 만든다: `pre-rendering.md`, `ssg-ssr.md`
 `posts/pre-rendering.md` 에 아래 코드를 복사하자.
 
 ```markdown
 ---
-title: 'Two Forms of Pre-rendering'
-date: '2020-01-01'
+title: "Two Forms of Pre-rendering"
+date: "2020-01-01"
 ---
 
 Next.js has two forms of pre-rendering: **Static Generation** and **Server-side Rendering**. The difference is in **when** it generates the HTML for a page.
@@ -2357,8 +2356,8 @@ Importantly, Next.js lets you **choose** which pre-rendering form to use for eac
 
 ```markdown
 ---
-title: 'When to Use Static Generation v.s. Server-side Rendering'
-date: '2020-01-02'
+title: "When to Use Static Generation v.s. Server-side Rendering"
+date: "2020-01-02"
 ---
 
 We recommend using **Static Generation** (with and without data) whenever possible because your page can be built once and served by CDN, which makes it much faster than having a server render the page on every request.
@@ -2376,6 +2375,7 @@ On the other hand, Static Generation is **not** a good idea if you cannot pre-re
 
 In that case, you can use **Server-Side Rendering**. It will be slower, but the pre-rendered page will always be up-to-date. Or you can skip pre-rendering and use client-side JavaScript to populate data.
 ```
+
 > `title` 과 `date`과 상단에 포함된 metadata 섹션을 가진 마크다운 파일이란걸 알 수 있을 것이다. 이것을 [gray-matter](https://github.com/jonschlinkert/gray-matter) 라이브러리를 사용해서 parse할 수 있는 [YAML](https://ko.wikipedia.org/wiki/YAML) Front Matter이라고 부른다.
 
 **Installing gray-matter**
@@ -2390,28 +2390,28 @@ npm install gray-matter
 
 다음으로, file system에서 parsing data 를 위한 utility function 을 만들자. utility function 을 사용해서 다음을 수행한다.
 
--  각 markdown 파일을 parse해서 `title`, `date`, 파일 이름을 얻는다.(파일이름은 post URL에 `id` 로 사용된다)
+- 각 markdown 파일을 parse해서 `title`, `date`, 파일 이름을 얻는다.(파일이름은 post URL에 `id` 로 사용된다)
 - index page에 날짜로 정렬한 data를 리스트한다.
 
 root 디렉토리에 `lib` 이라는 top-level 디렉토리를 만든다. `lib` 디렉토리 안에 `posts.js`라는 파일을 만들고 아래 코드를 복사해서 붙여넣자:
 
 ```js
-import fs from 'fs';
-import path from 'path';
-import matter from 'gray-matter';
+import fs from "fs";
+import path from "path";
+import matter from "gray-matter";
 
-const postsDirectory = path.join(process.cwd(), 'posts');
+const postsDirectory = path.join(process.cwd(), "posts");
 
 export function getSortedPostsData() {
   // Get file names under /posts
   const fileNames = fs.readdirSync(postsDirectory);
   const allPostsData = fileNames.map((fileName) => {
     // Remove ".md" from file name to get id
-    const id = fileName.replace(/\.md$/, '');
+    const id = fileName.replace(/\.md$/, "");
 
     // Read markdown file as string
     const fullPath = path.join(postsDirectory, fileName);
-    const fileContents = fs.readFileSync(fullPath, 'utf8');
+    const fileContents = fs.readFileSync(fullPath, "utf8");
 
     // Use gray-matter to parse the post metadata section
     const matterResult = matter(fileContents);
@@ -2433,8 +2433,9 @@ export function getSortedPostsData() {
 }
 ```
 
->Note:
+> Note:
 > learn Next.js 위해 코드의 실행부분을 이해할 필요는 없다. 함수는 블로그 예제 함수적으로 만드는 것이다. 그러나 만약 더 알고 싶다면:
+>
 > - `fs`는 file system에서 파일들을 읽을 수 있는 Node.js module 이다.
 > - `path`는 file paths를 다루는 Node.js module이다.
 > - `matter`는 각 마크다운 파일에서 metadata를 parse 하는 라이브러리다.
@@ -2451,6 +2452,7 @@ export function getSortedPostsData() {
 
 Next.js는 pre-rendering의 투가지 폼을 가지고 있다: Static Generation, Server-side Rendering.
 다른점은 HTML 페이지들이 생성 되는 때이다.
+
 - Static Generation은 build 타임에 HTML을 생성하는 pre-rendering method 이다. pre-rendered HTML은 각 요청 시 다시 사용한다.
 - Server-side Rendering 은 각 요청때마다 HTML을 만드는 pre-rendering method 이다.
 
@@ -2462,7 +2464,7 @@ Next.js는 pre-rendering의 투가지 폼을 가지고 있다: Static Generation
 에디터에서 `pages/index.js`을 열고, 아래 코드를 exported `Home` component 위에 추가하자.
 
 ```js
-import { getSortedPostsData } from '../lib/posts';
+import { getSortedPostsData } from "../lib/posts";
 
 export async function getStaticProps() {
   const allPostsData = getSortedPostsData();
@@ -2480,7 +2482,7 @@ export async function getStaticProps() {
 export default function Home ({ allPostsData }) { ... }
 ```
 
-블로그 포스트들을 표시하기 위해,  `Home` component는 업데이트 하여, 자기 소개가 있는 section 아래 데이터가 있는 다른 `<section>` tag는 추가해보자. props가 `()` 에서 `({allPostsData})`로 변경되는 것도 잊지말자.
+블로그 포스트들을 표시하기 위해, `Home` component는 업데이트 하여, 자기 소개가 있는 section 아래 데이터가 있는 다른 `<section>` tag는 추가해보자. props가 `()` 에서 `({allPostsData})`로 변경되는 것도 잊지말자.
 
 ```js
 export default function Home({ allPostsData }) {
@@ -2507,6 +2509,7 @@ export default function Home({ allPostsData }) {
   );
 }
 ```
+
 만약 http://localhost:3000에 접속하면 블로그 데이터를 볼수 있을 것이다.
 
 ![image](https://nextjs.org/static/images/learn/data-fetching/blog-data.png)
@@ -2529,12 +2532,12 @@ export default function Home({ allPostsData }) {
 export async function getSortedPostsData() {
   // Instead of the file system,
   // fetch post data from an external API endpoint
-  const res = await fetch('..');
+  const res = await fetch("..");
   return res.json();
 }
 ```
 
->Note: Next.js는 클라이언트와 서버 둘다에서 `fetch()`를 polyfill 한다. 이것을 import 할 필요 없다.
+> Note: Next.js는 클라이언트와 서버 둘다에서 `fetch()`를 polyfill 한다. 이것을 import 할 필요 없다.
 
 database를 직접적으로 query 할수도 있다.
 
@@ -2550,10 +2553,11 @@ export async function getSortedPostsData() {
 }
 ```
 
-이것은 `getStaticProps`가 오직 server-side에서 실행되기 때문에 가능하다. client-side에서는 절대 실행되지 않는다. 브라우저에 JS bundle이 포함되어 있지 않다. 
+이것은 `getStaticProps`가 오직 server-side에서 실행되기 때문에 가능하다. client-side에서는 절대 실행되지 않는다. 브라우저에 JS bundle이 포함되어 있지 않다.
 이것의 의미는 브라우저로 보내지 않고도 직접적으로 database 쿼리들과 같은 코드들을 사용할 수 있다.
 
 **Development vs. Production**
+
 - development(`npm run dev` 또는 `yarn dev`) 에서는 `getStaticProps`는 모든 요청에 실행된다.
 - production에서는 `getStaticProps`는 build time에서만 실행된다. 그러나 이 행위는 `getStaticPaths`에 의해 리턴된 `fallback` [key](https://nextjs.org/docs/api-reference/data-fetching/get-static-paths#fallback-false)을 사용하여 향상 될 수 있다.
 
@@ -2600,6 +2604,7 @@ export async function getServerSideProps(context) {
 
 **Client-side Rendering**
 pre-render data가 필요없다면, 다음 전략을 사용할수도 있다.([Client-side Rendering](https://nextjs.org/docs/basic-features/data-fetching#fetching-data-on-the-client-side))
+
 - 외부 데이터가 필수적이지 않은 페이지들의 부분들을 고정적으로 생성한다(pre-render)
 - page가 로드될때, javascript을 사용하는 클라이언트로 부터 외부 데이터를 fetch하고 나머지 부분들을 채운다.
 
@@ -2613,10 +2618,10 @@ Next.js 팀은 SWR이라고 부르는 data fetching에 필요한 React hook을 �
 caching, revalidation, focus tracking, 일정 간격 refetching 등을 제어할 수 있다. 여기서 자세한 것은 다루지 않으나, 다음은 사용 예이다.
 
 ```js
-import useSWR from 'swr';
+import useSWR from "swr";
 
 function Profile() {
-  const { data, error } = useSWR('/api/user', fetch);
+  const { data, error } = useSWR("/api/user", fetch);
 
   if (error) return <div>failed to load</div>;
   if (!data) return <div>loading...</div>;
@@ -2628,7 +2633,8 @@ function Profile() {
 
 **That’s It!**
 다음 학습에서는 dynamic routes 를 사용하여 각 블로그 게시물을 위한 페이지들을 만들자.
->[Data Fetching documentation](https://nextjs.org/docs/basic-features/data-fetching) 에서 [getStaticProps](https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation)와 [getServerSideProps](https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering)에 대하여 더 깊은 정보를 얻을 수 있다.
+
+> [Data Fetching documentation](https://nextjs.org/docs/basic-features/data-fetching) 에서 [getStaticProps](https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation)와 [getServerSideProps](https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering)에 대하여 더 깊은 정보를 얻을 수 있다.
 
 ### 5. Dynamic Routes
 
@@ -2644,11 +2650,327 @@ function Profile() {
 
 #### 6) Render Markdown
 
+마크다운 컨텐츠를 렌더하기 위해서는 `remark` 라이브러리를 사용해야합니다. 우선 , 설치를 진행합니다.
+
+```bash
+npm install remark remark-html
+```
+
+그리고 `lib/posts.js`를 열고 파일 최상위에 아래를 imports 합니다.
+
+```javascript
+import { remark } from "remark";
+import html from "remark-html";
+```
+
+`remark`를 사용하기 위해서 같은 파일에 `getPostData()` 함수를 update 합니다.
+
+```javascript
+export async function getPostData(id) {
+  const fullPath = path.join(postsDirectory, `${id}.md`);
+  const fileContents = fs.readFileSync(fullPath, "utf8");
+
+  // Use gray-matter to parse the post metadata section
+  const matterResult = matter(fileContents);
+
+  // Use remark to convert markdown into HTML string
+  const processedContent = await remark()
+    .use(html)
+    .process(matterResult.content);
+  const contentHtml = processedContent.toString();
+
+  // Combine the data with the id and contentHtml
+  return {
+    id,
+    contentHtml,
+    ...matterResult.data,
+  };
+}
+```
+
+> **중요** : 우리는 `remark`에 `await`을 사용하기 위해 getPostData에 **async **키워드를 사용해야 합니다. 비동기로 data를 fetch하기 위해 `async/await`이 필요합니다.
+
+`pages/posts/[id].js` 에 [getStaticProps](https://nextjs.org/docs/basic-features/data-fetching/overview#getstaticprops-static-generation)안에 `getPostData`를 부를때 `await`을 사용합니다.
+
+```javascript
+export async function getStaticProps({ params }) {
+  // Add the "await" keyword like this:
+  const postData = await getPostData(params.id);
+
+  return {
+    props: {
+      postData,
+    },
+  };
+}
+```
+
+마침내 , [`dangerouslySetInnerHTML` ](https://reactjs.org/docs/dom-elements.html#dangerouslysetinnerhtml)을 사용하여 `pages/posts/[id].js` 에 `contentHtml`을 렌더하여 Post 컴포넌트를 업데이트 할 수 있습니다.
+
+```javascript
+export default function Post({ postData }) {
+  return (
+    <Layout>
+      {postData.title}
+      <br />
+      {postData.id}
+      <br />
+      {postData.date}
+      <br />
+      <div dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />
+    </Layout>
+  );
+}
+```
+
+다음 페이지를 다시 방문하세요 :
+
+- [http://localhost:3000/posts/ssg-ssr](http://localhost:3000/posts/ssg-ssr)
+- [http://localhost:3000/posts/pre-rendering](http://localhost:3000/posts/pre-rendering)
+
+이제 블로그 컨텐츠가 표시됩니다.
+
+![](https://nextjs.org/static/images/learn/dynamic-routes/markdown.png)
+
+거의 끝났고 다음 페이지를 다듬어 보겠습니다.
+
 #### 7) Polishing the Post Page
+
+#### Polishing the Post Page
+
+**Post 페이지에 `title` 추가하기**
+
+`pages/posts/[id].js` 안에서 `title` 태그를 추가해보세요. `next/head`를 파일 최상위에 import 하고 Post 컴포넌트에 `title` 태그를 추가합니다.
+
+```javascript
+// Add this import
+import Head from "next/head";
+
+export default function Post({ postData }) {
+  return (
+    <Layout>
+      {/* Add this <Head> tag */}
+      <Head>
+        <title>{postData.title}</title>
+      </Head>
+
+      {/* Keep the existing code here */}
+    </Layout>
+  );
+}
+```
+
+**날짜 포맷팅**
+
+날짜를 포맷하기 위해 , [`date-fns`](https://date-fns.org/) 라이브러리를 사용할 것입니다. 먼저 아래를 따라 설치합니다.
+
+```bash
+npm install date-fns
+```
+
+`components/date.js` 파일을 만들고 아래를 따라서 Date 컴포넌트의 내용을 추가합니다.
+
+```javascript
+import { parseISO, format } from "date-fns";
+
+export default function Date({ dateString }) {
+  const date = parseISO(dateString);
+  return <time dateTime={dateString}>{format(date, "LLLL d, yyyy")}</time>;
+}
+```
+
+> **참고** : [date-fns](https://date-fns.org/v2.16.1/docs/format) 웹사이트에서 `format()` string 옵션과 관련된 다양한 것들을 볼 수 있습니다.
+
+이제 `pages/posts/[id].js` 파일을 열고 `Date` 컴포넌트를 최상위에 import하고 `{postData.date}`를 사용합니다.
+
+```javascript
+// Add this import
+import Date from "../../components/date";
+
+export default function Post({ postData }) {
+  return (
+    <Layout>
+      {/* Keep the existing code here */}
+
+      {/* Replace {postData.date} with this */}
+      <Date dateString={postData.date} />
+
+      {/* Keep the existing code here */}
+    </Layout>
+  );
+}
+```
+
+만약에 [http://localhost:3000/posts/pre-rendering](http://localhost:3000/posts/pre-rendering) 위 사이트에 접근한다면 , **January 1, 2020** 로 쓰여진 날짜를 볼 수 있습니다.
+
+**Adding CSS**
+
+마지막으로 , `styles/utils.module.css` 파일을 사용하여 CSS를 추가합니다. 아래의 코드를 따라서 Post 컴포넌트에 CSS파일을 import 합니다.
+
+```javascript
+// Add this import at the top of the file
+import utilStyles from "../../styles/utils.module.css";
+
+export default function Post({ postData }) {
+  return (
+    <Layout>
+      <Head>
+        <title>{postData.title}</title>
+      </Head>
+      <article>
+        <h1 className={utilStyles.headingXl}>{postData.title}</h1>
+        <div className={utilStyles.lightText}>
+          <Date dateString={postData.date} />
+        </div>
+        <div dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />
+      </article>
+    </Layout>
+  );
+}
+```
+
+만약에 [http://localhost:3000/posts/pre-rendering](http://localhost:3000/posts/pre-rendering)에 접근한다면 , 페이지는 아래와 같이 더 나아 보일 것입니다.
+
+![](https://nextjs.org/static/images/learn/dynamic-routes/post-page-css.png)
+
+다음에 index 페이지를 업데이트하고 끝내겠습니다.
 
 #### 8) Polishing the Index Page
 
+다음에 index 페이지를 업데이트를 해보겠습니다. 우리는 [Link](https://nextjs.org/docs/api-reference/next/link) 컴포넌트를 사용해서 각 포스트 페이지에 link를 추가해야합니다.
+
+`pages/index.js` 페이지를 열고 아래와 같이 [Link](https://nextjs.org/docs/api-reference/next/link)와 Date 컴포넌트를 최상위에 import 합니다.
+
+```javascript
+import Link from "next/link";
+import Date from "../components/date";
+```
+
+그리고 같은 파일 하단에 `li` 태그를 아래와 같이 대체합니다.
+
+```jsx
+<li className={utilStyles.listItem} key={id}>
+  <Link href={`/posts/${id}`}>{title}</Link>
+  <br />
+  <small className={utilStyles.lightText}>
+    <Date dateString={date} />
+  </small>
+</li>
+```
+
+만약에 http://localhost:3000 으로 이동한다면 각각의 아티클은 link를 가집니다.
+
+![](https://nextjs.org/static/images/learn/dynamic-routes/links.png)
+
+> 만약 무언가 작동하지 않는다면 , [이것](https://github.com/vercel/next-learn/blob/master/basics/api-routes-starter/pages/posts/%5Bid%5D.js)과 같은지 확인하세요 !
+
+끝으로 강의를 마무리하기 전에 다음페이지에서 [dynamic routes](https://nextjs.org/docs/routing/dynamic-routes)에 대해서 몇가지 팁을 알아보겠습니다.
+
 #### 9) Dynamic Routes Details
+
+여기에 [dynamic routes](https://nextjs.org/docs/routing/dynamic-routes)에 대해서 알아야 할 필수 정보들이 있습니다.
+
+**Fetch External API or Query Database**
+
+[getStaticProps](https://nextjs.org/docs/basic-features/data-fetching/overview#getstaticprops-static-generation) , [getStaticPaths](https://nextjs.org/docs/basic-features/data-fetching/overview#getstaticpaths-static-generation)는 모든 data source들을 fetch 할 수 있습니다. 예를 들어 , `getAllPostId` ( getStaticPaths가 사용된 )는 외부의 API endpoint로 부터 fetch 할 수 있습니다.
+
+```javascript
+export async function getAllPostIds() {
+  // Instead of the file system,
+  // fetch post data from an external API endpoint
+  const res = await fetch("..");
+  const posts = await res.json();
+  return posts.map((post) => {
+    return {
+      params: {
+        id: post.id,
+      },
+    };
+  });
+}
+```
+
+**Development vs Production**
+
+- development ( `npm run dev` or `yarn dev`)에서 [getStaticPaths](https://nextjs.org/docs/basic-features/data-fetching/overview#getstaticpaths-static-generation)는 매 요청마다 실행된다.
+- production에서는 [getStaticPaths](https://nextjs.org/docs/basic-features/data-fetching/overview#getstaticpaths-static-generation)는 빌드 타임에 실행됩니다.
+
+**Fallback**
+
+getStaticPaths에서 `fallback : false`는 어떤 의미일까요?
+
+만약에 [fallback이 false](https://nextjs.org/docs/basic-features/data-fetching/overview#fallback-false)이면 , 모든 paths는 [getStaticPaths](https://nextjs.org/docs/basic-features/data-fetching/overview#getstaticpaths-static-generation)에 의해서 반환되지 않고 404페이지를 만듭니다.
+
+만약에 [fallback이 true](https://nextjs.org/docs/basic-features/data-fetching/overview#fallback-true)이면 , getStaticProps의 동작은 변합니다.
+
+- getStaticPaths는 build time에 HTML을 반환할 것입니다.
+- 빌드 시 생성되지 않은 경로는 **404** 페이지를 생성하지 않습니다. 대신 Next.js는 그런 경로에 대한 첫 번 째 요청에서 페이지의 'fallback' 버전을 제공합니다.
+- background에서 Next.js는 정적으로 요청 path를 생성할 것 입니다. 그 이후로 같은 페이지에 대한 요청은 빌드 시 미리 렌더링된 다른 페이지와 마찬가지로 생성된 페이지를 제공할 것입니다.
+
+만약에 [fallback이 blocking](https://nextjs.org/docs/basic-features/data-fetching/overview#fallback-blocking)이면, 새로운 경로는 getStaticProps에서 server-side rendered 될 것이고 향후 캐쉬되어 paths당 한번만 발생합니다.
+
+우리의 수업 범위에 넘어가짐나 , fallback : true와 fallback : blocking에 대해서 [fallback 문서](https://nextjs.org/docs/api-reference/data-fetching/get-static-paths#fallback-false)에서 더 배울 수 있습니다.
+
+**Catch-all Routes**
+
+Dynamic routes는 괄호안에서 ...을 활용하여 모든 경로를 포착하도록 동적 경로를 확장할 수 있습니다.
+
+예를 들어
+
+- `pages/posts/[...id].js` 는 `/posts/a` 뿐만 아니라 `/posts/a/b`, `/posts/a/b/c` 와 매치됩니다.
+
+만약에 [getStaticPaths](https://nextjs.org/docs/basic-features/data-fetching/overview#getstaticpaths-static-generation)안에서 위와 같이 해야한다면 , id key를 갖는 배열을 반환 해야합니다.
+
+```javascript
+return [
+  {
+    params: {
+      // Statically Generates /posts/a/b/c
+      id: ["a", "b", "c"],
+    },
+  },
+  //...
+];
+```
+
+그리고 `params.id` 는 [getStaticProps](https://nextjs.org/docs/basic-features/data-fetching/overview#getstaticprops-static-generation)안에서 배열일 것입니다.
+
+```javascript
+export async function getStaticProps({ params }) {
+  // params.id will be like ['a', 'b', 'c']
+}
+```
+
+[catch all routes documentation](https://nextjs.org/docs/routing/dynamic-routes#catch-all-routes)을 더 배우려면 여기서 확인하세요.
+
+**Router**
+
+만약에 Next.js router에 접근하는것을 원한다면 , [useRouter](https://nextjs.org/docs/api-reference/next/router#userouter) hook을 [next/router](https://nextjs.org/docs/api-reference/next/router)에서 import 할 수 있습니다.
+
+**404 Pages**
+
+[custom 404](https://nextjs.org/docs/advanced-features/custom-error-page#404-page) 페이지를 만들기 위해서는 pages/404.js를 만들어야합니다. 이 파일은 빌드 시간에 정적으로 생성됩니다.
+
+```javascript
+// pages/404.js
+export default function Custom404() {
+  return <h1>404 - Page Not Found</h1>;
+}
+```
+
+자세한 내용은 [오류 페이지](https://nextjs.org/docs/advanced-features/custom-error-page)설명서를 참조하세요.
+
+**More Examples**
+
+[getStaticProps](https://nextjs.org/docs/basic-features/data-fetching/overview#getstaticprops-static-generation)와 [getStaticPaths](https://nextjs.org/docs/basic-features/data-fetching/overview#getstaticpaths-static-generation)를 설명하기 위해 몇가지 예제를 만들었습니다. 소스코드를 살펴보세요
+
+- [Blog Starter using markdown files](https://github.com/vercel/next.js/tree/canary/examples/blog-starter) ([Demo](https://next-blog-starter.vercel.app/))
+- [WordPress Example](https://github.com/vercel/next.js/tree/canary/examples/cms-wordpress) ([Demo](https://next-blog-wordpress.vercel.app/))
+- [DatoCMS Example](https://github.com/vercel/next.js/tree/canary/examples/cms-datocms) ([Demo](https://next-blog-datocms.vercel.app/))
+- [TakeShape Example](https://github.com/vercel/next.js/tree/canary/examples/cms-takeshape) ([Demo](https://next-blog-takeshape.vercel.app/))
+- [Sanity Example](https://github.com/vercel/next.js/tree/canary/examples/cms-sanity) ([Demo](https://next-blog-sanity.vercel.app/))
+
+다음 수업에서는 Next.js에서 [API Routes](https://nextjs.org/docs/api-routes/introduction)에 대해서 얘기해보겠습니다.
 
 ### 6. API Routes
 
