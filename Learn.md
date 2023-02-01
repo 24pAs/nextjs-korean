@@ -3735,9 +3735,151 @@ Core Web Vitals는 최상의 페이지 경험을 위해 노력하는 데 도움�
 
 #### 1) Introduction
 
+Next.js 기능을 사용하여 예제의 Core Web Vitals를 개선할 수 있는 방법을 살펴보겠습니다.
+
+이 단원에서는 다음을 배웁니다.
+
+- Lighthouse는 무엇이며 어떻게 사용할 수 있습니까?
+- `next/image`이미지를 자동으로 최적화 하는 방법 .
+- 초기 JS 번들을 줄이기 위해 라이브러리 및 구성 요소를 동적으로 가져오는 방법.
+- third-party 스크립트에 사전 연결하는 방법.
+- Next.js가 기본적으로 웹 글꼴 로딩을 최적화하는 방법.
+- third-party 스크립트의 로딩을 최적화하는 방법.
+
 #### 2) Lighthouse
 
+이전 section에서 봤다시피 , Core Web Vitals은 loading performance (Largest Contentful Paint), interactivity (First Input Delay), and visual stability (Cumulative Layout Shift)와 같은 유저 경험 측면에 중점되어 있습니다. 
+
+이번 수업에서는 , Core Web Vitals를 Lighthouse라고 불리는 환경에서 어떻게 측정하는지에 대해 집중할 것 입니다. 
+
+> **Note** : 이번 수업을 통해  [Chrome Dev Tools](https://developers.google.com/web/tools/lighthouse?hl=en#devtools)를 사용할 것 입니다. 그러나 , Lighthouse를 운영하는 많은 [방법](https://developer.chrome.com/docs/lighthouse/overview/#get-started)이 있습니다.
+
+Lighthouse는 제공된 URL에서 일련의 감사를 실행하여 작동합니다. 이러한 감사를 기반으로 페이지가 얼마나 잘 수행되었는지에 대한 보고서를 생성합니다. 개선이 필요한 영역이 있는 경우 보고서는 개선 방법에 대한 통찰력을 제공합니다.
+
+healthy Core Web Vitals 사이트와 다른 하나의 Lighthouse report 차이점을 볼 것 입니다. 
+
+**최적화된 예제**
+
+어떻게 Lighthouse가 작동하는지 보기 위해 , 우리는 `https://nextjs.org` 홈페이지를 사용할 것 입니다. 
+
+1. 크롬을 열고 
+2. 시크릿 창으로 들어가서 `https://nextjs.org`로 이동합니다. 
+3. DevTools를 열고 Lighthouse 탭으로 이동합니다. 
+4. Generate report를 클릭합니다. 
+
+60초 미만으로 실행될 것 입니다. 
+
+> **Note** : third-party 플러그인이 보고서에 영향을 미치므로 시크릿 창에서 보고서를 실행하는 것이 중요합니다.
+
+게다가 광고 차단기는 스크립트가 로드되지 않도록 차단하여 불완전한 감사를 제공할 수 있습니다. 깨끗한 [persona](https://support.google.com/chrome/answer/2364824?hl=en)를 셋팅하세요.
+
+![](https://nextjs.org/static/images/learn/seo/lighthouse.png)
+
+**최적화되지 않은 예제**
+
+자습서의 목적을 위해 최적화 없이 애플리케이션을 만들었습니다.
+
+**프로젝트 설정**
+
+이것은 방문자가 두 가지 작업을 수행할 수 있는 최적화되지 않은 기본 응용 프로그램입니다. 국가를 검색하여 인구를 검색하고 버튼을 클릭하여 팝업 모달을 읽습니다. 이 응용 프로그램은 타사 라이브러리의 사용을 피할 수 없는 대규모 응용 프로그램에서 작업하는 현실을 모방하기 위한 것입니다.
+
+```bash
+npx create-next-app@latest nextjs-lighthouse --use-npm --example "https://github.com/vercel/next-learn/tree/master/seo"
+```
+
+**Production Build 실행**
+
+Lighthouse에서 정확한 보고서를 받으려면 애플리케이션을 항상 프로덕션 빌드로 테스트해야 합니다. 프로덕션 빌드를 실행하려면 프로젝트 디렉터리로 변경합니다.
+
+```bash
+cd nextjs-lighthouse
+```
+
+`next build`를 실행하여 애플리케이션을 빌드하고 `next start`를 실행하여 [프로덕션 모드](https://nextjs.org/docs/api-reference/cli#production) 에서 서버를 시작하십시오 .
+
+```bash
+npm run build && npm run start
+```
+
+Chrome DevTools로 Lighthouse 보고서를 실행해 보겠습니다. 보고서가 완료되면 사이트를 최적화하고 바이탈을 개선해 보겠습니다.
+
 #### 3) Image Optimization
+### 최적화되지 않은 이미지
+
+HTML을 사용하여 아래와 같이 Hero 이미지를 추가할 수 있습니다. 
+
+```html
+<img src="large-image.jpg" alt="Large Image" />
+```
+
+그러나 , 이것은 우리가 몇 가지 사항을 최적화해야 함을 의미합니다. 
+
+- 이미지가 다양한 화면 크기에서 반응하는지 확인합니다. 
+- third-party 라이브러리를 사용하여 이미지를 최적합니다. 
+- 뷰포트에 들어갈 때 Lazy-loading 
+
+
+
+### 이미지 컴포넌트
+
+Next는 최적화를 할 수 있는 [이미지 컴포넌트](https://nextjs.org/docs/api-reference/next/image)를 제공합니다. `next/image` 는 현대 웹에서 진화한 HTML img 요소의 확장입니다. `next/image`는 resizing , optimizing , webP 같은 현대 포맷에 맞게 제공합니다. 
+
+컴포넌트는 더 작은 뷰포트가 있는 장치에 큰 이미지를 전달하는 것을 방지하고 Next.js가 미래의 이미지 형식을 채택하고 해당 이미지를 지원하는 브라우저에 제공할 수 있도록 합니다. 
+
+자동 이미지 최적화는 모든 이미지 소스에서 동작합니다. 이미지가 CMS 같은 외부 data source에 호스팅될지라도 최적화 할 수 있습니다. 
+
+### 자동 최적화는 어떻게 이루어지는지?
+
+**On-demand Optimization**
+
+Next.js는 빌드시에 이미지 최적화하는 대신에 사용자가 요청할때 이뤄집니다. SSG나 static-only solution에서 이미지가 10개이던 10만개던 빌드시간이 늘어나지 않습니다. 
+
+**Lazy Loaded Images**
+
+이미지는 기본적으로 Lazy load 됩니다. 페이지 속도는 뷰포트 외부에 있는 이미지에 대해 불이익을 받지 않습니다. 이미지는 view안에 들어올때 load 됩니다. 
+
+**Avoids CLS**
+
+이미지는 항상 CLS를 피하기 위해 렌더됩니다. 
+
+### Using the Image Component
+
+`next/image`를 사용하여 hero 이미지를 업데이트 해보겠습니다. 높이와 넓이 props는 이미지와 동일한 비율로 원하는 렌더링 크기여야 합니다. 
+
+`pages/index.js` 파일을 열고 , `next/image`를 추가하세요. 
+
+```js
+import Image from 'next/image';
+```
+
+그리고 나서 hero img를 Image 컴포넌트로 대체하세요. 
+
+```jsx
+// Before
+<img src="large-image.jpg" alt="Large Image" />
+
+// After
+<Image src="/large-image.jpg" alt="Large Image" width={3048} height={2024} />
+```
+
+그리고 footer에도 이미지가 있어서 이것도 교체하겠습니다. 
+
+```jsx
+// Before
+<img src="/vercel.svg" alt="Vercel Logo" />
+
+// After
+<Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
+
+```
+
+마지막으로 Chrome DevTools에서 또 다른 Lighthouse 보고서를 실행하고 결과를 비교합니다.
+
+> **추가 자료**
+>
+> - Next.js: [Automatic Image Optimization Documentation](https://nextjs.org/docs/basic-features/image-optimization)
+> - Next.js: [API Reference for `next/image`](https://nextjs.org/docs/api-reference/next/image)
+
 
 #### 4) Dynamic Imports
 
