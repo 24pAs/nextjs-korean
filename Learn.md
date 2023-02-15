@@ -3611,25 +3611,275 @@ Ranking과 Rendering과정에서 약간의 차이가 있지만 대부분의 검�
 
 ### 4. Performanca & Core Web Vitals
 
-#### 1) Introduction
 
+#### 1) Introduction
+[Web Vital](https://web.dev/vitals/)은 통일된 안내와 ux를 측정하기 위해서 구글에서 최초로 만들었다. 
+
+[Core Web Vitals](https://developers.google.com/search/blog/2020/11/timing-for-page-experience?hl=ko)은 Web Vitals 중에 하나인데 loading , interactivity 와 visual stability로 구성됩니다. 이러한 지표는  [Largest Contentful Paint (LCP)](https://nextjs.org/learn/seo/web-performance/lcp), [First Input Delay (FID)](https://nextjs.org/learn/seo/web-performance/fid), and [Cumulative Layout Shift (CLS)](https://nextjs.org/learn/seo/web-performance/cls) 입니다. 
+
+3가지 지표에 좋은 점수를 받는 것은 유저에게 더 좋은 경험을 제시할 것입니다. 
+
+ Core Web Vitals 지표가 낮은 웹사이트들은 Google 검색 엔진에 영향을 받을 것 입니다. 저조한 vitals은 web traffic과 사업에 영향을 끼칠 수 있습니다. 
+
+이번 파트에서는 , 아래의것들을 배웁니다.
+
+- Core web Vitals에 대한 간단한 배경 
+- SEO 및 UX에서 Core Web Vitals의 의미와 웹사이트에 미치는 영향
+- 개발 프로세스에서 Core Web Vitals에 관심을 가져야 하는 이유와 이를 측정하는 방법
+- Next.js로 Core Web Vitals를 개선하고 변경 사항을 모니터링하는 방법.
 #### 2) Vitals Overview
+
+이 강의에서는 다양한 메트릭, [Core Web Vitals](https://web.dev/vitals/) 가 SEO에 미칠 수 있는 영향, 사용자 경험에 미치는 중요성에 대해 살펴보겠습니다.
+
+**Core Web Vitals를 측정할 때 "좋음"** , **"개선 필요"** 및 **"나쁨"** 의 세 가지 다른 값이 있습니다 . 이 값은 측정되는 생명력에 따라 다릅니다.
+
+![](https://nextjs.org/static/images/learn/seo/vitals-light.png)
+
+다음과 같은 두 가지 방법으로 Core Web Vitals에 접근할 수 있습니다. 
+
+1. 가능한 지표에서 높은 점수를 받으세요. 완벽을 추구하는 것은 좋지만 종속성이 많은 대형 웹사이트에서는 까다로울 수 있습니다. 
+2. 산업 경쟁업체와 비교하여 벤치마킹하세요. 모든게 완벽하게 최적화된 웹사이트와 경쟁하지 말고 너의 목표 키워드에 순위를 매긴 다른 웹사이트와 경쟁하세요.
+
+**다음 단계** 
+
+다음 단원에서는 항목을 살펴보고 측정 항목을 공부합니다. 
+
 
 #### 3) Largest Contentful Paint
 
+![](https://nextjs.org/_next/image?url=%2Fstatic%2Fimages%2Flearn%2Fseo%2Flcp.png&w=1920&q=75)
+
+LCP 지표는 웹페이지에 로딩 성능을 측정합니다. 뷰포트안에 가장 큰 요소가 얻어지는 시간을 측정합니다. 이것은 페이지에서 주요 공간을 차지하는 큰 텍스트 블록 , 비디오 또는 이미지일 수 있습니다. 
+
+> **Note** : 이것은  페이지가 로드되기 시작할 때부터 첫 번째 요소가 화면에 렌더링될 때까지의 시간을 측정하는 [First Contentful Paint (FCP)](https://web.dev/fcp/) 가 아닙니다. 
+
+DOM이 렌더링될 때 페이지에서 가장 큰 요소가 변경될 수 있습니다. 가장 큰 콘텐츠가 있는 페인트는 가장 큰 이미지나 요소가 화면에 나타날 때까지 계산을 멈추지 않습니다.
+
+![](https://nextjs.org/_next/image?url=%2Fstatic%2Fimages%2Flearn%2Fseo%2Flcp-example.png&w=3840&q=75)
+
+> **추가 자료**
+>
+> - Google: [Largest Contentful Paint Documentation](https://web.dev/lcp/)
+> - Vercel: [Blog: Core Web Vitals - Largest Contentful Paint](https://vercel.com/blog/core-web-vitals#largest-contentful-paint)
+
+
 #### 4) First Input Delay
+
+FID는 웹 페이지와 상호 작용하는 동안 최종 사용자의 경험에 대한 인식입니다. 아무것도 일어나지 않는 input의 안쪽을 클릭한다고 생각해봐라 사이트의 상호 작용 및 응답성에 대한 불만은 큰 입력 지연으로 인해 발생합니다. 
+
+![](https://nextjs.org/static/images/learn/seo/fid.png)
+
+FID는 실제 사용자 데이터가 필요하며 실험실(예: Google Lighthouse)에서 측정할 수 없습니다. 그러나 ,  [Total Blocking Time (TBT)](https://web.dev/tbt) 지표는 실험실에서 측정 가능하며 상호 작용에 영향을 미치는 문제를 포착합니다.
+
+![](https://nextjs.org/static/images/learn/seo/fid-example.png)
+
+> **추가 자료**
+>
+> - Google: [First Input Delay Documentation](https://web.dev/fid/)
+> - Vercel: [Blog: Core Web Vitals - First Input Delay](https://vercel.com/blog/core-web-vitals#first-input-delay)
 
 #### 5) Cumulative Layout Shift
 
+![](https://nextjs.org/static/images/learn/seo/cls.png)
+
+**Cumulative Layout Shift (CLS)** 지표는 웹사이트에 종합적인 layout 안정성을 측정합니다. 사이트가 페이지 로드 중에 ㅇ예상치 못하게 layout이 바뀌는것은 사용자 오류 및 주의 산만으로 이어질 수 있습니다. 
+
+CLS(Cumulative Layout Shift)는 요소가 DOM에 의해 처음 렌더링된 후 이동되었을 때 발생합니다. 여기에서 텍스트 블록 뒤에 버튼이 화면에 렌더링되어 블록이 아래로 이동했습니다. CLS를 계산할 때 충격과 거리의 조합이 고려됩니다.
+
+![](https://nextjs.org/static/images/learn/seo/cls-example.png)
+
+각 요소의 개별 레이아웃 이동 점수는 예상치 못한 움직임이 발생하는 경우에만 CLS로 계산됩니다. 새 요소가 DOM에 추가되거나 기존 요소의 크기가 변경되는 경우 로드된 요소가 위치를 유지하면 레이아웃 이동에 포함되지 않습니다.
+
+> **추가 자료**
+>
+> - Google: [누적 레이아웃 이동 문서](https://web.dev/cls/)
+> - Vercel: [블로그: 핵심 성능 보고서 - 누적 레이아웃 변화](https://vercel.com/blog/core-web-vitals#cumulative-layout-shift)
+
 #### 6) SEO Impact
+구글 검색 엔진에 주된 목표는 현지화 및 맞춤법 오류를 고려하면서 사용자에게 가능한 최선의 결과를 주는 것 입니다. 모든 경우에  , 구글은 사용자에게 빠르고 부드러운 경험을 줍니다. 
+
+모바일 장치에서 [Web page speed](https://developers.google.com/web/updates/2018/07/search-ads-speed) 2018년부터 순위를 매기는 요소였습니다. 그러나 지금까지 구글 검색 알고리즘이 순위의 일부로 어떤 특정 지표를 사용하는지 명시하지 않았습니다. 
+
+구글은 2021년 부터 변화했고 성능 분석과 최적화에 대한 지표를 제공했습니다. 
+
+![](https://nextjs.org/static/images/learn/seo/page-experience.png)
+
+**Lighthouse (v6) Weights for Vitals**
+
+3가지 지표를 필수적으로 동등한 가치를 갖는것은 아닙니다.  [Lighthouse](https://developers.google.com/web/tools/lighthouse)에서 Core Web Vitals의 다른 가중치를 할당하고 있습니다. 
+
+- **Largest Contentful Paint**: 25%
+- **Total Blocking Time\***: 25%
+- **First Contentful Paint**: 15%
+- **Speed Index**: 15%
+- **Time to Interactive**: 15%
+- **Cumulative Layout Shift**: 5%
+
+> **Note** : Google 순위 영향은 개별 Core Web Vitals 점수에 관계없이 모든 Core Web Vitals의 좋은 범위에 있는 모든 페이지에 대해 동일합니다.
+
+
+
+**UX 영향**
+
+Core Web Vitals에 대한 대부분의 대화는 주로 SEO에 초점을 맞추고 있습니다.
+
+Core Web Vitals가 페이지 경험과 검색 순위의 개선을 측정하고 추진하기 위해 고안된 이니셔티브인 것은 사실이지만, 궁극적으로 이러한 변화의 혜택을 받는 것은 사용자입니다.
+
+Core Web Vitals는 최상의 페이지 경험을 위해 노력하는 데 도움이 됩니다. [2012년 아마존 연구](https://www.fastcompany.com/1825005/how-one-second-could-cost-amazon-16-billion-sales)에 따르면 로드 시간이 1초 추가되면 잠재적으로 회사에 무수히 많은 비용이 발생할 수 있습니다.  이와 같은 연구는 Core Web Vitals가 달성하는 데 도움이 되는 훌륭한 페이지 경험과 빠른 웹 사이트의 중요성을 보여줍니다.
+
+> **추가 자료**
+>
+> - Chromium: [The Science Behind Web Vitals](https://nextjs.org/docs/routing/introduction)
 
 ### 5. Improving your Core Web Vitals
 
 #### 1) Introduction
 
+Next.js 기능을 사용하여 예제의 Core Web Vitals를 개선할 수 있는 방법을 살펴보겠습니다.
+
+이 단원에서는 다음을 배웁니다.
+
+- Lighthouse는 무엇이며 어떻게 사용할 수 있습니까?
+- `next/image`이미지를 자동으로 최적화 하는 방법 .
+- 초기 JS 번들을 줄이기 위해 라이브러리 및 구성 요소를 동적으로 가져오는 방법.
+- third-party 스크립트에 사전 연결하는 방법.
+- Next.js가 기본적으로 웹 글꼴 로딩을 최적화하는 방법.
+- third-party 스크립트의 로딩을 최적화하는 방법.
+
 #### 2) Lighthouse
 
+이전 section에서 봤다시피 , Core Web Vitals은 loading performance (Largest Contentful Paint), interactivity (First Input Delay), and visual stability (Cumulative Layout Shift)와 같은 유저 경험 측면에 중점되어 있습니다. 
+
+이번 수업에서는 , Core Web Vitals를 Lighthouse라고 불리는 환경에서 어떻게 측정하는지에 대해 집중할 것 입니다. 
+
+> **Note** : 이번 수업을 통해  [Chrome Dev Tools](https://developers.google.com/web/tools/lighthouse?hl=en#devtools)를 사용할 것 입니다. 그러나 , Lighthouse를 운영하는 많은 [방법](https://developer.chrome.com/docs/lighthouse/overview/#get-started)이 있습니다.
+
+Lighthouse는 제공된 URL에서 일련의 감사를 실행하여 작동합니다. 이러한 감사를 기반으로 페이지가 얼마나 잘 수행되었는지에 대한 보고서를 생성합니다. 개선이 필요한 영역이 있는 경우 보고서는 개선 방법에 대한 통찰력을 제공합니다.
+
+healthy Core Web Vitals 사이트와 다른 하나의 Lighthouse report 차이점을 볼 것 입니다. 
+
+**최적화된 예제**
+
+어떻게 Lighthouse가 작동하는지 보기 위해 , 우리는 `https://nextjs.org` 홈페이지를 사용할 것 입니다. 
+
+1. 크롬을 열고 
+2. 시크릿 창으로 들어가서 `https://nextjs.org`로 이동합니다. 
+3. DevTools를 열고 Lighthouse 탭으로 이동합니다. 
+4. Generate report를 클릭합니다. 
+
+60초 미만으로 실행될 것 입니다. 
+
+> **Note** : third-party 플러그인이 보고서에 영향을 미치므로 시크릿 창에서 보고서를 실행하는 것이 중요합니다.
+
+게다가 광고 차단기는 스크립트가 로드되지 않도록 차단하여 불완전한 감사를 제공할 수 있습니다. 깨끗한 [persona](https://support.google.com/chrome/answer/2364824?hl=en)를 셋팅하세요.
+
+![](https://nextjs.org/static/images/learn/seo/lighthouse.png)
+
+**최적화되지 않은 예제**
+
+자습서의 목적을 위해 최적화 없이 애플리케이션을 만들었습니다.
+
+**프로젝트 설정**
+
+이것은 방문자가 두 가지 작업을 수행할 수 있는 최적화되지 않은 기본 응용 프로그램입니다. 국가를 검색하여 인구를 검색하고 버튼을 클릭하여 팝업 모달을 읽습니다. 이 응용 프로그램은 타사 라이브러리의 사용을 피할 수 없는 대규모 응용 프로그램에서 작업하는 현실을 모방하기 위한 것입니다.
+
+```bash
+npx create-next-app@latest nextjs-lighthouse --use-npm --example "https://github.com/vercel/next-learn/tree/master/seo"
+```
+
+**Production Build 실행**
+
+Lighthouse에서 정확한 보고서를 받으려면 애플리케이션을 항상 프로덕션 빌드로 테스트해야 합니다. 프로덕션 빌드를 실행하려면 프로젝트 디렉터리로 변경합니다.
+
+```bash
+cd nextjs-lighthouse
+```
+
+`next build`를 실행하여 애플리케이션을 빌드하고 `next start`를 실행하여 [프로덕션 모드](https://nextjs.org/docs/api-reference/cli#production) 에서 서버를 시작하십시오 .
+
+```bash
+npm run build && npm run start
+```
+
+Chrome DevTools로 Lighthouse 보고서를 실행해 보겠습니다. 보고서가 완료되면 사이트를 최적화하고 바이탈을 개선해 보겠습니다.
+
 #### 3) Image Optimization
+### 최적화되지 않은 이미지
+
+HTML을 사용하여 아래와 같이 Hero 이미지를 추가할 수 있습니다. 
+
+```html
+<img src="large-image.jpg" alt="Large Image" />
+```
+
+그러나 , 이것은 우리가 몇 가지 사항을 최적화해야 함을 의미합니다. 
+
+- 이미지가 다양한 화면 크기에서 반응하는지 확인합니다. 
+- third-party 라이브러리를 사용하여 이미지를 최적합니다. 
+- 뷰포트에 들어갈 때 Lazy-loading 
+
+
+
+### 이미지 컴포넌트
+
+Next는 최적화를 할 수 있는 [이미지 컴포넌트](https://nextjs.org/docs/api-reference/next/image)를 제공합니다. `next/image` 는 현대 웹에서 진화한 HTML img 요소의 확장입니다. `next/image`는 resizing , optimizing , webP 같은 현대 포맷에 맞게 제공합니다. 
+
+컴포넌트는 더 작은 뷰포트가 있는 장치에 큰 이미지를 전달하는 것을 방지하고 Next.js가 미래의 이미지 형식을 채택하고 해당 이미지를 지원하는 브라우저에 제공할 수 있도록 합니다. 
+
+자동 이미지 최적화는 모든 이미지 소스에서 동작합니다. 이미지가 CMS 같은 외부 data source에 호스팅될지라도 최적화 할 수 있습니다. 
+
+### 자동 최적화는 어떻게 이루어지는지?
+
+**On-demand Optimization**
+
+Next.js는 빌드시에 이미지 최적화하는 대신에 사용자가 요청할때 이뤄집니다. SSG나 static-only solution에서 이미지가 10개이던 10만개던 빌드시간이 늘어나지 않습니다. 
+
+**Lazy Loaded Images**
+
+이미지는 기본적으로 Lazy load 됩니다. 페이지 속도는 뷰포트 외부에 있는 이미지에 대해 불이익을 받지 않습니다. 이미지는 view안에 들어올때 load 됩니다. 
+
+**Avoids CLS**
+
+이미지는 항상 CLS를 피하기 위해 렌더됩니다. 
+
+### Using the Image Component
+
+`next/image`를 사용하여 hero 이미지를 업데이트 해보겠습니다. 높이와 넓이 props는 이미지와 동일한 비율로 원하는 렌더링 크기여야 합니다. 
+
+`pages/index.js` 파일을 열고 , `next/image`를 추가하세요. 
+
+```js
+import Image from 'next/image';
+```
+
+그리고 나서 hero img를 Image 컴포넌트로 대체하세요. 
+
+```jsx
+// Before
+<img src="large-image.jpg" alt="Large Image" />
+
+// After
+<Image src="/large-image.jpg" alt="Large Image" width={3048} height={2024} />
+```
+
+그리고 footer에도 이미지가 있어서 이것도 교체하겠습니다. 
+
+```jsx
+// Before
+<img src="/vercel.svg" alt="Vercel Logo" />
+
+// After
+<Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
+
+```
+
+마지막으로 Chrome DevTools에서 또 다른 Lighthouse 보고서를 실행하고 결과를 비교합니다.
+
+> **추가 자료**
+>
+> - Next.js: [Automatic Image Optimization Documentation](https://nextjs.org/docs/basic-features/image-optimization)
+> - Next.js: [API Reference for `next/image`](https://nextjs.org/docs/api-reference/next/image)
+
 
 #### 4) Dynamic Imports
 
