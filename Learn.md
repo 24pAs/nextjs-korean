@@ -4308,25 +4308,304 @@ import Image from 'next/image';
 
 #### 4) Dynamic Imports
 
+이번 강의에서는 초기 페이지에서 라이브러리를 불러오는 동안 불러오게 되는 JavaScript  코드의 양을 줄여볼 것 입니다.
+
+Next.js는 ES2020dml [dynamic import()](https://nextjs.org/docs/advanced-features/dynamic-import)를 지원합니다. 이것을 통해 JavaScript 모듈을 동적으로 불러올 수 있고 동작시킬 수 있습니다. 또한 SSR 환경도 지원합니다.
+
+dynamic import를 당신의 코드를 관리할 수 있는 chunk 파일로 분리하는 또다른 방식으로 생각하세요.
+
+dynamic import를 할 예정이므로 `pages/index.js` 파일을 열고 아래의 두 줄의 코드를 제거합니다.
+
+```javascript
+import Fuse from 'fuse.js';
+import _ from 'lodash';
+```
+
+또한 다음 항목도 제거해줍니다.
+
+```javascript
+const fuse = new Fuse(countries, {
+  keys: ['name'],
+  threshold: 0.3,
+});
+```
+
+이제 모든 코드를 제거했고 dynamic import를 사용하기 위한 설정을 해보도록 하겠습니다.
+
+아래와 같이 `input` 코드를 작성해줍니다.
+
+```react
+<input
+  type="text"
+  placeholder="Country search..."
+  className={styles.input}
+  onChange={async (e) => {
+    const { value } = e.currentTarget;
+    // Dynamically load libraries
+    const Fuse = (await import('fuse.js')).default;
+    const _ = (await import('lodash')).default;
+
+    const fuse = new Fuse(countries, {
+      keys: ['name'],
+      threshold: 0.3,
+    });
+
+    const searchResult = fuse.search(value).map((result) => result.item);
+
+    const updatedResults = searchResult.length ? searchResult : countries;
+    setResults(updatedResults);
+
+    // Fake analytics hit
+    console.info({
+      searchedAt: _.now(),
+    });
+  }}
+/>
+```
+
+Dynamic import를 사용함으로써 페이지를 불러오는 동안 '사용하지 않는 JavaScript 제거'할 수 있습니다.
+
+이 방식은 [First Input Delay(FID)](https://nextjs.org/learn/seo/web-performance/fid)를 개선하는데 도움이 되는 Time to Interactive(TTI)를 개선할 수 있습니다.
+
+우리의 진행상황을 보기 위해 Chorome DevTools의 Lighthouse Report를 실행해 보도록 하겠습니다.
+
+> 더 읽어보기
+>
+> - Next.js: [Dynamic Imports Documentation](https://nextjs.org/docs/advanced-features/dynamic-import)
+
 #### 5) Dynamic Imports for Components
+
+다음으로 초기 페이지 로드 시 필요하지 않은 React 구성 요소에 대해 살펴보겠습니다.
+
+React 구성 요소는 동적 가져오기를 사용하여 가져올 수도 있지만 이 경우 다른 React 구성 요소와 마찬가지로 작동하는지 확인하기 위해 `next/dynamic`와 함께 사용합니다.
+
+우리는 이 방법을 사용해서 `Hello World` 코드 예시의 모달을 지연 로드해볼 것입니다. 이렇게 하면 우리는 초기 페이지를 불러올 때 두 개의 라이브러리도 제거할 수 있습니다.
+
+`pages/index/js` 파일을 열고 파일 시작 부분에 아래와 같이 `next/dynamic`의 dynamic을 추가하세요.
+
+```react
+import dynamic from 'next/dynamic';
+```
+
+또한 아래 줄을 삭제해줍니다.
+
+```react
+import CodeSampleModal from '../components/CodeSampleModal';
+```
+
+이제 파일 시작 부분에 아래와 같이 동적으로 컴포넌트를 불러올 수 있습니다.
+
+```react
+const CodeSampleModal = dynamic(() => import('../components/CodeSampleModal'), {
+  ssr: false,
+});
+```
+
+`CodeSampleModal`은 `../components/CodeSampleModal`이 `default`로 반환하는 컴포넌트가 될 것입니다. 이 컴포넌트는 일반적인 리액트 컴포넌트로 동작할 것이고 props 또한 일반적인 방식으로 넘길 수 있습니다.
+
+이 컴포넌트가 서버에서 필요하지 않은 컴포넌트이기에 `ssr: false` 옵션을 사용하였습니다.
+
+다음으로 사용자가 요구할 때까지 이 컴포넌트의 로드를 연기하려고 합니다. 이를 위해 모달이 열려 있어야 하는지 확인하는 조건으로 구성 요소를 래핑할 수 있습니다. 만약 열려 있다면 컴포넌트가 로드됩니다.
+
+`CodeSampleModal`를 아래와 같이 감싸주세요.
+
+```react
+{
+  isModalOpen && (
+    <CodeSampleModal
+      isOpen={isModalOpen}
+      closeModal={() => setIsModalOpen(false)}
+    />
+  );
+}
+```
+
+이제 `isModalOpen`이 처음  `true`가 된 시점에 필요한 JavaScript를 요청할 것입니다.
+
+이런 최적화를 통해 vital이 더 건강해질 것입니다. 확인을 위해 Chrome Devtool에서 Lighthouse 보고서를 실행해보겠습니다.
+
+이제 우리는 두 가지의 최적화 제안이 남아있습니다.
+
+- HTTP2를 사용: 이 문제를 풀기 위해서 우리는 HTTP2를 지원하는 어떠한 곳에 배포할 수 있습니다.
+- 이미지 요소에 명시되지 않은 `width`와 `height` : 이것은 실제로 [Lighthout의 버그](https://github.com/GoogleChrome/lighthouse/issues/11631)이며, 사이트 성능에 영향을 미치지 않습니다.
 
 #### 6) Optimizing Fonts
 
+[데스크탑 웹 페이지의 82%](https://almanac.httparchive.org/en/2020/fonts)가 웹 폰트를 사용합니다. 커스텀 폰트는 웹사이트의 브랜딩, 디자인 그리고 크로스 브라우저, 디바이스의 통일성을 위해 아주 중요합니다. 하지만 이러한 폰트를 사용한다고 해서 웹사이트의 성능이 저하되어서는 안됩니다.
+
+Next.js는 [자동 웹폰트 최적화](https://nextjs.org/docs/basic-features/font-optimization)를 내장하고 있습니다. 기본적으로 Next.js는 빌드 시 자동으로 폰트 CSS를 인라인으로 선언하여 폰트를 가져오기 위한 추가적인 선언을 제거합니다. 그 결과 First Contentful Paint(FCP) 및 Largest Contentful Paint(LCP)가 개선되었습니다.
+
+예를 들어, 여기에 Next.js가 폰트를 최적화 하기 전후가 있습니다.
+
+최적화를 하기 전에는 추가적인 네트워크 요청이 필요했습니다.
+
+```html
+<link href="https://fonts.googleapis.com/css2?family=Inter" rel="stylesheet" />
+```
+
+최적화 후에 Next.js는 폰트 CSS를 인라인으로 선언합니다.
+
+```html
+<style data-href="https://fonts.googleapis.com/css2?family=Inter">
+  @font-face{font-family:'Inter';font-style:normal.....
+</style>
+```
+
 #### 7) Optimizing Third-Party Scripts
+
+많은 애플리케이션은 분석, 광고 및 고객 지원 위젯과 같은 다양한 유형의 기능을 포함하기 위해 라이브러리에 의존합니다. 그러나 라이브러리를 포함하면 페이지 내용이 렌더링되는 것을 지연시키고 너무 일찍 로드될 경우 사용자 성능에 영향을 미칠 수 있습니다.
+
+Next.js는 서드파티 스크립트에 대한 로드를 최적화하는 [스크립트 컴포넌트](https://nextjs.org/docs/basic-features/font-optimization)를 제공하는 동시에 개발자들이 이 스크립트를 가져오고 실행할 시기를 결정할 수 있는 옵션을 제공합니다.
+
+#### Using the Script Component
+
+일반적인 HTML을 사용하여 외부 스크립트에 명시적으로 `next/head`를 추가해줄 필요가 있습니다.
+
+```react
+import Head from 'next/head';
+
+function IndexPage() {
+  return (
+    <div>
+      <Head>
+        <script src="https://www.googletagmanager.com/gtag/js?id=123" />
+      </Head>
+    </div>
+  );
+}
+```
+
+Next.js의 Script Component를 통해 `next/head`를 사용하지 않고도 컴포넌트 내부 어디에나 추가할 수 있습니다.
+
+```react
+import Script from 'next/script';
+
+function IndexPage() {
+  return (
+    <div>
+      <Script
+        strategy="afterInteractive"
+        src="https://www.googletagmanager.com/gtag/js?id=123"
+      />
+    </div>
+  );
+}
+```
+
+`Script` 컴포넌트에는 최적의 로드를 위해 스크립트를 가져오고 실행할 시기를 결정할 수 있는 `strategy` 속성이 도입되었습니다. LCP(Large Contentful Paint)에 부정적인 영향을 미치지 않으려면 대부분의 외부 스크립트는 페이지의 모든 내용이 로드된 후 즉시(strategy="afterInteractive") 또는 브라우저 유휴 시간 동안 느릿느릿 로드되도록 연기해야 합니다"(strategy = lazyOnload").
+
+> 더 읽어보기
+>
+> - Next.js : [Script 컴포넌트](https://nextjs.org/docs/basic-features/script)
+> - Next.js : [next/script를 위한 API 문서](https://nextjs.org/docs/api-reference/next/script)
 
 ### 6. Monitoring your Core Web Vitals
 
 #### 1) Introduction
 
+사이트를 최적화했으면 계속 반복할 수 있도록 운영 중에 모니터링하는 것이 중요합니다. Core Web VItal을 모니터링할 때는 일회성 랩 테스트에 의존하기보다는 시간 경과에 따른 추적이 핵심입니다.
+
+이번 강의에서는 다음 주제에 대해 자세히 알아볼 예정입니다.
+
+- Next.js Analytics
+- Next.js Custom Reporting
+- CrUX Report
+- Other tools for measurement
+
 #### 2) Next.js Analytics
+
+[Next.js Analytics](https://vercel.com/analytics)는 Core Web Vitals를 사용하는 페이지의 성능을 측정하고 분석하는 기능을 제공합니다.
+
+<img src="https://nextjs.org/static/images/learn/seo/analytics.png" width="1000" height="600"/>
+
+[Vercel에 배포](https://vercel.com/docs/concepts/analytics?utm_source=next-site&utm_medium=learnpages&utm_campaign=next-website) 하면 어떠한 설정 없이 당신의 [Real Experience Score](https://vercel.com/docs/concepts/analytics#metrics?utm_source=next-site&utm_medium=learnpages&utm_campaign=next-website)를 수집할 수 있습니다. 또한 [self-hosting](https://vercel.com/analytics#self-hosted?utm_source=next-site&utm_medium=learnpages&utm_campaign=next-website)을 하게 됐을 경우에도 분석을 지원합니다.
 
 #### 3) Custom Reporting
 
+Next.js Analytics가 사용하는 내장 릴레이를 사용하여 데이터를 자체 서비스로 전송하거나 Google Analytics에 푸시할 수도 있습니다.
+
+이제 어떻게 추가할 수 있는지 살펴보겠습니다. 우리는 우리가 최적화하고 있는 데모 앱에 그것을 추가할 수 있습니다.
+
+console.log를 사용하여 메트릭을 실시간으로 확인합니다.
+
+이를 위해 Next.js에서 제공하는 reportWebVitals 기능을 활용할 수 있습니다
+
+> **Note** : 이것은 이전 강의를 막 끝냈다면 필요하지 않습니다.
+
+```bash
+npx create-next-app@latest nextjs-lighthouse --use-npm --example "https://github.com/vercel/next-learn/tree/master/seo"
+```
+
+`pages/_app.js` 파일을 열로 아래 함수를 export 하세요.
+
+```react
+export function reportWebVitals(metric) {
+  console.log(metric);
+}
+```
+
+그런 다음 프로젝트를 빌드하고 시작하세요.
+
+```bash
+npm run build && npm run start
+```
+
+크롬을 열었다면 DevTools 콘솔 안에 메트릭을 볼 수 있을겁니다. 또한 페이지와 상호 작용할 때만 FID가 트리거된다는 것을 알 수 있습니다.
+
+> 더 읽어보기
+>
+> - Next.js : [Measuring Performance](https://nextjs.org/docs/advanced-features/measuring-performance)
+
+
+
 #### 4) Data Studio
+
+성능을 측정하는 또 다른 훌륭한 자유-오픈 소스 방법은 [Chrome User Experience Report](https://developer.chrome.com/docs/crux/) 데이터 세트를 사용하는 것입니다.
+
+[Chrome User Experience Report](https://developer.chrome.com/docs/crux/)는 실제 Chrome 사용자가 웹에서 인기 있는 사이트를 경험하는 방법에 대한 사용자 환경 메트릭을 제공합니다.
+
+이 데이터 세트는 [BigQuery](https://console.cloud.google.com/bigquery?project=chrome-ux-report&pli=1)에서 공개적으로 사용할 수 있으며 [Google Data Studio](https://lookerstudio.google.com/overview?)에서도 무료로 완전히 사용할 수 있습니다.
+
+다행히도 웹 사이트의 성능을 추적하기 위한 템플릿으로 사용할 수 있는 오픈 소스 대시보드가 있습니다.
+
+이 데이터 세트의 유일한 단점은 웹 사이트가 CrUX 보고서에 포함되기 위해서는 상당한 양의 방문(트래픽)이 필요하다는 것입니다. 그렇지 않으면 데이터 부족으로 인해 보고서에 포함되지 않습니다. 따라서 이 옵션은 진행 중인 웹 사이트나 최근에 만든 웹 사이트에 대한 최선의 선택이 아닐 수 있습니다.
+
+또한 데이터는 월 단위로 업데이트됩니다. 일반적으로 한 달이 끝난 후 15일 정도 지나면 데이터가 표시되기 때문에 Core Web Vital 점수를 높이는 작업을 계획하는 경우에는 데이터가 가장 실용적이지 않을 수 있습니다.
+
+<img src="https://nextjs.org/static/images/learn/seo/data-studio.png" width="1000" height="600"/>
+
+
+
+> 더 읽어보기
+>
+> - Google: [Example Dashboard(copy for free)](https://web.dev/chrome-ux-report-data-studio-dashboard/)
 
 #### 5) Other Tools
 
+다음과 같은 Tool을 통해 필드 데이터를 수집할 수 있습니다.
+
+- [Page Speed insight](https://pagespeed.web.dev/?utm_source=psi&utm_medium=redirect) : 구글의 페이지 속도 측정 툴
+- [Chrome User Experience Report](https://developer.chrome.com/docs/crux/) : 필드 데이터 오픈소스 데이터셋
+- [Search Console](https://support.google.com/webmasters/answer/9205520) : 구글 검색, 코어 웹 바이탈 보고서
+
+만약 연구 데이터를 원한다면 구글은 몇가지의 분석 툴을 제공합니다.
+
+- [Lighthouse](https://developer.chrome.com/docs/lighthouse/overview/) : 구글의 오픈소스, 웹 페이지의 성능을 개선시키기 위한 자동화된 툴
+- [Chrome DevTools](https://developer.chrome.com/docs/devtools/) : 크롬 브라우저에 내장되어 있는 웹 개발자 툴 세트
+
+두 도구 모두 [First Input Delay(FID)](https://web.dev/fid/) 대신 [Total Blocking TIme(TBT)](https://web.dev/tbt/)을 사용해야 합니다. FID는 필드 데이터를 통해서만 측정할 수 있기 때문입니다.
+
 #### 6) What To Learn Next
+
+Good job!
+
+이제 막 SEO와 Core Web VItal 코스를 끝냈습니다!
+
+**추천하는 다음 단계 **
+
+- Share: Twitter에서 이 튜토리얼을 사용하여 SEO 및 Core Web Vital에 대한 지식이 향상되었음을 알려주십시오. 당신이 가지고 있는 피드백을 알려주세요.
+
+- Join the conversation: Next.js와 관련된 질문이 있으면 언제든지 GitHub 토론 및 디스코드에 대해 커뮤니티에 문의하세요.
 
 ## Excel
 
