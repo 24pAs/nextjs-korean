@@ -3585,15 +3585,440 @@ Ranking과 Rendering과정에서 약간의 차이가 있지만 대부분의 검�
 
 #### 1) Introduction
 
+이제 검색 시스템과 구글봇의 동작방식에 대한 전반적인 개요를 알아보았으므로 크롤링과 인덱싱에 영향을 미치는 몇 가지 주요 부분을 자세히 살펴보겠습니다. 
+
+이번 과정에서는 다음과 같은 내용을 살펴볼 것입니다. 
+
+- HTTP 상태 코드 기본사항
+- 메타데이터와 웹 크롤러가 웹 콘텐츠를 파싱할 때 찾는 항목
+- 여러분의 사이트에 새로운 콘텐츠가 있을 검색 크롤러가 알 수 있도록 구글과 통신하는 방법
+- 원하는 인덱싱 상태를 검색 엔진에 표시하기 위해 메타 로봇 태그 및 표준 링크를 활용하는 방법
+
 #### 2) Status Codes
 
-#### 3) Robots.txt
+[HTTP 응답 상태 코드](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status)는 특정한 HTTP 요청이 성공적으로 완료되었는지 여부를 나타냅니다. 많은 상태 코드가 있지만 SEO 관점에서 의미있는 것은 소수에 불과합니다. 이제 그것들에 대해 알아볼 것입니다. 
 
+200
+
+```
+`HTTP 200 OK`는 성공 상태를 나타내는 응답 코드로 요청이 성공했음을 나타냅니다. 
+```
+
+구글에서 페이지를 인뎃싱하기 위해서는 상태 코드 `200`을 반환해야 합니다. 이는 전형적으로 유기적 트래픽을 수신하기 위해 페이지에서 찾고자 하는 것입니다. 
+
+이는 Next.js가 페이지를 성공적으로 렌더링 했을 때 설정되는 기본 코드입니다. 
+
+300 
+
+```
+`HTTP 301 Moved Permanently`는 redirect 상태를 나타내는 응답코드로 요청된 리소스가 영구적으로 다른 URL로 이동되었음을 나타냅니다. 
+```
+
+이는 영구적인 리디렉션입니다. 일반적으로 가장 널리 사용되는 리디렉션 유형입니다. 
+
+리디렉션은 다양한 이유로 사용되지만 주된 원인은 URL이 A에서 B로 이동되었다는 것을 나타냅니다. 
+
+만약 콘텐츠가 기존의 위치에서 다른 위치로 이동되었다면 현재의 고객과 잠재된 고객을 잃지 않고 봇이 사이트를 계속 인덱싱할 수 있도록 하기 위해서는 리디렉션이 필수적입니다. 
+
+참고**:** [Next.js permanent redirects](https://nextjs.org/docs/api-reference/next.config.js/redirects)은 301 대신에 더 최신 버전이고 나은 옵션으로 간주되는 308을 기본으로 사용합니다. 
+
+두 상태 코드의 주요 차이점은 `301`은 요청방법을 POST에서 GET으로 변경할 수 있는 반면 `308`은 그렇지 않다는 것입니다. 
+
+`getStaticProps()` 함수에서 props 대신 redirect를 반환하면 Next.js에서 308 리디렉션을 트리거할 수 있습니다. 
+
+```jsx
+//  pages/about.js
+export async function getStaticProps(context) {
+  return {
+    redirect: {
+      destination: '/',
+      permanent: true, // triggers 308
+    },
+  };
+}
+```
+
+next.config.js에서 `permenent: true` 키를 사용해 리디렉션을 설정할 수 있습니다. 
+
+```jsx
+//next.config.js
+
+module.exports = {
+  async redirects() {
+    return [
+      {
+        source: '/about',
+        destination: '/',
+        permanent: true, // triggers 308
+      },
+    ];
+  },
+};
+```
+
+302 
+
+```
+`HTTP 302 Found` 리디렉션 상태 응답 코드는 요청된 리소스가 일시적으로 대상 URL로 이동되었음을 나타냅니다. 
+```
+
+대부분의 경우 302 리디렉션은 301 리디렉션이어야 할 것입니다. 일시적으로 사용자를 특정 페이지(예. 홍보 페이지)로 리디렉션하거나 위치를 기반으로 사용자를 리디렉션하는 경우에는 그렇지 않을 수 있습니다. 
+
+404
+
+```
+`HTTP 404 Not Found`는 클라이언트 에러 응답 코드로 요청된 리소스를 서버에서 찾을 수 없다는 것을 나타냅니다. 
+```
+
+위에서 언급한대로 이동된 페이지는 `HTTP 301` 상태 코드와 함께 새로운 위치로 리디렉션되어야 합니다. 그렇지 않을 경우 URL은 `404` 상태 코드를 반환할 수 있습니다. 
+
+`404` 상태 코드는 사용자가 존재하지 않는 URL을 방문하는 경우 나타나는 결과로 기본적으로 반드시 나쁜 것은 아니지만 페이지에서 빈번하게 에러가 발생할 경우 검색 순위가 저하될 수 있습니다. 
+
+Next.js는 여러분의 애플리케이션에서 존재하지 않는 URL에 대해 자동으로 `404`를 반환합니다. 
+
+경우에 따라 페이지에서 `404`를 반환할수도 있습니다. props 대신 아래의 코드를 반환하여 이를 수행할 수 있습니다. 
+
+```jsx
+export async function getStaticProps(context) {
+  return {
+    notFound: true, // triggers 404
+  };
+}
+```
+
+`pages/404.js` 파일을 생성하여 빌드 시 정적으로 생성되는 [404 페이지를 커스텀할 수 있습니다.](https://nextjs.org/docs/advanced-features/custom-error-page#404-page) 
+
+예시: 
+
+```jsx
+// pages/404.js
+export default function Custom404() {
+  return <h1>404 - Page Not Found</h1>;
+}
+```
+
+410
+
+```
+`HTTP 410 Gone`은 클라이언트 에러 응답 코드로 오리진 서버에서 대상 리소스에 대한 접근을 할 수 없으며 이 상태가 영구적일 가능성이 있음을 나타냅니다. 
+```
+
+이는 주로 사용되지는 않지만 웹 사이트에서 더 이상 존재하지 않을 콘텐츠를 삭제하려는 경우 이 상태 코드를 사용할 수 있습니다. 
+
+`HTTP 410 Gone`의 유용한 사용 예는 다음과 같습니다. 
+
+- E-commerce: 재고에서 영구적으로 삭제된 상품
+- Forum: 사용자가 삭제한 스레드
+- Blog: 사이트에서 제거된 블로그 게시물
+
+해당 상태 코드는 봇이 이 콘텐츠를 크롤링하기 위해 절대 돌아와서는 안 된다고 알려줍니다. 
+
+500
+
+```
+`HTTP 500 Internal Server Error`는 응답 코드로 서버가 요청을 이행하기 못하게 하는 예상하지 못한 상황이 발생했음을 나타냅니다. 
+```
+
+Next.js는 예기치 못한 애플리케이션 오류에 대해 자동으로 `500` 상태 코드를 반환합니다. 
+
+`pages/500.js` 파일을 생성하여 빌드 시 정적으로 생성되는 [500 에러 페이지를 커스텀할 수 있습니다](https://nextjs.org/docs/advanced-features/custom-error-page#404-page)
+
+예시: 
+
+```jsx
+// pages/500.js
+export default function Custom500() {
+  return <h1>500 - Server-side error occurred</h1>;
+}
+```
+
+503 
+
+```
+`HTTP 503 Service Unavailable` 서버 에러 응답 코드는 서버가 해당 요청을 처리할 준비가 되지 않았음을 나타냅니다. 
+```
+
+웹 사이트가 다운되고 웹 사이트가 장기간 다운될 것으로 예상되는 경우 해당 상태 코드를 반환하는 것이 좋습니다. 이는 장기적으로 순위를 잃는 것을 방지합니다.
+
+#### 3) Robots.txt
+**What is a robots.txt File?**
+
+[robots.txt 파일은](https://developers.google.com/search/docs/advanced/robots/intro) 검색 엔진 크롤러에게 크롤러가 사이트에서 요청할 수 있거나 요청할 수 없는 페이지 또는 파일을 알려줍니다. `robots.txt` 파일은 웹 표준 파일로 대부분의 [좋은 봇](https://www.cloudflare.com/learning/bots/how-to-manage-good-bots)들이 특정 도메인에서 무언가를 요청하기 전에 사용합니다. 
+
+CMS 또는 관리자, 전자 상거래의 사용자 계정 또는 일부 API 경로와 같이 웹 사이트로부터 특정 영역이 탐색되지 않도록 보호하고 싶을 수 있습니다. 
+
+이 파일들은 각 호스트의 루트에서 제공되어야 하며 이외의 경우 루트 `/robots.txt` 경로를 대상 URL로 리디렉션할 수 있으며 대부분의 봇이 이를 따릅니다. 
+
+**How to add a robots.txt file to a Next.js project**
+
+[정적 페이지를](https://nextjs.org/docs/basic-features/static-file-serving) 제공하는 Next.js에서는 `public` 폴더에 `robots.txt` 이름을 가진 파일을 생성함으로서  `robots.txt` 파일을 쉽게 추가할 수 있습니다. 
+
+파일에 넣을 수 있는 항목의 예는 다음과 같습니다. 
+
+```
+# Block all crawlers for /accounts
+User-agent: *
+Disallow: /accounts
+
+# Allow all crawlers
+User-agent: *
+Allow: /
+```
+
+`yarn dev`로 앱을 실행할 경우 [http://localhost:3000/robots.txt](http://localhost:3000/robots.txt)에서 접근할 수 있습니다. `public` 폴더의 이름은 URL에 포함되지 않음을 주의하세요. 
+
+public 디렉토리에 다른 이름을 지정하지 마세요. 이름은 변경이 불가능하며 정적인 assets을 처리하기 위해 사용되는 유일한 디렉토리입니다.
 #### 4) XML Sitemaps
+
+사이트 맵은 구글과 소통하는 가장 쉬운 방법입니다. 이는 웹 사이트에 포함된 URL과 업데이트 시기를 가르키며 구글이 새로운 콘텐츠를 쉽게 감지하고 여러분의 웹사이트를 더욱 효과적으로 크롤링할 수 있도록 합니다. 
+
+XML 사이트 맵은 가장 많이 알려지고 사용되는 맵이지만 [RSS](https://developers.google.com/search/docs/advanced/sitemaps/build-sitemap)나 [Atom](https://developers.google.com/search/docs/advanced/sitemaps/build-sitemap)을 통해 생성할 수도 있고 최대로 단순한 것을 선호할 경우 [Text](https://developers.google.com/search/docs/advanced/sitemaps/build-sitemap) 파일을 사용할 수도 있습니다. 
+
+사이트맵은 사이트의 페이지, 비디오 및 기타 파일에 대한 정보와 이들 간의 관계를 제공하는 파일입니다. 구글과 같은 검색 엔진은 당신의 사이트를 더 지능적으로 크롤링하기 위해 해당 파일을 읽습니다. 
+
+[Google](https://developers.google.com/search/docs/advanced/sitemaps/overview)에 의하면: 
+
+```
+다음과 같은 경우 사이트 맵이 필요할 수 있습니다. 
+- 사이트가 매우 클 경우. 구글 웹 크롤러는 새 페이지 또는 최근 업데이트된 페이지 중 일부를 크롤링하는 것을 간과할 가능성이 높습니다. 
+- 사이트에 서로 분리되었거나 잘 연결되지 않은 콘텐츠 페이지의 대용량 아카이브가 있을 경우. 사이트 페이지가 자연스럽게 서로를 참조하지 않는 경우 사이트 맵에 나열하여 구글이 일부 페이지를 간과하지 않도록 할 수 있습니다. 
+사이트가 새로 만들어졌거나 외부 링크가 거의 없을 경우. 구글봇 및 기타 웹 크롤러는 한 페이지에서 다른 페이지로 연결되는 링크를 따라 웹을 탐색합니다. 결과적으로 페이지에 연결된 다른 사이트가 없으면 구글에서 페이지를 찾지 못할 수 있습니다. 
+사이트에 리치 미디어 콘텐츠(동영상, 이미지)가 많거나 구글 뉴스에 표시될 경우. 제공된 경우 구글은 적절한 경우 검색을 위해 사이트맵의 추가 정보를 고려할 수 있습니다. 
+```
+
+사이트맵은 좋은 검색 엔진 성능을 위한 필수조건은 아니지만 봇에 대한 크롤링 및 인덱싱을 용이하게 할 수 있으므로 콘텐츠가 더 빨리 선택되고 그에 따라 순위가 매겨집니다. 
+
+사이트맵을 사용하고 웹 사이트 전체에 새로운 콘텐츠가 채워질 때 이를 동적으로 만드는 것은 강력하게 추천됩니다. 정적 사이트 맵도 유효하지만 지속적인 검색 목적으로 사용되지 않기 때문에 구글에서는 덜 유용할 수 있습니다. 
+
+**How to Add Sitemaps to a Next.js Project**
+
+여기에는 두가지 선택사항이 있습니다. 
+
+- Manual
+    
+    만약 비교적 간단하고 정적인 사이트라면 sitemap.xml 파일을 public 디렉토리에 수동으로 생성할 수 있습니다. 
+    
+    ```xml
+    <!-- public/sitemap.xml -->
+       <xml version="1.0" encoding="UTF-8">
+       <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+         <url>
+           <loc>http://www.example.com/foo</loc>
+           <lastmod>2021-06-01</lastmod>
+         </url>
+       </urlset>
+       </xml>
+    ```
+    
+- getServerSideProps
+    
+    사이트가 동적인 경우에는 getServerSideProps를 활용하여 필요에 따라 XML 사이트맵을 생성할 수 있습니다. 
+    
+    페이지 디렉터리 내에 `pages/sitemap.xml.js` 와 같은 새 페이지를 만들 수 있습니다. 이 페이지의 목표는 동적 페이지의 URL을 알 수 있는 데이터를 얻기 위해 API를 사용하는 것입니다. 그런 다음 /sitemap.xml에 대한 응답으로 XML 파일을 작성합니다. 
+    
+    다음은 직접 사용해 볼 수 있는 예입니다. 
+    
+    ```jsx
+    //pages/sitemap.xml.js
+    const EXTERNAL_DATA_URL = 'https://jsonplaceholder.typicode.com/posts';
+    
+    function generateSiteMap(posts) {
+      return `<?xml version="1.0" encoding="UTF-8"?>
+       <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+         <!--We manually set the two URLs we know already-->
+         <url>
+           <loc>https://jsonplaceholder.typicode.com</loc>
+         </url>
+         <url>
+           <loc>https://jsonplaceholder.typicode.com/guide</loc>
+         </url>
+         ${posts
+           .map(({ id }) => {
+             return `
+           <url>
+               <loc>${`${EXTERNAL_DATA_URL}/${id}`}</loc>
+           </url>
+         `;
+           })
+           .join('')}
+       </urlset>
+     `;
+    }
+    
+    function SiteMap() {
+      // getServerSideProps will do the heavy lifting
+    }
+    
+    export async function getServerSideProps({ res }) {
+      // We make an API call to gather the URLs for our site
+      const request = await fetch(EXTERNAL_DATA_URL);
+      const posts = await request.json();
+    
+      // We generate the XML sitemap with the posts data
+      const sitemap = generateSiteMap(posts);
+    
+      res.setHeader('Content-Type', 'text/xml');
+      // we send the XML to the browser
+      res.write(sitemap);
+      res.end();
+    
+      return {
+        props: {},
+      };
+    }
+    
+    export default SiteMap;
+    ```
 
 #### 5) Special Tags
 
+**Special Meta Tags for Search Engines**
+
+메타 로봇 태그는 검색엔진이 항상 준수하는 지시어입니다. 이러한 로봇 태그를 추가하면서 웹 사이트의 색인화가 더 쉬워집니다. 
+
+directives(지시어)와 suggestions(제안)은 다음과 같은 차이가 있습니다. 메타 로봇 태그 또는 `robot.txt` 파일은 지시어로 항상 지켜집니다. Canonical tag(표준 태그)는 권장사항으로 구글은 이를 지키거나 그렇지 않을 수 있습니다. 
+
+페이지 레벨의 메타 태그와 관련하여 많은 옵션들이 있지만 다음은 일반적으로 SEO와 관련된 예입니다. 
+
+```jsx
+<meta name="robots" content="noindex,nofollow" />
+```
+
+로봇 태그는 여러분이 볼 수 있는 가장 흔한 태그일 것입니다. 기본적으로 `index, follow` 값이 있으므로 지정할 필요가 없으며 `all` 유효한 대안으로 사용될 수 있습니다. 
+
+```jsx
+<meta name="robots" content="all" />
+```
+
+위의 예시와 같이 로봇 태그를 `noindex,nofollow`로 설정하면 검색엔진에 아래와 같이 표시됩니다. 
+
+- noindex
+    
+    검색결과에 이 페이지를 표시하지 않기 위해 사용합니다. `noindex`를 생략하면 페이지를 인덱싱하여 검색 결과에 표시할 수 있음을 나타냅니다. 
+    
+    웹 사이트를 구축할 때 특정 페이지를 인덱싱하고 싶지 않을 수 있습니다. 일반적으로 설정 페이지, 내부 검색 페이지, 정책 등의 페이지에서 사용됩니다. 
+    
+- nofollow
+    
+    해당 페이지의 링크를 따라가지 않기 위해 사용합니다. 이를 생략할 경우 로봇이 이 페이지의 링크를 크롤링하고 따라갈 수 있습니다. 다른 페이지에서 찾은 링크는 크롤링을 사용하도록 설정할 수 있으므로 페이지 X와 Y에 linkA가 있고 X에 `nofollow` 로봇 태그가 있고 Y에는 없다면 구글은 해당 링크를 크롤링할 수 있습니다. 
+    
+
+참고: 구글 공식 문서에서 [지시어의 전체 목록](https://developers.google.com/search/docs/advanced/robots/robots_meta_tag#directives)을 확인할 수 있습니다. 
+
+**Googlebot tag**
+
+```jsx
+<meta name="googlebot" content="noindex,nofollow" />
+```
+
+가끔 `googlebot` 태그를 볼수도 있을 것입니다. 대부분의 경우에서 `robots` 만 있으면 됩니다. `googlebot` 태그는 구글에만 특정됩니다. 구글봇에 대한 별도의 규칙과 나머지 검색 봇에 대한 일반적인 하나의 규칙을 원할 경우 해당 태그를 사용할 수 있습니다. 
+
+이 경우 충돌하는 태그가 있을 때 더 제한적으로 태그가 적용됩니다. 
+
+크롤링을 원하지 않는 URL을 `robot.txt`에 추가할 수 있는 경우 이러한 태그가 필요한 이유가 궁금할 수 있습니다. 해당 메타 태그는 요청 시 페이지를 `noindex` 로 표시할 수 있는 유연성을 제공합니다. 
+
+예를 들어 제품 페이지에 필터를 적용했는데 결과가 없는 경우 이 페이지를 `noindex`하는 것이 일반적입니다. 
+
+`robots.txt` 파일을 통해 크롤링하는 봇으로부터 제한된 URL은 구글에서 절대 크롤링하지 않지만 페이지의 색인이 이미 생성된 후에 규칙이 추가되면 페이지의 색인이 생성된 상태로 유지될 수 있습니다. 페이지의 색인이 생성되지 않도록 하는 가장 좋은 방법은 `noindex` 태그를 사용하는 것입니다. 
+
+**참고:** Google은 페이지를 크롤링하지 않고 색인을 생성하도록 결정할 수 있습니다. 이것은 매우 드물지만 Google이 페이지가 특정 검색 결과를 이행하기를 원하고 페이지에 사용자가 기대하는 내용이 포함되어 있다고 확신할 때 발생합니다.
+
+**Google tags**
+
+nositelinkssearchbox
+
+```jsx
+<meta name="google" content="nositelinkssearchbox" />
+```
+
+사용자가 여러분의 사이트를 검색할 때 구글 검색 결과는 여러분의 사이트에 대한 다른 직접 링크와 함께 여러분의 사이트에 특정한 검색창이 표시되는 경우가 있습니다. 이 태그는 구글에 사이트 링크 검색창을 표시하지 않도록 지시합니다. 
+
+notranslate
+
+```jsx
+<meta name="google" content="notranslate" />
+```
+
+구글은 사이트 콘텐츠가 사용자가 일고 싶어하는 언어로 되어 있지 않음을 인식하면 종종 검색 결과에 번역 링크를 제공합니다. 
+
+일반적으로 이는 훨씬 더 많은 사용자 그룹에 매력적인 콘텐츠를 제공할 수 있습니다. 하지만 이러한 점이 적절하지 않은 상황도 있을 수 있습니다. 이 메타 태그는 구글에게 해당 페이지의 번역을 제공하지 않기를 원한다고 알립니다. 
+
+예시
+
+이제 우리는 접할 수 있는 몇 가지 일반적인 태그를 알아보았습니다. 다음은 그 중 일부를 사용하는 페이지의 예시입니다. 
+
+```jsx
+import Head from 'next/head';
+
+function IndexPage() {
+  return (
+    <div>
+      <Head>
+        <title>Meta Tag Example</title>
+        <meta name="google" content="nositelinkssearchbox" key="sitelinks" />
+        <meta name="google" content="notranslate" key="notranslate" />
+      </Head>
+      <p>Here we show some meta tags off!</p>
+    </div>
+  );
+}
+
+export default IndexPage;
+```
+
+예제에서 볼 수 있듯이 [next/head](https://nextjs.org/docs/api-reference/next/head)는 페이지의 `head`에 요소를 추가하기 위해 사용한 빌트인 컴포넌트입니다. 
+
+`head`에 태그가 중복되는 것을 피하기 위해서 `key` 속성을 사용할 수 있으며 이는 태그가 한 번만 렌더링되도록 합니다.
+
 #### 6) Canonical Tags
+
+표준 URL은 중복된 페이지들의 모임에서 검색엔진이 가장 대표적이라고 생각하는 페이지의 URL입니다. 
+
+검색엔진에게 표준 URL을 직접적으로 전달할 수도 있지만 또한 이를 알리지 않고 여러 URL을 그룹화하도록 결정할 수도 있습니다. 구글이 여러 경로에서 URL을 찾아낼 경우 이는 자동으로 발생할 수 있습니다. 
+
+구글은 이들을 감지하는 데 큰 역할을 하지만 시스템은 막대한 규모로 동작하며 이는 모든 극단적인 경우를 다루지는 않습니다. 표준 태그는 웹 사이트에서 우수한 성능을 보장하기 위해 다루어야 할 중요한 측면입니다. 
+
+만약 구글이 같은 콘텐츠를 가진 여러 URL들을 찾아낸다면 이는 아마 중복된 것으로 간주될 수 있으므로 검색결과에서 해당 URL의 강등을 결정할 수 있습니다. 
+
+이는 도메인간에도 발생할 수 있습니다 .만약 여러분이 두개의 다른 웹사이트를 운영하고 있고 그 안에서 같은 콘텐츠를 게시했다면 검색엔진은 순위를 매길 둘 중 하나를 선택하거나 둘 다 바로 강등시킬 수 있습니다. 
+
+여기에서 표준 태그가 매우 유용합니다. 그들은 어떤 URL이 진실의 원본이고 어떤 URL이 복제되었는지 구글에 알려줍니다. 동일하거나 다른 도메인에 걸쳐 중복된 페이지가 많으면 순위가 낮아지거나 불이익을 받을 수 있습니다. 
+
+E-commerce에서 [example.com/products/phone](https://example.com/products/phone) 와 [example.com/phone](http://example.com/phone)을 통해 제품에 접근할 수 있다고 가정해 봅시다. 
+
+둘 모두 유효하고 동작하는 URL이지만 우리는 우리가 소유한 중복 콘텐츠의 감지를 방지하기 위해 표준을 사용합니다. 순위에 [`https://example.com/products/phone`](https://example.com/products/phone)이 사용되어야 한다고 결정한 경우 표준 태그를 생성할 수 있습니다. 
+
+```jsx
+<link rel="canonical" href="https://example.com/products/phone" />
+```
+
+표준 태그는 다른 URL을 만들 수 있을 뿐 아니라 사용자 또는 마케팅 도구도 만들 수 있기 때문에 SEO 성능의 기본입니다. 
+
+구글에서 마케팅 캠페인을 실행 중이고 구글이 일부 [UTM parameters](https://ga-dev-tools.appspot.com/campaign-url-builder/)를 추가하기로 결정했다고 가정해 보세요. 이 새롭고 고유한 URL이 구글봇에 의해 색인 생성될 수 있으므로 중복 페이지를 통합하기 위해 표준 태그를 계속 표시하고 있는지 확인해야 합니다.
+
+예시
+
+```jsx
+import Head from 'next/head';
+
+function IndexPage() {
+  return (
+    <div>
+      <Head>
+        <title>Canonical Tag Example</title>
+        <link
+          rel="canonical"
+          href="https://example.com/blog/original-post"
+          key="canonical"
+        />
+      </Head>
+      <p>This post exists on two URLs.</p>
+    </div>
+  );
+}
+
+export default IndexPage;
+```
 
 ### 3. Rendering and Ranking
 
