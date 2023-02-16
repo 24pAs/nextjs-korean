@@ -101,9 +101,331 @@
 
   - #### Overview
 
+    <details >
+      <summary>Examples</summary>
+      <ul>
+
+    ​	<li><a href="https://github.com/vercel/next.js/tree/canary/examples/cms-wordpress">WordPress Example (Demo)</a></li>
+    ​	<li><a href="https://github.com/vercel/next.js/tree/canary/examples/blog-starter">Blog Starter using markdown files (Demo)</a></li>
+    ​	<li><a href="https://github.com/vercel/next.js/tree/canary/examples/cms-datocms">DatoCMS Example (Demo)</a></li>
+    ​	<li><a href="https://github.com/vercel/next.js/tree/canary/examples/cms-takeshape">TakeShape Example (Demo)</a></li>
+    ​	<li><a href="https://github.com/vercel/next.js/tree/canary/examples/cms-sanity">Sanity Example (Demo)</a></li>
+    ​	<li><a href="https://next-blog-prismic.vercel.app/">Prismic Example (Demo)</a></li>
+    ​	<li><a href="https://github.com/vercel/next.js/tree/canary/examples/cms-contentful">Contentful Example (Demo)</a></li>
+    ​	<li><a href="https://github.com/vercel/next.js/tree/canary/examples/cms-strapi">Strapi Example (Demo)</a></li>
+    ​	<li><a href="https://github.com/vercel/next.js/tree/canary/examples/cms-prepr">Prepr Example (Demo)</a></li>
+    ​	<li><a href="https://next-blog-agilitycms.vercel.app/">Agility CMS Example (Demo)</a></li>
+    ​	<li><a href="https://github.com/vercel/next.js/tree/canary/examples/cms-cosmic">Cosmic Example (Demo)</a></li>
+    ​	<li><a href="https://github.com/vercel/next.js/tree/canary/examples/cms-buttercms">ButterCMS Example (Demo)</a></li>
+    ​	<li><a href="https://github.com/vercel/next.js/tree/canary/examples/cms-storyblok">Storyblok Example (Demo)</a></li>
+    ​	<li><a href="https://github.com/vercel/next.js/tree/canary/examples/cms-graphcms">GraphCMS Example (Demo)</a></li>
+    ​	<li><a href="https://github.com/vercel/next.js/tree/canary/examples/cms-kontent">Kontent Example (Demo)</a></li>
+    ​	<li><a href="https://static-tweet.vercel.app/">Static Tweet Demo</a></li>
+    ​	<li><a href="https://github.com/vercel/next.js/tree/canary/examples/cms-enterspeed">Enterspeed Example (Demo)</a></li>
+
+      </ul>
+    </details>
+
+    > **Note**
+    >
+    > Next.js 13버전은 `app/` 디렉토리(베타버전)를 소개합니다. 이 새로운 디렉터리는 새로운 React Hook과 확장된 웹 API를 사용하여 컴포넌트 수준에서 [colocated data fetching](https://beta.nextjs.org/docs/data-fetching/fundamentals)를 지원합니다. 
+
+    Next.js에서 데이터를 가져오면 응용 프로그램의 사용 사례에 따라 다양한 방식으로 콘텐츠를 렌더링할 수 있습니다. 여기에는 **서버 측 렌더링(Sever Side Rendering)** 또는 **정적 생성(Static Generation)**을 사용하여 사전 렌더링하고, **증분 정적 재생(Incremental Static Regeneration)**을 사용하여 런타임에 콘텐츠를 업데이트하거나 생성하는 작업이 포함됩니다.
+
+    #### [1. SSR: Server-side rendering](#getserversideprops)
+      Next.js에서  `getServerSideProps`를 가지고 서버사이드 렌더링에 대해 알아보도록 합시다.
+    #### [2. SSG: Static-site generation](#getstaticprops)
+      Next.js에서  `getStaticProps`를 가지고 정적 사이트 생성에 대해 알아보도록 합시다.
+    #### [3. CSR: Client-side rendering](#client-side)
+      Next.js에서 `SWR`을 가지고 클라이언트 사이드 렌더링에 대해 알아보도록 합시다.
+    #### [4. Dynamic routing](#getstaticpaths)
+       Next.js에서  `getStaticPaths`를 가지고 동적 라우팅에 대해 알아보도록 합시다.
+    #### [5. ISR: Incremental Static Regeneration](#incremental-static-regeneration)
+       Next.js에서 증분 정적 생성에 대해 알아보도록 합시다.
+    ## Learn more
+
+    #### [1. Preview Mode](#preview-mode)
+      Next.js에서 미리보기 모드에 대해 알아보도록 합시다.
+    #### [2. Routing](#routing)
+      Next.js에서 라우팅에 대해 알아보도록 합시다.
+    #### [3. TypeScript](#typescript)
+      우리 사이트에 TypeScript를 추가해보도록 합시다.
+
   - #### getServerSideProps
+      만약 당신이 `getServerSideProps`라고 하는 함수를 페이지에서 `export`한다면 Next.js는 `getServerSideProps`가 반환하는 데이터를 사용해서 각각의 요청마다 페이지를 `pre-render`할 것입니다.
+
+      ```javascript
+        export async function getServerSideProps(context) {
+          return {  
+            props: {}, // will be passed to the page component as props
+          }
+        }
+      ```
+      > 렌더링 유형에 관계없이 모든 `props`는 page component로 전달되며 초기 HTML에서 클라이언트 측에서 볼 수 있습니다. 이는 페이지가 올바르게 [hydrate](https://reactjs.org/docs/react-dom.html#hydrate)할 수 있도록 하기 위함입니다. 클라이언트에서 사용할 수 없는 중요한 정보를 `props`로 전달하지 않도록 주의하세요.
+
+      #### When does getServerSideProps run
+      `getServerSideProps`는 브라우저에서 동작하는 것이 아닌 오직 서버 사이드에서만 동작합니다. 만약 페이지에서 `getServerSideProps`를 사용한다면 다음과 같습니다.
+
+      ​
+
+      - 해당 페이지에 직접적으로 요청할 때, `getServerSideProps`는 요청 시간(request time)에 동작합니다. 그리고 해당 페이지는 반환된 `props`를 가지고 사전에 렌더링됩니다.
+      - 만약 `next/link`나 `next/router`를 통해 클라이언트 사이드의 페이지 전환을 통해 해당 페이지를 요청하게 되면 `Next.js`는 `getServerSideProps`를 실행하는 서버에 API 요청을 보냅니다.
+
+      ​
+      `getServerSideProps`는 페이지를 렌더링하는 데 사용될 JSON을 반환합니다. 이 모든 작업은 Next.js에 의해 자동으로 처리되므로 `getServerSideProps`를 정의하는 한 추가 작업을 수행할 필요가 없습니다.
+
+      다음 [코드 제거 도구](https://next-code-elimination.vercel.app/)를 사용하여 Next.js가 클라이언트 측 번들에서 제거하는 항목을 확인할 수 있습니다.
+
+      ​
+      `getServerSideProps`는 오직 **페이지**에서만 `export` 할 수 있습니다. 페이지 파일이 아니면 `export`할 수 없습니다.
+
+      ​
+      반드시 `getServerSideProps`를 독립 실행형 함수로 내보내야 합니다. `getServerSideProps`를 페이지 구성 요소의 속성으로 추가하면 작동하지 않습니다.
+
+      [getServerSideProps API 문서](https://nextjs.org/docs/api-reference/data-fetching/get-server-side-props)에는 getServerSideProps와 함께 사용할 수 있는 모든 매개 변수와 속성이 포함되어 있습니다.
+
+      #### When should I use getServerSideProps
+      요청 시 데이터를 가져와야 하는 페이지를 렌더링해야 하는 경우에만 `getServerSideProps`를 사용해야 합니다. 이는 데이터의 특성이나 요청 속성(예: 인증 헤더 또는 지리적 위치) 때문일 수 있습니다. `getServerSideProps`를 사용하는 페이지는 요청 시 서버 측에서 렌더링되며 [캐시 제어 헤더](https://nextjs.org/docs/going-to-production#caching)가 구성된 경우에만 캐시됩니다.
+
+      요청하는 동안 데이터를 렌더링할 필요가 없는 경우 클라이언트 측에서 데이터를 가져오거나 `getStaticProps` 통해 데이터를 가져오는 것을 고려해야 합니다.
+
+      ​
+      **getServerSideProps or API Routes**
+
+      서버에서 데이터를 가져온 다음 getServerSideProps에서 API 경로를 호출할 때 
+      [API routes](https://nextjs.org/docs/api-routes/introduction)에 도달하는 방식을 시도할 수 있습니다. 서버에서 실행 중인 getServerSideProps와 API Routes로 인해 추가 요청이 발생하기 때문에 이는 불필요하고 비효율적인 접근 방식입니다.
+
+      ​
+      다음의 예를 들어보겠습니다 API 경로는 CMS에서 일부 데이터를 가져오는 데 사용되며, 이 API 경로는 getServerSideProps에서 직접 호출됩니다. 이렇게 하면 호출이 추가로 발생하여 성능이 저하됩니다. 대신 API Route 내에서 사용되는 로직을 `getServerSideProps`로 직접 가져오세요. 이는 `getServerSideProps` 내부에서 CMS, 데이터베이스 또는 기타 API를 직접 호출하는 것을 의미할 수 있습니다.
+
+      ​
+
+      **getServerSideProps with Edge API Routes**
+
+      `getServerSideProps`는 서버리스와 Edge 런타임 환경에서도 사용될 수 있고 `props` 또한 설정할 수 있습니다. 그러나 현재 Edge Runtime에서 응답 객체(response object)에 액세스할 수 없습니다. 즉, 예를 들어 getServerSideProps에서 쿠키를 추가할 수 없습니다. 응답 객체에 액세스하려면 기본 런타임인 Node.js 런타임을 계속 사용해야 합니다.
+
+      다음과 같이 구성을 수정하여 [페이지별로 런타임을 명시적](https://nextjs.org/docs/advanced-features/react-18/switchable-runtime#edge-api-routes)으로 설정할 수 있습니다:
+
+      ```javascript
+      export const config = {
+        runtime: 'nodejs',
+      }
+      ```
+
+      #### Fetching data on the client side
+
+      페이지에 자주 업데이트되는 데이터가 포함되어 있고 데이터를 미리 렌더링할 필요가 없는 경우 클라이언트 측에서 데이터를 가져올 수 있습니다. 다음은 사용자별 데이터입니다:
+
+      - 먼저, 데이터가 없는 페이지를 즉시 보여줍니다. 정적 생성(Static Generation)을 사용하여 페이지의 일부를 미리 렌더링할 수 있습니다.  결측 데이터에 대한 로드 상태를 표시할 수 있습니다.
+      - 그런 다음 클라이언트 측에서 데이터를 가져와 준비되면 표시합니다.
+
+      이 방법은 예를 들어 사용자 대시보드 페이지에서 잘 작동합니다. 대시보드는 개인 사용자별 페이지이므로 SEO는 관련이 없으며 페이지를 미리 렌더링할 필요가 없습니다. 또한 데이터는 자주 업데이트되므로 요청 시간 데이터 가져오기가 필요합니다.
+
+      #### Using getServerSideProps to fetch data at request time
+
+      다음 예제에서는 요청 시 데이터를 가져와 결과를 미리 렌더링하는 방법을 보여 줍니다.
+
+      ```react
+      function Page({ data }) {
+        // Render data...
+      }
+
+      // This gets called on every request
+      export async function getServerSideProps() {
+        // Fetch data from external API
+        const res = await fetch(`https://.../data`)
+        const data = await res.json()
+
+        // Pass data to the page via props
+        return { props: { data } }
+      }
+
+      export default Page
+      ```
+
+      #### Caching with Server-Side Rendering(SSR)
+
+      `getServerSideProps `내부에서 캐시 헤더(`Cache-Control`)를 사용하여 동적인응답을 캐시할 수 있습니다. 예를 들어, [`stale-while-revalidate`](https://web.dev/stale-while-revalidate/) 사용할 수 있습니다.
+
+      ```react
+      // This value is considered fresh for ten seconds (s-maxage=10).
+      // If a request is repeated within the next 10 seconds, the previously
+      // cached value will still be fresh. If the request is repeated before 59 seconds,
+      // the cached value will be stale but still render (stale-while-revalidate=59).
+      //
+      // In the background, a revalidation request will be made to populate the cache
+      // with a fresh value. If you refresh the page, you will see the new value.
+      export async function getServerSideProps({ req, res }) {
+        res.setHeader(
+          'Cache-Control',
+          'public, s-maxage=10, stale-while-revalidate=59'
+        )
+
+        return {
+          props: {},
+        }
+      }
+      ```
+
+      [캐싱](https://nextjs.org/docs/going-to-production)에 대해 더 알아보려면 링크를 참고하세요.
+
+      #### Dose getServerSideProps render an error page
+
+      `getServerSideProps` 안에서 에러가 발생한다면 `pages/500.js` 파일을 보여줍니다. 어떻게 500 페이지를 만들고 배우는지는 [500 page](https://nextjs.org/docs/advanced-features/custom-error-page#500-page) 문서를 확인해보세요. 개발을 하는 동안 이 파일은 표시되지 않고 개발 오버레이가 대신 보여집니다.
+
+      #### Related
+
+      다음 작업에 대한 자세한 내용은 다음 섹션을 참조하십시오:
+
+      [getServerSideProps API Reference](https://nextjs.org/docs/api-reference/data-fetching/get-server-side-props)
 
   - #### getStaticProps
+
+      만약 당신이 `getStaticProps`(Static Site Generation)라고 하는 함수를 페이지에서 `export`한다면 Next.js는 `getStaticProps`가 반환하는 `props`를 사용하여 빌드 타임에 페이지는 미리 렌더링(pre-rendering) 합니다.
+
+      ```react
+      export async function getStaticProps(context) {
+        return {
+          props: {}, // will be passed to the page component as props
+        }
+      }
+      ```
+
+      > 렌더링 유형에 관계없이 모든 `props`는 page component로 전달되며 초기 HTML에서 클라이언트 측에서 볼 수 있습니다. 이는 페이지가 올바르게 [hydrate](https://reactjs.org/docs/react-dom.html#hydrate)할 수 있도록 하기 위함입니다. 클라이언트에서 사용할 수 없는 중요한 정보를 `props`로 전달하지 않도록 주의하세요.
+
+      #### When should I use getStaticProps
+
+      다음과 같은 경우 `getStaticProps`를 사용해야 합니다:
+
+      - 페이지를 렌더링하기 위해 필요한 데이터가 사용자 요청 이전에 빌드타임에서 사용해야 하는 경우
+      - headless CMS로부터 데이터가 오는 경우
+      - SEO를 위해 페이지가 반드시 사전에 렌더링 되어야하고 매우 빨라야 하는 경우 - `getStaticProps`는 성능을 위해 CDN에 캐싱되는 HTML 파일과 JSON 파일을 생성합니다.
+      - 데이터가 사용자별이 아닌 공개적으로 캐싱되어야 하는 경우. 이 조건은 특정 상황에서 미들웨어를 사용하여 경로를 재조정하면 무시할 수 있습니다.
+
+      #### When does getStaticProps run
+
+      `getStaticProps`는 항상 서버에서 실행이 되고 클라이언트에서는 절대 실행되지 않습니다. 이 [도구](https://next-code-elimination.vercel.app/)를 이용해서 클라이언트 사이드 번들에서 `getStaticProps`가 제거된 코드를 검증할 수 있습니다.
+
+      - `getStaticProps`는 항상 `next build` 동안 실행됩니다.
+      - `getStaticProps`는 `fallback: true` 옵션을 사용할 때 백그라운드에서 동작합니다.
+      - `getStaticProps` 는 `fallback: blocking` 옵션을 사용할 때 초기 렌더링 이전에 호출됩니다.
+      - `getStaticProps` 는 `revalidate`를 사용할 때 백그라운드에서 동작합니다.
+      - `getStaticProps` 는 `revalidate()`를 사용할 때 백그라운드 안에서 on-demand로 동작합니다.
+
+      [Incremental Static Regeneration](https://nextjs.org/docs/basic-features/data-fetching/incremental-static-regeneration)과 결합해서 `getStaticProps`를 사용하면 오래된 페이지가 재검증되고 새로운 페이지가 브라우저에서 제공되는 동안 백그라운드에서 실행됩니다.
+
+      `getStaticProps`는 정적 HTML 파일을 생성하기 때문에 쿼리 파라미터나 HTTP Header와 같은 요청에 접근할 수 없습니다. 만약 요청에 접근하고 싶다면 `getStaticProps` 외에 [미들웨어](https://nextjs.org/docs/advanced-features/middleware)를 사용하는 것을 고려해보세요.
+
+      #### Using getStaticProps to fetch data from a CMS
+
+      다음 예제는 CMS로부터 블로그 게시글 목록을 어떻게 불러올 수 있는지를 보여주는 예제입니다.
+
+      ```react
+      // posts will be populated at build time by getStaticProps()
+      function Blog({ posts }) {
+        return (
+          <ul>
+            {posts.map((post) => (
+              <li>{post.title}</li>
+            ))}
+          </ul>
+        )
+      }
+
+      // This function gets called at build time on server-side.
+      // It won't be called on client-side, so you can even do
+      // direct database queries.
+      export async function getStaticProps() {
+        // Call an external API endpoint to get posts.
+        // You can use any data fetching library
+        const res = await fetch('https://.../posts')
+        const posts = await res.json()
+
+        // By returning { props: { posts } }, the Blog component
+        // will receive `posts` as a prop at build time
+        return {
+          props: {
+            posts,
+          },
+        }
+      }
+
+      export default Blog
+      ```
+
+      [getStaticProps API 문서](https://nextjs.org/docs/api-reference/data-fetching/get-static-props)에 `getStaticProps`가 사용할 수 있는 모든 파라미터와 `props`에 대해 나와있습니다.
+
+      #### Write server-side code directly
+
+      `getStaticProps`가 오직 서버사이드에 동작하기 때문에 클라이언트 사이드에서는 결코 동작하지 않습니다. 즉, 브라우저를 위한 자바스크립트 번틀에 포함이 되지 않습니다. 그래서 브라우저에 전송되지 않고 데이터베이스 쿼리를 직접 작성할 수 있습니다.
+
+      즉, `getStaticProps`(자체적으로 외부 소스로부터 데이터를 가져오기)에서 API 경로를 가져오는 대신, `getStaticProps`에서 직접 서버 측 코드를 작성할 수 있습니다.
+
+      다음의 예를 들어봅시다. API 경로는 CMS에서 일부 데이터를 가져오는 데 사용됩니다. 해당 API 경로는 getStaticProps에서 직접 호출됩니다. 이렇게 하면 호출이 추가로 발생하여 성능이 저하됩니다. 대신 lib/directory를 사용하여 CMS에서 데이터를 가져오는 로직을 공유할 수 있습니다. 그런 다음 getStaticProps와 공유할 수 있습니다.
+
+      ```react
+      // lib/load-posts.js
+
+      // The following function is shared
+      // with getStaticProps and API routes
+      // from a `lib/` directory
+      export async function loadPosts() {
+        // Call an external API endpoint to get posts
+        const res = await fetch('https://.../posts/')
+        const data = await res.json()
+
+        return data
+      }
+
+      // pages/blog.js
+      import { loadPosts } from '../lib/load-posts'
+
+      // This function runs only on the server side
+      export async function getStaticProps() {
+        // Instead of fetching your `/api` route you can call the same
+        // function directly in `getStaticProps`
+        const posts = await loadPosts()
+
+        // Props returned will be passed to the page component
+        return { props: { posts } }
+      }
+      ```
+
+      또는 API 경로를 사용하여 데이터를 가져오지 않는 경우 `fetch()` API를 `getStaticProps`에서 직접 사용하여 데이터를 가져올 수 있습니다.
+
+      다음 [코드 제거 도구](https://next-code-elimination.vercel.app/)를 사용하여 Next.js가 클라이언트 측 번들에서 제거하는 항목을 확인할 수 있습니다.
+
+      #### Statically generates both HTML and JSON
+
+      빌드 시 `getStaticProps`가 포함된 페이지가 미리 렌더링되면 페이지 HTML 파일 외에도 Next.js는 `getStaticProps`를 실행한 결과를 저장하는 JSON 파일을 생성합니다.
+
+      이 JSON 파일은 `next/link `또는 `next/router`를 통한 클라이언트 측 라우팅에 사용됩니다. `getStaticProps`를 사용하여 사전 렌더링된 페이지로 이동하면 Next.js가 이 JSON 파일(빌드 시 사전 계산됨)을 가져와서 페이지 구성 요소의 `props`로 사용합니다. 이것은 내보낸 JSON만 사용되기 때문에 클라이언트 측 페이지 전환이 getStaticProps를 호출하지 않는다는 것을 의미합니다.
+
+      증분 정적 생성(Incremental Static Regeneration)을 사용할 때 `getStaticProps`는 백그라운드에서 실행되어 클라이언트 측 탐색에 필요한 JSON을 생성합니다. 이는 동일한 페이지에 대해 여러 요청이 수행되는 형태로 나타날 수 있지만, 이는 의도된 것이며 최종 사용자 성능에 영향을 미치지 않습니다.
+
+      #### Where can i use getStaticProps
+
+      `getStaticProps`는 오직 페이지에서만 `export`될 수 잇습니다. 페이지가 아닌 파일이나 `_app`, `_document`, `_error` 페이지에서는 사용할 수 없습니다.
+
+      이러한 제한의 이유들 중 한가지는 페이지가 렌더링되기 이전에 리액트에 필요한 모든 데이터를 가지고 있어야하기 때문입니다.
+
+      또한, 반드시 `getStatocProps`를 독립 실행형 함수로 내보내야 합니다. `getStaticProps`를 페이지 구성 요소의 속성으로 추가하면 작동하지 않습니다.
+
+      > 참고: 사용자 지정 앱을 만든 경우 링크된 [문서](https://nextjs.org/docs/advanced-features/custom-app)에 표시된 것처럼 pageProps를 페이지 구성 요소로 전달하고 있는지 확인하십시오. 그렇지 않으면 속성이 비어 있습니다.
+
+      #### Runs on every request in development
+
+      개발 환경에서(`next dev`) `getStaticProps`는 모든 요청에 호출됩니다.
+
+      #### Preview Mode
+
+      임시로 정적 생성(static generation)을 무시하고 [Preivew Mode](https://nextjs.org/docs/advanced-features/preview-mode)를 사용하여 빌드 시간 대신 요청 시 페이지를 렌더링할 수 있습니다. 예를 들어 헤드리스 CMS를 사용하는 경우 초안이 배포되기 전에 미리 보기를 원할 수 있습니다.
+
+      #### Related
+
+      다음 작업에 대한 자세한 내용은 다음 섹션을 참조하십시오:
+
+      [getStaticProps API Reference](https://nextjs.org/docs/api-reference/data-fetching/get-static-props)
 
   - #### getStaticPaths
 
