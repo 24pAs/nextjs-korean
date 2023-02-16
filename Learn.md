@@ -4024,15 +4024,438 @@ export default IndexPage;
 
 #### 1) Introduction
 
+Javascript는 web development ecosystem의 중요한 부분이다. 과거에는, 대부분의 프로그래밍 언어가 서버로 부터 모든 컨텐츠를 보냈다.
+
+Javascript 와 같은 기술은, 브라우저로부터 정보가 fetching 하는 것이 그 어느때보다 대중화 되었다. 결과적으로 search engines와  그들의 페이지 이해 능력에 영향을 주었는데 대부분의 bot들이 서버로 부터 초기 HTML을 parsing 하고 브라우저로 로딩만 하였기 때문이다.
+
+이 학습에서, 배울건
+- 렌더링 전략들, CSR, ISR, SSG, SSR
+- URL 구조가 SEO 랭킹에 미치는 영향
+- 제목과 내부 링크를 통합하여 검색 엔진 결과 페이지 랭킹을 최적화
+
+Let's dive in!
+
 #### 2) Rendering Strategies
+
+**Static Site Generation (SSG)**
+
+[Static site generation](https://nextjs.org/docs/basic-features/pages#static-generation-recommended)는 빌드 타임때 HTML이 만들어지는 곳이다. 이 HTML은 각 요청시에 사용된다. SSG는 사전 렌더링되고([pre-rendered](https://nextjs.org/docs/basic-features/pages#pre-rendering)),로드 시 모든 HTML이 있을뿐만 아니라 페이지 퍼포먼스에 도움 또한 주기때문에 SEO를 위한 렌더링 전략의 최고의 타입일 것이다. - 이제 SEO와 관련하여 또 다른 순위 요소가 되었다.(?)
+
+**Server-Side Rendering (SSR)**
+
+SSG와 같이 [Server-Side Rendering](https://nextjs.org/docs/basic-features/pages#server-side-rendering)은 사전 렌더링되고(pre-rendered)되어 SEO에도 좋다. SSG처럼 빌드 타임에 생성하는 대신, SSR의 HTML은 요청 타임에 생성된다. 매우 동적이 페이지들을 가지고 있을때 적합하다.  
+
+**Incremental Static Regeneration (ISR)**
+
+만약 매우 무거운 양의 페이지들을 가지고 있을때, 빌드 시간때 그것들을 생성 하는 것은 알맞지 않을 수도 있다. Next.js를 사용하면 사이트를 빌드 한 후에 정적인 페이지들을 생성 또는 업데이트를 할 수 있다.
+
+[Incremental Static Regeneration](https://nextjs.org/docs/basic-features/data-fetching/overview#incremental-static-regeneration)은 전체 사이트를 다시 빌드할 필요 없이 개발자와 컨텐츠 편집자들은 페이지 단위로 정적 생성을 사용할 수 있다. ISR을 사용하면 정적의 이점을 유지하면서 수백만 페이지로 확장할 수 있다. 
+
+**Client Side Rendering (CSR)**
+
+[Client Side Rendering](https://nextjs.org/docs/basic-features/data-fetching/overview#fetching-data-on-the-client-side)을 사용하면 개발자들이 자바스크립트를 사용하여 브라우저에서 완전히 렌더링된 그들의 웹사이트를 만들 수 있습니다. 초기 페이지 로드 시 보통 자바스크립트를 페치하고 브라우저가 모든 것을 컴파일 하기 전까지 적거나 또는 컨텐츠가 없는 단일 HTML파일을 제공한다.
+
+이전에 우리가 말했듯이, 보통 CSR은 최적화 SEO에 추천하지 않는다.
+
+CSR은 데어타가 많은 대쉬보드들이나, 계정 페이지 또는 다른 서치 엔진 인덱스에 포함할 필요가 없는 페이지들에 적합하다.
+
+
+**Summary**
+
+SEO에서 제일 중요한 것은 자바스크립트가 없이 로드된 페이지에서 페이지 데이터와 메타데이터를 사용할수 있어야 한다. SSR 또는 SSR 케이스에서 좋은 선택이 될 것이다.
+
+Next.js의 중요한 강점 중 하나는 위의 렌더링 메소드들 중 하나를 페이지 단위로 수행 할 수 있다는 것이다. 당신이 만일 정적으로 만들어진 당신의 블로그나, CSR 된 소비자 계정 대쉬보드, 아마 SSR로 뉴스 피드들을 만들길 원할수도 있다.
+
+*Further Reading*
+- Next.js: [Data Fetching](https://nextjs.org/docs/basic-features/data-fetching/overview)
+- Smashing Magazine: [A Complete Guide to Incremental Static Regeneration with Next.js](https://www.smashingmagazine.com/2021/04/incremental-static-regeneration-nextjs/)
+- Vercel: [Next.js: Server-side Rendering vs. Static Generation](https://vercel.com/blog/nextjs-server-side-rendering-vs-static-generation)
 
 #### 3) What About AMP?
 
+2016년에, 구글에서 [AMP](https://amp.dev/)를 사용하는 웹페이지에 [search ranking preference](https://developers.google.com/search?hl=ko)(검색순위우선권)을 제공하기 시작했다. - 개발자가 모바일 디바이스에서 더 빠르게 로드 할 수 있는 웹페이지를 만들수 있도록 한 기술 - 시간이 지남에 따라서 구축, 유지하는 비용 발생
+
+[Core Web Vitals](https://web.dev/vitals/) page experience 업데이트와 함께 구글은 (검색 carousels에 보이기 위한 요구 사항으로 AMP 페이지들을 삭제했다)[https://developers.google.com/search/blog/2021/04/more-details-page-experience?hl=ko#details]. 이것은 SEO 목적 측면에서 구글이 AMP에 제공한 마지막 남은 중요 이점 중 하나였다.
+
+AMP 도입 이후, Nest.js 와 같은 최신 기술은 개발자 경험의 희생없이 웹사이트 경험을 개선할 수 있는 능력을 입증했다.
+
+Next.js는 [AMP support](https://nextjs.org/docs/advanced-features/amp-support/introduction)를 지원하지만, 이미 당신의 웹사이트가 대단한 Core Web Vitals 점수를 가지고 있다면, AMP 구현에 있어서 비용과 이점을 고려해야한다. 
+
 #### 4) URL Structure
+
+URL 구조는 SEO 전략 파트 중 중요하다. Google은 SEO의 각 파트에 어떤 가중치가 있는지 공개하지 않았지만, 우수한 URL은 이것이 끝에 크거나 작은 ranking factor인지에 문제없이 모범 사례로 간주된다.
+
+다음과 같이 몇가지 원칙을 따를 수 있다:
+
+- Semantic: ID나 랜덤 숫자들 대신 단어를 사용한 시멘틱, 의미가 있는 URLs를 사용하는 것은 가장 좋다. 예:  /learn/basics/create-nextjs-app는  /learn/course-1/lesson-1보다 좋다.
+- 논리적이고 일관된 패턴: URL은 페이지들 사이의 일종의 패턴을 따라야한다. 예를 들어, 각 product의 서로 다른 경로들을 가지는 대신 모든 product 페이지를 그룹화한 폴더를 가지길 원할 수 있다.
+- 키워드 중심: Google은 여전히 웹사이트가 가지고 있는 키워드에서 그들의 시스템 중의 상당한 파트를 기반으로 한다. 페이지의 목적에 대해 쉽게 이해할 수 있도록 URL에 키워드를 사용할 수 있다.
+- Not parameter-based: URLs를 구축할 때 parameters를 사용하는 것은 보통 좋은 아이디어가 아니다. 대부분 케이스에서 semantic하지 않고, search engine이 혼란스러울도 있어 결과적으로 랭킹이 낮아질 수 있다.
+
+**How are Routes Defined in Next.js?**
+
+Next.js는 [pages](https://nextjs.org/docs/basic-features/pages)의 컨셉 기반한 [file-system routing](https://nextjs.org/docs/routing/introduction)을 사용한다. 페이지 디렉토리에 파일이 추가될때, 라우트와 같이 자동으로 사용할 수 있다. 페이지 디렉토리 안쪽에 있는 그 파일들과 폴더들은 가장 공통 패턴으로 정의되어 사용되어 질수 있다.
+
+몇가지 간단한 URL들과 Next.js router에 추가하는 방법을 살펴보자
+
+- Homepage: https://www.example.com → pages/index.js
+- Listings: https://www.example.com/products → pages/products.js or pages/products/index.js
+- Detail: https://www.example.com/products/product → pages/products/product.js
+
+블로그나 e-commerce 사이트를 위해 product ID 또는 블로그 이름을 URL의 슬러그로 사용할 수 있다. 이것을 [dynamic routing](https://nextjs.org/docs/routing/dynamic-routes)이라고 한다.
+
+-Product:https://www.example.com/products/nextjs-shirt → pages/products/[product].js
+-Blog:https://www.example.com/blog/seo-in-nextjs → pages/blog/[blog-name].js
+
+dynamic routing을 사용하기 위해, 프로덕트 또는 블로그의 하위폴더안에 페이지 이름에 대괄호를 추가할수 있다.  
+
+SSG를 상룡한 페이지 최적화 예시:
+
+```js
+// pages/blog/[slug].js
+
+import Head from 'next/head';
+
+export async function getStaticPaths() {
+  // Call an external API endpoint to get posts
+  const res = await fetch('https://www.example.com/api/posts');
+  const posts = await res.json();
+
+  // Get the paths we want to pre-render based on posts
+  const paths = posts.map((post) => ({
+    params: { slug: post.slug },
+  }));
+  // Set fallback to blocking. Now any new post added post build will SSR
+  // to ensure SEO. It will then be static for all subsequent requests
+  return { paths, fallback: 'blocking' };
+}
+
+export async function getStaticProps({ params }) {
+  const res = await fetch(`https://www.example.com/api/blog/${params.slug}`);
+  const data = await res.json();
+
+  return {
+    props: {
+      blog: data,
+    },
+  };
+}
+
+function BlogPost({ blog }) {
+  return (
+    <>
+      <Head>
+        <title>{blog.title} | My Site</title>
+      </Head>
+      <div>
+        <h1>{blog.title}</h1>
+        <p>{blog.text}</p>
+      </div>
+    </>
+  );
+}
+
+export default BlogPost;
+```
+
+SSR을 사용한 다른 예시:
+
+```js
+// pages/blog/[slug].js
+
+import Head from 'next/head';
+function BlogPost({ blog }) {
+  return (
+    <div>
+      <Head>
+        <title>{blog.title} | My Site</title>
+      </Head>
+      <div>
+        <h1>{blog.title}</h1>
+        <p>{blog.text}</p>
+      </div>
+    </div>
+  );
+}
+
+export async function getServerSideProps({ query }) {
+  const res = await fetch(`https://www.example.com/api/blog/${query.slug}`);
+  const data = await res.json();
+
+  return {
+    props: {
+      blog: data,
+    },
+  };
+}
+
+export default BlogPost;
+```
 
 #### 5) Metadata
 
+Metadata는 웹사이트의 컨텐트의 추상화이고 사이트에 title, description, 그리고  이미지를 연결하는데 사용된다. 
+
+**Title**
+
+title 태그는 두가지 이유로 SEO 엘리먼트 중에 제일 중요한 것 중 하나다.
+
+첫번째, 검색 결과로 부터 당신의 웹사이트에 클릭해서 들어갈때, 사용자들이 본다.
+
+두번째, 페이지에 대하여 Google이 이해를 위해 사용하는 메인 엘리먼트중 하나이다. title에서 keywords를 사용하는 것은 검색 엔진에서 랭킹 순위가 향상하기 때문에 추천한다.
+
+예시:
+
+```html
+<title>iPhone 12 XS Max For Sale in Colorado - Big Discounts | Apple</title>
+
+```
+
+이 페이지는 모든 메인 키워드를 포함하고 깔끔한 값 제안을 보여주기 때문에 유저에게 매력적으로 만들수 있다.: Discount!
+
+**Description**
+
+description meta 태그는 또 다른 중요한 SEO element 이지만, title보다는 덜하다.
+Google에 따라, 이 element는 랭킹 목적을 위한 기술에서 고려되지 않지만, 검색 결과에서 click-through-rate(클릭률)에 영향을 줄수 있다.
+
+description 메타 태그를 사용하는 것은 title에서 정보를 보완한다. 만약 타이틀에 맞지 않는 키워드들이 있으면 content에 더 많은 키워드로 작업해야한다. 그 키워드들이 사용자의 검색에 포함되어있다면 굵게 표시된다.
+
+HTML에 description meta 태그 예시:
+```html
+<meta
+  name="description"
+  content="Check out iPhone 12 XR Pro and iPhone 12 Pro Max. Visit your local store and for expert advice."
+/>
+```
+
+이것은 search engine result page(SERP) 의 일부일때 페이지에서 어떻게 보여지는지 예시이다.
+![img](https://nextjs.org/_next/image?url=%2Fstatic%2Fimages%2Flearn%2Fseo%2Fserp-example.png&w=640&q=75)
+
+Next.js에서, 우리는 title과 description을 [Head component](https://nextjs.org/docs/api-reference/next/head) 설정한다. 다음은 Next.js에서 meta title과 description 태그들이 표시되는 방식이다.
+```jsx
+import Head from 'next/head';
+
+function IndexPage() {
+  return (
+    <div>
+      <Head>
+        <title>
+          iPhone 12 XS Max For Sale in Colorado - Big Discounts | Apple
+        </title>
+        <meta
+          name="description"
+          content="Check out iPhone 12 XR Pro and iPhone 12 Pro Max. Visit your local store and for expert advice."
+          key="desc"
+        />
+      </Head>
+      <h1>iPhones for Sale</h1>
+      <p>insert a list of iPhones for sale.</p>
+    </div>
+  );
+}
+
+export default IndexPage;
+```
+
+Head Component는 페이지 컨텐츠에 대하여 정보를 서술하거나 제공하기위해 당신의 어플리케이션 어느 페이지에서 사용할 수 있다.
+
+**Open Graph**
+
+[Open Graph protocol](https://ogp.me/)은, 원래 Facebook에서 개발했고,  특정 웹 페이지에서 메타데이터가 사용되는 방법을 표준화했다. 원하는 작거나 많은 정보들을 제공받을수 있지만, open graph 조각들의 모든 것은 함께 맞게 연결된 사이트의 표현을 만든다.
+
+다른 소셜 미디어 회사들은(Pinterst, Twitter, LinkedIn, etc), URL을 공유할때 많은 카드들을 보여주기 위해 open graph를 사용할 것이다. Twitter 또한 [Twitter Cards](https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/markup) 의 태그들을 가지고 있다.
+
+Open Graph 태그들은 SEO 관련 태그들과 많은 유사점을 가지고 있지만, 서치 엔진 랭킹에 이점은 없다. 그러나 소셜 미디어의 컨텐츠나 WhatsApp 또는 Telegram 같은 개인적인 메세징 툴들을 사람들이 공유할때에는 여전히 사용하는것을 추천한다.
+
+Head component 안에서 meta 태그에 'property'를 정의하는 Open Graph 태그들을 추가할 수 있다. 예:
+```js
+import Head from 'next/head';
+
+function IndexPage() {
+  return (
+    <div>
+      <Head>
+        <title>Cool Title</title>
+        <meta name="description" content="Checkout our cool page" key="desc" />
+        <meta property="og:title" content="Social Title for Cool Page" />
+        <meta
+          property="og:description"
+          content="And a social description for our cool page"
+        />
+        <meta
+          property="og:image"
+          content="https://example.com/images/cool-page.jpg"
+        />
+      </Head>
+      <h1>Cool Page</h1>
+      <p>This is a cool page. It has lots of cool content!</p>
+    </div>
+  );
+}
+
+export default IndexPage;
+```
+
+페이지의 컨텐츠를 나타내는 사진과 함께 설명과 타이틀을 제공하는 공유가능한 링크가,  SEO 랭킹에 직접적으로 영향을 미치진 않지만. 간접적으로 링크의 클릭율을 높일것이고 궁극적으로 사이트에 더 많은 방문객들을 늘릴것이다. 
+
+**Structured Data and JSON-LD** 
+
+구조화된 데이터는 검색 엔진에 당신의 사이트를 이해하도록 수월하게 한다. 몇 년에 걸쳐, 몇몇의 표현방식이 존재했지만, 현재 주요 방식은 [schema.org](https://schema.org/)이다.
+
+웹사이트에 따르면 schema.org는 "협력적이고, 인터넷, 웹 페이지, 이메일 메세지, 그 넘어에서 구조화된 데이터를 위한 생성, 구축, 촉진 하는 미션과 함께 협력적이고 커뮤니티가 활동이다." 
+
+> Schema.org의 표현방식은 [REFa](), [Microdata](), 그리고 [JSON-LD]() 를 포함하는 다양한 인코딩과 함께 사용가능하다.
+
+다른 검색 엔진들은 shema.org 내에서 다양한 표현방식에 채택할 수 있으며, 어떤 검색엔진도 웹사이트의 표현방식을 설명하는 모든 사용 사럐를 다루진 않는다. 각각의 케이스에서 어떤 표현방식을 허용하는지 확인하자.
+
+JSON-LD로 만든 schema 데이터를 추가한 것처럼 보이는 프로덕트 페이지의 예:
+```jsx
+import Head from 'next/head';
+
+function ProductPage() {
+  function addProductJsonLd() {
+    return {
+      __html: `{
+      "@context": "https://schema.org/",
+      "@type": "Product",
+      "name": "Executive Anvil",
+      "image": [
+        "https://example.com/photos/1x1/photo.jpg",
+        "https://example.com/photos/4x3/photo.jpg",
+        "https://example.com/photos/16x9/photo.jpg"
+       ],
+      "description": "Sleeker than ACME's Classic Anvil, the Executive Anvil is perfect for the business traveler looking for something to drop from a height.",
+      "sku": "0446310786",
+      "mpn": "925872",
+      "brand": {
+        "@type": "Brand",
+        "name": "ACME"
+      },
+      "review": {
+        "@type": "Review",
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": "4",
+          "bestRating": "5"
+        },
+        "author": {
+          "@type": "Person",
+          "name": "Fred Benson"
+        }
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.4",
+        "reviewCount": "89"
+      },
+      "offers": {
+        "@type": "Offer",
+        "url": "https://example.com/anvil",
+        "priceCurrency": "USD",
+        "price": "119.99",
+        "priceValidUntil": "2020-11-20",
+        "itemCondition": "https://schema.org/UsedCondition",
+        "availability": "https://schema.org/InStock"
+      }
+    }
+  `,
+    };
+  }
+  return (
+    <div>
+      <Head>
+        <title>My Product</title>
+        <meta
+          name="description"
+          content="Super product with free shipping."
+          key="desc"
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={addProductJsonLd()}
+          key="product-jsonld"
+        />
+      </Head>
+      <h1>My Product</h1>
+      <p>Super product for sale.</p>
+    </div>
+  );
+}
+
+export default ProductPage;
+```
+
+예시에서, 데이터는 스트링으로 하드코딩 되었지만, 데이터를  'addProductJsonLd' 메소드에 쉽게 전달하여 동적으로 만들 수 있다.
+
 #### 6) On Page SEO
+
+높은 수준에서, 페이지 SEO는 페이지의 전체 구조를 구성하는 headings과 링크를 나타낸다. Headings는 문서의 중요성을 나타내고 링크는 웹을 함께 연결한다.
+
+**Headings and H1**
+
+Headings는 페이지의 구조를 사용자가 이해하고, 다음 문장에서 무엇을 읽을지 도움을 준다. 가장 중요한 페이지의 파트를 이해하는 검색 엔진의 일을 수월하게 한다.
+
+Headings는 1~6까지 있고, Heading 1은 가장 중요한 것으로 되는 경향이 있다. 각 페이지에서 H1 heading 태그를 사용하는 것을 추천한다. H1은 어떤 페이지인지 나타내고 title 태그와 유사하 유사해야한다.
+
+```jsx
+function Page() {
+  return <h1>Your Main Page Heading</h1>;
+}
+```
+
+**Internal Links**
+
+인터넷은 링크들로 연결되어 있다. 하나의 웹사이트가 다른 웹사이트로 가는 링크가 없다면, 인터넷은 아마 존재하지 않을 것이다. 많은 링크들을 받는 웹사이트는 유저에 의해 많은 신뢰를 받는 웹사이트를 나타내는 경향이 있다.
+
+Google은 [PageRank Algorithm](https://web.stanford.edu/class/cs54n/handouts/24-GooglePageRankAlgorithm.pdf)의 발명과 이 원리를 시작했다.
+
+PageRank algorithm은 높은 수준으로, 데이터베이스에서 모든 링크를 통과하고, 수신하는 링크 수(수량) 과 도메인(품질)으로 부터 얼마나 많은 링크가 있는지를 기반으로 도메인 점수를 메긴다. 대부분의 스팸 웹사이트의 많은 링크들은 거의 값이 없다.
+
+그러나 대형 전국 언론 웹사이트의 링크는 검색엔진에게 매우 가치있다. 이것이 바로 링크들은 매우 중요한 이유이고 페이지의 내부적으로는 물론 그리고 다른 웹사이트에 대해 외부적으로도 링크를 항상 포함해야 한다. 링크는 항상 PageRank 계산에서 사용하기 위해  'href'를 사용해야한다.
+
+**next/link**
+
+Next.js는 라우트들에서 client-side 트렌지션에 연결되어있는 [Link component](https://nextjs.org/docs/api-reference/next/link)를 제공한다. 간단한 상용 방법은 다음과 같다.
+
+```jsx
+function NavLink({ href, name }) {
+  return (
+    <Link href={href}>
+      <a>{name}</a>
+    </Link>
+  );
+}
+
+export default NavLink;
+```
+
+href prop는 필수이고 SEO에 필수적인 anchor tag에 알맞게 링크를 추가한다. Google이 페이지를 크롤러 할때, 자바스크립에 의지하지 않고 크롤러 하고 링크를 따라간다.
+
+그러나, 만약 Link의 자식이 태그로 감싼 custom component이면, Link에 passHref를 추가해야한다. 만약 style-compoenent를 같은 라이브러리를 사용하고 있다면 이것은 필수다. 만약 그렇지 않다면 태그는 웹 사이트의 SEO에 영향을 주는 href attribute가 없다.
+
+passHref 사용법:
+```js
+import Link from 'next/link';
+import styled from 'styled-components';
+
+// This creates a custom component that wraps an <a> tag
+const RedLink = styled.a`
+  color: red;
+`;
+
+function NavLink({ href, name }) {
+  // Must add passHref to Link
+  return (
+    <Link href={href} passHref>
+      <RedLink>{name}</RedLink>
+    </Link>
+  );
+}
+
+export default NavLink;
+```
+
+만약 ESLint를 사용한다면, Next.js는 이런 일이 발생하지 않도록 보호하는 룰을 가지고 있다.
 
 ### 4. Performanca & Core Web Vitals
 
