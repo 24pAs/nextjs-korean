@@ -815,9 +815,83 @@ function Profile() {
 - ### Font Optimization
 
 - ### Static File Serving
+Next.js는 root 디렉토리에 `public` 폴더 아래에서 이미지같은 static 파일들을 관리 할 수 있습니다. `public` 안쪽에 파일은 URL(`/`)로 시작하여 접근 할 수 있습니다.
+
+예를 들어 , 만약에 public/me.png 이미지를 추가하려면 , 아래와 같은 코드는 이미지에 접근 할 수 있습니다. 
+
+```js
+import Image from 'next/image'
+
+function Avatar() {
+  return <Image src="/me.png" alt="me" width="64" height="64" />
+}
+
+export default Avatar
+```
+
+> 참고 : `next/image`는 Next.js 10이후에 도입됐습니다. 
+
+이 폴더는 `robots.txt` , `favicon.ico` , 구글 사이트 검증 등 모든 static 파일( `html`을 포함하여 )에 유용합니다.
+
+> **참고** : 폴더 이름은 확실하게 `public`이여야 합니다. 폴더 이름은 변할 수 없고 , 오직 정적인 파일들만 관리해야 합니다. 
+
+> **참고** : 페이지 디렉토리 안에 같은 이름의 정적인 파일이 없도록 해야합니다. 이것은 에러의 결과를 가집니다. 
+>
+> Read more: https://nextjs.org/docs/messages/conflicting-public-file-page
+
+> **참고** : Next.js는 [빌드 타임](https://nextjs.org/docs/api-reference/cli#build)에 `public` 폴더 안에 assets들을 제공합니다. 런타임에 추가된 것은 이용할 수 없습니다. 우리는 [AWS S3](https://aws.amazon.com/ko/s3/)와 같은 저장소를 추천합니다. 
+
 
 - ### Fash Refresh
+Fast Refresh는 Next.js에 기능이고 이 기능은 리액트 컴포넌트를 수정할때 즉각적인 피드백을 줍니다. Fast Refresh는 Next.js **9.4 버전** 부터 가능합니다. Next.js Fast Refresh를 사용하면 **컴포넌트 상태를 잃지** 않고 대부분의 편집 내용을 1초 이내에 볼 수 있습니다.
 
+**How It Works**
+
+- 만약에 React components를 수정한다면 , Fast Refresh는 그 파일의 코드를 업데이트 할 것이고 , 컴포넌트를 리렌더링 합니다. 스타일 , 렌더링 로직 , 이벤트 핸들러 등 파일 안에 모든 것을 수정 할 수 있습니다.
+- 만약에 React components가 아닌 것을 수정한다면 , Fast Refresh는 해당 파일과 import된 다른 파일을 다시 실행합니다. 따라서 `Button.js`와 `Modal.js`가 모두 `theme.js`를 가져오면 `theme.js`를 편집하면 두 컴포넌트가 모두 업데이트됩니다.
+
+- 마지막으로 응답 트리 외부의 파일에서 가져온 파일을 편집하면 , Fast Refresh가 다시 전체 다시 로드를 수행합니다. React 컴포넌트를 렌더링하지만 React가 아닌 컴포넌트에서 가져온 값을 내보내는 파일이 있을 수 있습니다. 예를 들어 구성 요소가 상수를 내보내고 non-React 유틸리티 파일이 상수를 가져올 수 있습니다. 이 경우 상수를 별도의 파일로 마이그레이션하고 두 파일로 모두 가져오는 것이 좋습니다. 이렇게 하면 Fast Refresh가 다시 활성화됩니다. 다른 사례들도 대개 비슷한 방식으로 해결될 수 있습니다.
+
+**Error Resilience**
+
+만약에 컴포넌트 내부에서 런타임 오류로 이어지는 실수를 하면 상황에 맞는 오버레이를 만날 것 입니다. 오류를 수정하면 앱을 다시 로드하지 않고 오버레이가 자동으로 해제됩니다. 
+
+렌더링하는 동안 에러가 발생하지 않는다면 컴포넌트 상태는 유지됩니다. 만약에 렌더링하는 동안 에러가 발생한다면 , React는 업데이트된 코드를 다시 시작할 것 입니다. 
+
+만약에 앱에 [Error Boundaries](https://reactjs.org/docs/error-boundaries.html)( production에서 우아한 실패의 좋은 방식입니다. )가 있다면 , 렌더링 에러 이후에 다시 시도 할 것 입니다. Error Boundaries는 root app 상태를 reset하는 것을 방지함을 의미합니다. 그러나 Error Boundaries가 너무 세밀하지 않아야 합니다. 이들은 React에서 생산에 사용되며, 항상 의도적으로 설계되어야 합니다.
+
+**Limitations**
+
+Fast Refresh는 편집중인 컴포넌트에 로컬 React 상태를 안전한 경우에만 보존하려고 합니다. 다음은 파일을 편집할 때마다 로컬 상태가 재설정되는 것을 볼 수 있는 몇 가지 이유입니다.
+
+- 클래스 컴포넌트에서는 로컬 상태가 보존되지 않습니다. ( 오직 함수형 컴포넌트가 가능합니다. )
+- 편집 중인 파일에 React 컴포넌트 외에 다른 내보내기가 있을 수 있습니다.
+- 때떄로 , 파일은HOC(Wrapped Component)와 같은 상위 구성 요소를 호출한 결과를 내보냅니다. 반환된 구성 요소가 클래스인 경우 해당 상태가 재설정됩니다.
+-  `export default () => <div />`와 같은 익명 화살표는 Fast Refresh로 인해 로컬 구성 요소 상태가 유지되지 않습니다. 대규모 코드베이스의 경우 Name-default-component 코드모드를 사용할 수 있습니다.
+
+함수형 컴포넌트로 변함에 따라서 더 많은 경우 상태가 유지될 것입니다. 
+
+
+
+**Tips**
+
+- Fast Refresh는 기본적으로 함수형 컴포넌트의 로컬 상태를 보존합니다.
+- 때때로 너가 강제로 초기화 하길 원하면 , 컴포넌트는 remount 해야 할 수도 있습니다. 예를 들어, 마운트에서만 발생하는 애니메이션을 조정하는 경우 편리할 수 있습니다. 이렇게하려면 편집중인 파일의 아무 곳이나 `// @refresh` 재설정을 추가 할 수 있습니다. 이 지시문은 파일의 로컬이며 모든 편집에서 해당 파일에 정의된 구성 요소를 다시 마운트하도록 Fast Refresh에 지시합니다. 
+- 개발 중에 편집하는 구성 요소에 `console.log` 또는 `debugger;` 넣을 수 있습니다.
+
+
+
+**Fast Refresh and Hooks**
+
+Fast Refresh는 가능한 편집하는동안 컴포넌트 상태를 유지하려고 합니다. 특히 , useState , useRef는 Hook의 호출 순서를 바꾸지 않는 한 이전 상태를 보존합니다.
+
+`useEffect` , `useMemo` , `useCallback`은 항상 Fast Refresh 할 것 입니다. dependencies 목록은 Fast Refresh가 일어나는 동안 무시됩니다. 
+
+예를들어 ,  `useMemo(() => x * 2, [x])` 을 `useMemo(() => x * 10, [x])`로 편집할때 x dependency가 변하지 않더라도 재 실행 될 것 입니다. 만약에 리액트가 그렇게 하지 않는다면 , 편집은 화면에 반영되지 않을 것 입니다. 
+
+때떄로 이것은 기대되지 않은 결과를 이끕니다. 예를 들어 , `useEffect`가 빈 depth라도 Fast Refresh 동안은 재 실행 됩니다. 
+
+그러나 때때로 useEffect의 재실행에 탄력적인 코드 작성은 Fast Refresh가 없어도 좋은 방법입니다. 당신이 나중에 그것에 새로운 의존성을 소개하는 것이 더 쉽게 만들 것이며, 우리가 적극적으로 활성화하는 것을 권장하는 [React Strict Mode](https://nextjs.org/docs/api-reference/next.config.js/react-strict-mode)에 의해 시행됩니다.
 - ### ESLint
 
 - ### TypeScript
