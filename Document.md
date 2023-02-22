@@ -5,36 +5,88 @@
 ## Next.js
 ---
 ### Documentation
-- [Next.js](#nextjs)
-  - [Documentation](#documentation)
 - [Getting Started](#getting-started)
 - [Basic Features](#basic-features)
-  - [When should I use getStaticPaths?](#when-should-i-use-getstaticpaths)
-  - [When does getStaticPaths run](#when-does-getstaticpaths-run)
-  - [How does getStaticProps run with regards to getStaticPaths](#how-does-getstaticprops-run-with-regards-to-getstaticpaths)
-  - [Where can I use getStaticPaths](#where-can-i-use-getstaticpaths)
-  - [Runs on every request in development](#runs-on-every-request-in-development)
-  - [Generating paths on-demand](#generating-paths-on-demand)
-  - [On-demand Revalidation](#on-demand-revalidation)
-  - [Using On-demand Revalidation](#using-on-demand-revalidation)
-  - [Testing on-Demand ISR during development](#testing-on-demand-isr-during-development)
-  - [Error handling and revalidation](#error-handling-and-revalidation)
-  - [Self - hosting ISR](#self---hosting-isr)
-  - [Related](#related)
-- [Client-side data fetching](#client-side-data-fetching)
-  - [Client-side data fetching with useEffect](#client-side-data-fetching-with-useeffect)
-  - [Client-side data fetching with SWR](#client-side-data-fetching-with-swr)
+  - [Pages](#pages)
+  - [Data Fetching](#data-fetching)
+    - [Overview](#overview)
+    - [getServerSideProps](#getserversideprops)
+    - [getStaticProps](#getstaticprops)
+    - [getStaticPaths](#getstaticpaths)
+    - [Incremental Static Regeneration](#incremental-static-regeneration)
+    - [Client Side](#client-side)
+  - [Built-in CSS Support](#built-in-css-support)
+  - [Layouts](#layouts)
+  - [Image Optimization](#image-optimization)
+  - [Font Optimization](#font-optimization)
+  - [Static File Serving](#static-file-serving)
+  - [Fast Refresh](#fash-refresh)
+  - [ESLint](#eslint)
+  - [TypeScript](#typescript)
+  - [Environment Variables](#environment-variables)
+  - [Supported Browsers and Features](#supported-browsers-and-features)
+  - [Handling Scripts](#handling-scritps)
 - [Routing](#routing)
+  - [Introduction](#introduction)
+  - [Dynamic Routes](#dynamic-routes)
+  - [Imperatively](#imperatively)
+  - [Shallow Routing](#shallow-routing)
 - [API Routes](#api-routes)
+  - [Introduction](#introduction-1)
+  - [Dynamic API Routes](#dynamic-api-routes)
+  - [Request Helpers](#request-helpers)
+  - [Response Helpers](#response-helpers)
+  - [Edge API Routes](#edge-api-routes)
 - [Going to Production](#going-to-production)
 - [Deployment](#deployment)
 - [Authentication](#authentication)
 - [Testing](#testing)
 - [Accessibility](#accessibility)
 - [Guides](#guides)
+  - [Building Forms](#building-forms)
 - [Advanced Features](#advanced-features)
+  - [Next.js Complier](#nextjs-compiler)
+  - [Turbopack](#turbopack)
+  - [Preview Mode](#preview-mode)
+  - [Dynamic Import](#dynamic-import)
+  - [Automatic Static Optimization](#automatic-static-optimization)
+  - [Static HTML Export](#static-html-export)
+  - [Absolute Imports and Module Path Aliases](#absolute-imports-and-module-path-aliases)
+  - [Using MDX](#using-mdx)
+  - [AMP Support](#amp-support)
+    - [Introduction](#introduction-2)
+    - [Adding AMP Components](#adding-amp-components)
+    - [AMP in Static HTML Export](#amp-in-static-html-export)
+    - [TypeScript](#typescript-1)
+  - [Customizing Babel Config](#customizing-babel-config)
+  - [Customizing PostCSS Config](#customizing-postcss-config)
+  - [Custom Server](#custom-server)
+  - [Custom APP](#custom-app)
+  - [Custom Document](#custom-document)
+  - [Custom Error Page](#custom-error-page)
+  - [src Directory](#src-directory)
+  - [CI Build Caching](#ci-build-caching)
+  - [Multi Zones](#multi-zones)
+  - [Measuring performance](#measuring-performance)
+  - [Middlewares](#middleware)
+  - [Debugging](#debugging)
+  - [Error Handling](#error-handling)
+  - [Source Maps](#source-maps)
+  - [Codemods](#codemods)
+  - [Internatinalized Routing](#internationalized-routing)
+  - [Output File Tracing](#output-file-tracing)
+  - [Security Headers](#security-headers)
+  - [React 18](#react-18)
+    - [Overview](#overview-2)
+    - [Streaming SSR](#streaming-ssr)
+    - [React Server Components](#react-server-components)
+    - [Switchable Runtime](#switchable-runtiem)
 - [Upgrade Guide](#upgrade-guide)
 - [Migrating to Next.js](#migrating-to-nextjs)
+  - [Incrementally Adopting Next.js](#incrementally-adopting-nextjs)
+  - [Migrating fron Gatsby](#migrating-from-gatsby)
+  - [Migrating from Create React App](#migrating-from-create-react-app)
+  - [Migrating from React Router](#migrating-from-react-router)
 - [FAQ](#faq)
 
 ---
@@ -407,7 +459,7 @@ export default function Post({ post }) {
 
 `getStaticPaths` API reference는 [getStaticPaths](https://nextjs.org/docs/api-reference/data-fetching/get-static-paths)와 함께 사용할 수 있는 모든 매개 변수와 소도구를 다룹니다.
 
- ### When should I use getStaticPaths? 
+ When should I use getStaticPaths? 
 
 Dynamic routes를 이용해서 정적으로 pre-rendering된 페이지를 getStaticPaths를 사용해서 만들 수 있습니다. 
 
@@ -419,11 +471,11 @@ Dynamic routes를 이용해서 정적으로 pre-rendering된 페이지를 getSta
 
 
 
-### When does getStaticPaths run 
+When does getStaticPaths run 
 
 `getStaticPaths`는 프로덕션 환경에서만 동작할 것이고 runtime에서는 동작하지 않습니다. [도구](https://next-code-elimination.vercel.app/)를 사용하여 `getStaticPaths`안쪽에 쓰여진 코드를 validate하고 클라이언트 측 번들에서 제거되었는지 확인할 수 있습니다.
 
-### How does getStaticProps run with regards to getStaticPaths
+How does getStaticProps run with regards to getStaticPaths
 
 - `getStaticProps` 는 `next build` 하는 동안 작동하고 , 모든 paths는 빌드 시간동안 반환된다.
 - `getStaticProps` 는 `fallback : true` 일때 background에서 작동합니다. 
@@ -431,7 +483,7 @@ Dynamic routes를 이용해서 정적으로 pre-rendering된 페이지를 getSta
 
 
 
-### Where can I use getStaticPaths 
+Where can I use getStaticPaths 
 
 - `getStaticPaths` 는 `getStaticProps`와 함께 사용해야합니다. 
 - `getServerSideProps` 에서는 `getStaticPaths` 를 사용할 수 없습니다. 
@@ -441,13 +493,13 @@ Dynamic routes를 이용해서 정적으로 pre-rendering된 페이지를 getSta
 
 
 
-### Runs on every request in development
+Runs on every request in development
 
 개발 모드( `next dev` )에서는 , `getStaticPaths` 는 모든 요청마다 불릴 것 입니다.
 
 
 
-### [Generating paths on-demand](https://nextjs.org/docs/basic-features/data-fetching/get-static-paths#generating-paths-on-demand)
+[Generating paths on-demand](https://nextjs.org/docs/basic-features/data-fetching/get-static-paths#generating-paths-on-demand)
 
 `getStaticPaths`를 사용하면 on-demand 대체 대신 빌드 중에 생성되는 페이지를 제어할 수 있습니다. 많은 페이지를 빌드하는 시간동안 생성하는것은 빌드 속도가 느려집니다.
 
