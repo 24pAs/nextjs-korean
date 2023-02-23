@@ -1023,10 +1023,279 @@ image component가 다양한 스타일을 사용한 예는 [Image Component Demo
 
 - ### Font Optimization
 
+`@next/font`는 폰트를(custom font 포함)을 자동으로 최적화하고 개인 정보 보호와 성능을 위해 외부 네트워크 요청을 삭제한다.
+
+>Watch: `@next/font` 사용하는 방법에 대해 더 배우자. -> [YouTube(6 minutes)](https://www.youtube.com/watch?v=L8_98i_bMMA)
+
+#### Overview
+
+`@next/font` 는 모든 폰트 파일을 위해 built-in automatic self-hosting 을 포함한다. 이는 기본적인 CSS 크기 조정 속성 덕분에 zero layout shift 와 함께 웹 폰트를 최적화 로드할수 있다는 것을 의미한다.
+
+새로운 폰트 시스템은 Google fonts를 성능과 개인 정보 보호를 염두에 두고 편리하게 사용할 수 있도록 한다.
+CSS 와 폰트 파일은 빌드타임때 다운로드 되고 정적 자산의 나머지와 함께 self-hosted 한다. 브라우저로 Google에 보내는 리퀘스트는 없다.
+
+#### Usage
+
+시작하려면 다음과 같이 `@next/font`를 설치한다:
+
+```zsh
+npm install @next/font
+```
+
+##### Google Fonts
+
+자동으로 모든 Google Font를 self-host한다. 
+폰트들은 배포에 포함되어 있고, 배포와 동일한 도메인으로 제공된다. 브라우저로 Google에 보내는 요청은 없다.
+
+`@next/font/google` 함수를 사용하여 폰트를 import 하자. 우수한 성능과 유연함을 위해 [variable fonts](https://fonts.google.com/variablefonts)를 사용하는 것을 추천한다.
+
+모든 페이지에서 폰트를 사용하기 위해선 아래와 같이 `/pages` 아래에 `_app.js`file에 추가한다.
+
+```jsx
+// pages/_app.js
+import { Inter } from '@next/font/google'
+
+// If loading a variable font, you don't need to specify the font weight
+const inter = Inter({ subsets: ['latin'] })
+
+export default function MyApp({ Component, pageProps }) {
+  return (
+    <main className={inter.className}>
+      <Component {...pageProps} />
+    </main>
+  )
+}
+```
+
+만약 다양한 폰트를 사용하지 못한다면, weight(무게)를 지정해야 할 필요가 있다.
+```jsx
+// pages/_app.js
+import { Roboto } from '@next/font/google'
+
+const roboto = Roboto({
+  weight: '400',
+  subsets: ['latin'],
+})
+
+export default function MyApp({ Component, pageProps }) {
+  return (
+    <main className={roboto.className}>
+      <Component {...pageProps} />
+    </main>
+  )
+}
+
+```
+
+여러개의 weights(무게) 그리고/또는 styles 를 array를 사용하여 지정할 수 있다:
+```js
+const roboto = Roboto({
+  weight: ['400', '700'],
+  style: ['normal', 'italic'],
+  subsets: ['latin'],
+})
+```
+
+###### Apply the font in `<head>`
+
+wrapper과 `className` 없이 다음과 같이 `<head>`안에서 주입하여 폰트를 사용할 수 있다.
+
+```jsx
+// pages/_app.js
+import { Inter } from '@next/font/google'
+
+const inter = Inter({ subsets: ['latin'] })
+
+export default function MyApp({ Component, pageProps }) {
+  return (
+    <>
+      <style jsx global>{`
+        html {
+          font-family: ${inter.style.fontFamily};
+        }
+      `}</style>
+      <Component {...pageProps} />
+    </>
+  )
+}
+```
+
+###### Single page usage
+
+싱글 페이지에서 폰트를 사용하기 위해, 아래와 같이 지정한 페이지에 추가한다.
+```jsx
+// pages/index.js
+import { Inter } from '@next/font/google'
+
+const inter = Inter({ subsets: ['latin'] })
+
+export default function Home() {
+  return (
+    <div className={inter.className}>
+      <p>Hello World</p>
+    </div>
+  )
+}
+```
+
+###### Specifying a subset
+
+Google Fonts는 자동 [subset](https://fonts.google.com/knowledge/glossary/subsetting)이다.
+폰트 파일의 사이즈를 재구성(압축)하고 성능을 개선한다.
+이러한 subsets중 preload하기를 원하는 것을 정의할 필요가 있다.
+`preload`가 true일때마다  모든 subset을 지정하지 못하면 경고가 발생할 것이다.
+
+아래와 같이 두가지 방법에서 수행할 수 있다:
+
+- 함수를 호출을 추가하여 글꼴 별로 글꼴 단위로
+```js
+// pages/_app.js
+const inter = Inter({ subsets: ['latin'] })
+```
+
+- `next.config.js` 에서 모든 폰트를 전역화
+```js
+// next.config.js
+module.exports = {
+  experimental: {
+    fontLoaders: [
+      { loader: '@next/font/google', options: { subsets: ['latin'] } },
+    ],
+  },
+}
+```
+- 둘다 설정되어있으면, 함수 호출안의 subset을 사용한다.
+
+더 많은 정보를 위해 [Font API Reference](https://nextjs.org/docs/api-reference/next/font#nextfontgoogle)를 보자
+
+
+##### Local Fonts
+
+`@next/font/local`을 import 하고 local 폰트 파일의 src를 지정하자. 우리는 최고의 성능과 유연함을 위해 [variable fonts](https://fonts.google.com/variablefonts)를 추천한다.
+
+```js
+// pages/_app.js
+import localFont from '@next/font/local'
+
+// Font files can be colocated inside of `pages`
+const myFont = localFont({ src: './my-font.woff2' })
+
+export default function MyApp({ Component, pageProps }) {
+  return (
+    <main className={myFont.className}>
+      <Component {...pageProps} />
+    </main>
+  )
+}
+```
+단일 font family를 위한 여러개의 파일을 사용하길 원하다면 `src`는 array로 할 수 있다.
+
+```js
+const roboto = localFont({
+  src: [
+    {
+      path: './Roboto-Regular.woff2',
+      weight: '400',
+      style: 'normal',
+    },
+    {
+      path: './Roboto-Italic.woff2',
+      weight: '400',
+      style: 'italic',
+    },
+    {
+      path: './Roboto-Bold.woff2',
+      weight: '700',
+      style: 'normal',
+    },
+    {
+      path: './Roboto-BoldItalic.woff2',
+      weight: '700',
+      style: 'italic',
+    },
+  ],
+})
+```
+더 많은 정보를 위해 [Font API Reference](https://nextjs.org/docs/api-reference/next/font#nextfontlocal)를 보자.
+
+#### With Tailwind CSS
+
+`@next/font`는 CSS 변수들에 통한 Tailwind CSS 와 함께 사용할 수 있다.
+
+다음 예제에서, `@next/font/google`(모든 google의 폰트나 local 폰트들을 사용 가능하다.) 로 부터 `Inter` 폰트를 사용한다.
+변수 옵션으로 폰트가 로드되고, CSS 변수 이름을 정의하고, 이를 `inter`에 할당한다. 
+그리고나서, `inter .variable`를 사용하여 HTML document에 CSS 변수를 추가한다.
+```js
+// pages/_app.js
+import { Inter } from '@next/font/google'
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+})
+
+export default function MyApp({ Component, pageProps }) {
+  return (
+    <main className={`${inter.variable} font-sans`}>
+      <Component {...pageProps} />
+    </main>
+  )
+}
+```
+
+마지막으로, [Tailwind CSS config](https://github.com/vercel/next.js/tree/canary/examples/with-tailwindcss)에 CSS 변수를 추가할 수 있다.
+
+```js
+// tailwind.config.js
+const { fontFamily } = require('tailwindcss/defaultTheme')
+
+/** @type {import('tailwindcss').Config} \*/
+module.exports = {
+  content: [
+    './pages/**/*.{js,ts,jsx,tsx}',
+    './components/**/*.{js,ts,jsx,tsx}',
+  ],
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ['var(--font-inter)', ...fontFamily.sans],
+      },
+    },
+  },
+  plugins: [],
+}
+
+```
+
+이제 `font-sans` utility class를 사용하여 element에 폰트를 적용할 수 있다.
+
+#### Preloading
+
+사이트의 페이지에서 폰트 함수를 호출할때, 이것은 전역적으로 사용할 수 없고 모든 라우트에서 preload 되었다.
+오히려, 폰트는 사용하는 파일의 타입에 따라서 관계된 라우트에서만 사전 로드된다.
+
+- 만약 [unique page](https://nextjs.org/docs/basic-features/pages)라면, 해당 페이지의 unique route에만 preload 된다.
+- 먼역 [custom App](https://nextjs.org/docs/advanced-features/custom-app)이라면, `/pages` 아래 사이트이 모든 route 에서 preload 된다.
+
+#### Reusing fonts
+
+`localFont` 또는 Google 폰트 함수를 호출할 모든 시간마다, 어플리케이션에서 하나의 인스턴스로 호스트 된다.
+그러므로 여러 파일에서 같은 폰트 함수로 로드하고 있다면 같은 폰트의 여러개 인스턴스들이 호스트 된다. 
+이런 경우, 아래와 같이 하길 추천한다.
+
+- 하나의 공유 파일에서 font loader 함수를 호출
+- 상수로 Export
+- 폰트를 사용하려고 하는 각 파일에서 상수를 import
+
+#### Next Steps
+
+[Font API Reference](https://nextjs.org/docs/api-reference/next/font)
+[Image Optimization](https://nextjs.org/docs/basic-features/image-optimization)
+
 - ### Static File Serving
 Next.js는 root 디렉토리에 `public` 폴더 아래에서 이미지같은 static 파일들을 관리 할 수 있습니다. `public` 안쪽에 파일은 URL(`/`)로 시작하여 접근 할 수 있습니다.
 
-예를 들어 , 만약에 public/me.png 이미지를 추가하려면 , 아래와 같은 코드는 이미지에 접근 할 수 있습니다. 
+예를 들어 , 만약에 public/me.png 이미지를 추가하려면 , 아래와 같은 코드는 이미지에 접근 할 수 있습니다.
 
 ```js
 import Image from 'next/image'
