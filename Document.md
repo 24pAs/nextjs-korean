@@ -1,3 +1,4 @@
+
 <img src="https://camo.githubusercontent.com/f21f1fa29dfe5e1d0772b0efe2f43eca2f6dc14f2fede8d9cbef4a3a8210c91d/68747470733a2f2f6173736574732e76657263656c2e636f6d2f696d6167652f75706c6f61642f76313636323133303535392f6e6578746a732f49636f6e5f6c696768745f6261636b67726f756e642e706e67" />
 
 
@@ -808,12 +809,448 @@ function Profile() {
 
 - ### Built-in CSS Support
 
+  - Examples
+    - [Basic CSS Example](https://github.com/vercel/next.js/tree/canary/examples/basic-css)
+    - [With Tailwind CSS](https://github.com/vercel/next.js/tree/canary/examples/with-tailwindcss)
+
+  Next.js는 JavaScript 파일에서 CSS file을 import 하는 것을 허용해줍니다. 이것은 Next.js가 JavaScript의 import 컨셉을 상속받았기 때문에 가능합니다.
+
+  ### Adding a Global Stylesheet
+
+  스타일시트를 애플리케이션에 추가하기 위해 `pages/_.app.js` 안에 CSS 파일을 import 하세요.
+
+  예를 들어, 아래처럼 `styles.css` 라는 이름은 가진 스타일 시트가 있다고 생각해봅시다.
+
+  ```css
+  body {
+    font-family: 'SF Pro Text', 'SF Pro Icons', 'Helvetica Neue', 'Helvetica',
+      'Arial', sans-serif;
+    padding: 20px 20px 60px;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+  ```
+
+  `pages/_app.js` 파일이 없다면 만들고 `styles.css` 파일을 import 하세요.
+
+  ```javascript
+  import '../styles.css'
+
+  // This default export is required in a new `pages/_app.js` file.
+  export default function MyApp({ Component, pageProps }) {
+    return <Component {...pageProps} />
+  }
+  ```
+
+  이 스타일들(`styles.css`)은 애플리케이션의 모든 페이지와 컴포넌트에 적용이 될 것입니다.
+
+  스타일시트를 전역적으로 사용하고 충돌을 피하기 위해서는 오직 `pages/_app.js` 파일 안에서 import 해야만 합니다.
+
+  개발 환경에서 이런 방식으로 스타일시트를 표현하는 것은 스타일을 수정할 때 hot reload가 가능합니다. 다시 말해, 애플리케이션의 상태를 유지할 수 있습니다.
+
+  배포 환경에서 모든 CSS 파일들은 자동적으로 하나의 `.css` 파일로 합쳐질 것입니다.
+
+  개발 환경에서는 이 방식으로 CSS 파일을 사용할 때 hot reloading이 가능합니다. 배포 환경에서는 모든 CSS 파일이 자동으로 하나의 `.css` 파일로 결합됩니다.
+
+  ### Import styles from `node_modules`
+
+  Next.js는 9.5.4 버전 이후로, 어디서든지 node_modules에서 CSS 파일을 import할 수 있습니다.
+
+  `Bootstrap`이나 `nprogress`와 같은 전역 스타일시트를 사용하려면, `pages/_app.js` 파일 안에 import 해주세요. 아래는 예시입니다.
+
+  ```javascript
+  // pages/_app.js
+  import 'bootstrap/dist/css/bootstrap.css'
+
+  export default function MyApp({ Component, pageProps }) {
+    return <Component {...pageProps} />
+  }
+  ```
+
+  서드파티 컴포넌트에서 필요한 CSS를 import 하려면, 해당 컴포넌트 안에서 해주세요. 아래는 예시입니다.
+
+  ```javascript
+  // components/ExampleDialog.js
+  import { useState } from 'react'
+  import { Dialog } from '@reach/dialog'
+  import VisuallyHidden from '@reach/visually-hidden'
+  import '@reach/dialog/styles.css'
+
+  function ExampleDialog(props) {
+    const [showDialog, setShowDialog] = useState(false)
+    const open = () => setShowDialog(true)
+    const close = () => setShowDialog(false)
+
+    return (
+      <div>
+        <button onClick={open}>Open Dialog</button>
+        <Dialog isOpen={showDialog} onDismiss={close}>
+          <button className="close-button" onClick={close}>
+            <VisuallyHidden>Close</VisuallyHidden>
+            <span aria-hidden>×</span>
+          </button>
+          <p>Hello there. I am a dialog</p>
+        </Dialog>
+      </div>
+    )
+  }
+  ```
+
+  ### [Adding Component-Level CSS](https://nextjs.org/docs/basic-features/built-in-css-support#adding-component-level-css)
+
+  Next.js는 `[name].module.css` 파일 네이밍 규칙을 사용하여 CSS Modules를 지원합니다.
+
+  CSS Modules는 고유한 클래스 이름을 자동으로 생성하여 CSS를 지역적으로 스코프화합니다. 이를 통해 충돌 걱정 없이 동일한 CSS 클래스 이름을 다른 파일에서 사용할 수 있습니다.
+
+  이러한 행동 덕분에 CSS Modules는 컴포넌트 수준 CSS를 포함하는 이상적인 방법입니다. CSS Module 파일은 **앱 어디에서든지 가져올 수 있습니다**.
+
+  예를 들어 `components/` 폴더에 있는 재사용 가능한 `Button` 컴포넌트를 고려해보세요:
+
+  먼저, 다음 내용을 포함하는 `components/Button.module.css`를 작성합니다:
+
+  ```css
+  /*
+  다른 `.css` 또는 `.module.css` 파일에서 `.error {}`가 충돌하지 않아도 됩니다!
+  */
+  .error {
+    color: white;
+    background-color: red;
+  }
+  ```
+
+  그런 다음, 위의 CSS 파일을 가져와 사용하는 `components/Button.js`를 만듭니다:
+
+  ```javascript
+  import styles from './Button.module.css'
+
+  export function Button() {
+    return (
+      <button
+        type="button"
+        // "error" 클래스가 가져온 `styles` 객체의 속성으로서 접근되는 것에 유의하세요.
+        className={styles.error}
+      >
+        Destroy
+      </button>
+    )
+  }
+  ```
+
+  CSS Modules는 *선택적인 기능*으로, **.module.css 확장자를 가진 파일에만 활성화**됩니다. 일반 `<link>` 스타일시트 및 전역 CSS 파일도 여전히 지원됩니다.
+
+  생산 환경에서는 모든 CSS Module 파일이 **자동으로 minifying 및 code splitting 된 .css 파일로 연결**됩니다. 이러한 `.css` 파일은 앱에서 실행 경로를 나타내어 앱이 그리기 위해 필요한 최소한의 CSS가 로드되도록 보장합니다.
+
+  ### [Sass Support](https://nextjs.org/docs/basic-features/built-in-css-support#sass-support)
+
+  Next.js는 `.scss` 및 `.sass` 확장자를 사용하여 Sass를 가져올 수 있습니다. `.module.scss` 또는 `.module.sass` 확장자를 사용하여 컴포넌트 수준 Sass를 사용할 수 있습니다.
+
+  Next.js의 내장 Sass 지원을 사용하려면 먼저 `[sass](<https://github.com/sass/sass>)`를 설치해야합니다:
+
+  ```bash
+  npm install --save-dev sass
+  ```
+
+  Sass 지원은 위에서 설명한 내장 CSS 지원과 동일한 장점과 제한 사항을 갖습니다.
+
+  > 참고: Sass는 각각 고유한 확장자가 있는 [두 가지 다른 구문](https://sass-lang.com/documentation/syntax)을 지원합니다. .scss 확장자는 [SCSS 구문](https://sass-lang.com/documentation/syntax#scss)을 사용해야하며, .sass 확장자는 [들여쓰기 구문 ("Sass")](https://sass-lang.com/documentation/syntax#the-indented-syntax)을 사용해야합니다.
+  >
+  > 둘 중 어느 것을 선택해야하는지 확실하지 않은 경우, 들여쓰기 구문을 사용하지 않아도되는 CSS의 상위 집합인 `.scss` 확장자를 사용하세요.
+
+  ### [Customizing Sass Options](https://nextjs.org/docs/basic-features/built-in-css-support#customizing-sass-options)
+
+  Sass 컴파일러를 구성하려면 `next.config.js`에서 `sassOptions`를 사용할 수 있습니다.
+
+  예를 들어 `includePaths`를 추가하려면:
+
+  ```javascript
+  const path = require('path')
+
+  module.exports = {
+    sassOptions: {
+      includePaths: [path.join(__dirname, 'styles')],
+    },
+  }
+  ```
+
+  ### [Sass Variables](https://nextjs.org/docs/basic-features/built-in-css-support#sass-variables)
+
+  Next.js는 CSS Module 파일에서 내보낸 Sass 변수를 지원합니다.
+
+  예를 들어 내보낸 `primaryColor` Sass 변수를 사용하는 방법:
+
+  ```css
+  /* variables.module.scss */
+  $primary-color: #64ff00;
+
+  :export {
+    primaryColor: $primary-color;
+  }
+  ```
+
+  ```javascript
+  // pages/_app.js
+  import variables from '../styles/variables.module.scss'
+
+  export default function MyApp({ Component, pageProps }) {
+    return (
+      <Layout color={variables.primaryColor}>
+        <Component {...pageProps} />
+      </Layout>
+    )
+  }
+  ```
+
+  ### CSS-in-JS
+
+  <details >
+    <summary>Examples</summary>
+    <ul>
+
+  ​	<li><a href="(https://github.com/vercel/next.js/tree/canary/examples/with-styled-jsx">Styled JSX</a></li>
+  ​	<li><a href="https://github.com/vercel/next.js/tree/canary/examples/with-styled-components">Styled Components</a></li>
+  ​	<li><a href="https://github.com/vercel/next.js/tree/canary/examples/with-emotion">Emotion</a></li>
+  ​	<li><a href="https://github.com/vercel/next.js/tree/canary/examples/with-linaria">Linaria</a></li>
+  ​	<li><a href="https://github.com/vercel/next.js/tree/canary/examples/with-tailwindcss-emotion">Tailwind CSS + Emotion</a></li>
+  ​	<li><a href="https://github.com/vercel/next.js/tree/canary/examples/with-styletron">Styletron</a></li>
+  ​	<li><a href="https://github.com/vercel/next.js/tree/canary/examples/with-cxs">Cxs</a></li>​
+
+  ​	<li><a href="https://github.com/vercel/next.js/tree/canary/examples/with-aphrodite">Aphrodite</a></li>
+
+  ​	<li><a href="https://github.com/vercel/next.js/tree/canary/examples/with-fela">Fela</a></li>
+
+  ​	<li><a href="https://github.com/vercel/next.js/tree/canary/examples/with-stitches">Stitches</a></li>
+
+    </ul>
+  </details>
+
+  기존 CSS-in-JS 솔루션을 사용할 수 있습니다. 가장 간단한 것은 인라인 스타일입니다:
+
+  ```javascript
+  function HiThere() {
+    return <p style={{ color: 'red' }}>hi there</p>}
+
+  export default HiThere
+  ```
+
+  우리는 `styled-jsx`를 번들로 제공하여 격리 된 스코프 CSS를 지원합니다. 목표는 Web Components와 유사한 "Shadow CSS"를 지원하는 것이지만, 불행히도 [서버 렌더링을 지원하지 않으며 JS 만 지원합니다](https://github.com/w3c/webcomponents/issues/71).
+
+  다른 인기있는 CSS-in-JS 솔루션 (예 : Styled Components)에 대한 위의 예시를 참조하십시오.
+
+  `styled-jsx`를 사용하는 컴포넌트는 다음과 같습니다:
+
+  ```javascript
+  function HelloWorld() {
+    return (
+      <div>
+        Hello world
+        <p>scoped!</p>
+        <style jsx>{`
+          p {
+            color: blue;
+          }
+          div {
+            background: red;
+          }
+          @media (max-width: 600px) {
+            div {
+              background: blue;
+            }
+          }
+        `}</style>
+        <style global jsx>{`
+          body {
+            background: black;
+          }
+        `}</style>
+      </div>)
+  }
+
+  export default HelloWorld
+  ```
+
+  더 많은 예제를 보려면 [styled-jsx 문서](https://github.com/vercel/styled-jsx)를 참조하십시오.
+
+  ### [FAQ](https://nextjs.org/docs/basic-features/built-in-css-support#faq)
+
+  ### **JavaScript가 비활성화되면 작동합니까?**
+
+  네, JavaScript를 비활성화하면 CSS가 여전히 프로덕션 빌드 (`next start`)에서 로드됩니다. 개발 중에는 Fast Refresh와 최상의 개발자 환경을 제공하기 위해 JavaScript가 활성화되어야합니다.
+
+  ### [Related](https://nextjs.org/docs/basic-features/built-in-css-support#related)
+
+  다음에 할 일에 대한 자세한 정보는 다음 섹션을 참조하십시오:
+
+  - [사용자 정의 PostCSS 구성](https://nextjs.org/docs/advanced-features/customizing-postcss-config)
+
 - ### Layouts
+
+  > 참고: Next.js 13은 (베타) app/ 디렉토리를 도입합니다. 이 새로운 디렉토리에는 레이아웃, 중첩된 라우트 및 기본적으로 서버 컴포넌트를 사용하는 기능이 포함됩니다. app/ 내부에서는 레이아웃을 포함한 전체 애플리케이션의 데이터를 검색할 수 있으며, (위치 기반 데이터 검색을 지원하는) 보다 세부적인 중첩된 레이아웃을 지원합니다.
+
+  > app/를 점진적으로 채택하는 방법에 대해 자세히 알아보세요.
+
+  React 모델을 사용하면 페이지를 여러 구성 요소로 분해할 수 있습니다. 이러한 구성 요소 중 많은 요소는 종종 페이지 간에 재사용됩니다. 예를 들어, 모든 페이지에서 동일한 탐색 막대와 바닥 글을 가질 수 있습니다.
+
+  ```javascript
+  // components/layout.js
+
+  import Navbar from './navbar'
+  import Footer from './footer'
+
+  export default function Layout({ children }) {
+    return (
+      <>
+        <Navbar />
+        <main>{children}</main>
+        <Footer />
+      </>)
+  }
+  ```
+
+  ## [Examples](https://nextjs.org/docs/basic-features/layouts#examples)
+
+  ### [Single Shared Layout with Custom App](https://nextjs.org/docs/basic-features/layouts#single-shared-layout-with-custom-app)
+
+  전체 애플리케이션에 대해 하나의 레이아웃만 있는 경우 사용자 정의 App을 만들고 해당 레이아웃으로 애플리케이션을 래핑할 수 있습니다. `<Layout />` 구성 요소가 페이지를 변경할 때 재사용되므로 해당 구성 요소의 상태 (예: 입력 값)가 보존됩니다.
+
+  ```javascript
+  // pages/_app.js
+
+  import Layout from '../components/layout'
+
+  export default function MyApp({ Component, pageProps }) {
+    return (
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>)
+  }
+  ```
+
+  ### [Per-Page Layouts](https://nextjs.org/docs/basic-features/layouts#per-page-layouts)
+
+  여러 레이아웃이 필요한 경우 페이지에 `getLayout` 속성을 추가하여 레이아웃용 React 구성 요소를 반환할 수 있습니다. 이를 통해 레이아웃을 페이지별로 정의할 수 있습니다. 함수를 반환하기 때문에 필요한 경우 복잡한 중첩된 레이아웃을 가질 수 있습니다.
+
+  ```javascript
+  // pages/index.js
+
+  import Layout from '../components/layout'
+  import NestedLayout from '../components/nested-layout'
+
+  export default function Page() {
+    return (
+      /** Your content */
+    )
+  }
+
+  Page.getLayout = function getLayout(page) {
+    return (
+      <Layout>
+        <NestedLayout>{page}</NestedLayout>
+      </Layout>)
+  }
+  ```
+
+  ```javascript
+  // pages/_app.js
+
+  export default function MyApp({ Component, pageProps }) {
+    // 페이지 수준에서 정의된 레이아웃을 사용합니다.
+    const getLayout = Component.getLayout || ((page) => page)
+
+    return getLayout(<Component {...pageProps} />)
+  }
+  ```
+
+  페이지 간에 이동할 때 Single-Page Application(SPA) 경험을 위해 페이지 상태(입력 값, 스크롤 위치 등)를 유지하려고 합니다.
+
+  이 레이아웃 패턴을 사용하면 React 구성 요소 트리가 페이지 전환 사이에 유지되므로 상태가 보존됩니다.
+
+  > 참고: 이 프로세스는 변경된 요소를 이해하는 React가 호출하는 [reconciliation](https://reactjs.org/docs/reconciliation.html)입니다.
+
+  ### [With TypeScript](https://nextjs.org/docs/basic-features/layouts#with-typescript)
+
+  TypeScript를 사용할 때는 먼저 페이지에 대한 새 유형을 만들어야 합니다. 이 유형에는 `getLayout` 함수가 포함됩니다. 그런 다음 `AppProps`에 대한 새 유형을 만들어 `Component` 속성을 이전에 만든 유형으로 오버라이드해야 합니다.
+
+  ```javascript
+  // pages/index.tsx
+
+  import type { ReactElement } from 'react'
+  import Layout from '../components/layout'
+  import NestedLayout from '../components/nested-layout'
+  import type { NextPageWithLayout } from './_app'
+
+  const Page: NextPageWithLayout = () => {
+    return <p>hello world</p>}
+
+  Page.getLayout = function getLayout(page: ReactElement) {
+    return (
+      <Layout>
+        <NestedLayout>{page}</NestedLayout>
+      </Layout>)
+  }
+
+  export default Page
+  ```
+
+  ```javascript
+  // pages/_app.tsx
+
+  import type { ReactElement, ReactNode } from 'react'
+  import type { NextPage } from 'next'
+  import type { AppProps } from 'next/app'
+
+  export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
+    getLayout?: (page: ReactElement) => ReactNode
+  }
+
+  type AppPropsWithLayout = AppProps & {
+    Component: NextPageWithLayout
+  }
+
+  export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
+    // 페이지 수준에서 정의된 레이아웃을 사용합니다.
+    const getLayout = Component.getLayout ?? ((page) => page)
+
+    return getLayout(<Component {...pageProps} />)
+  }
+  ```
+
+  ### [Data Fetching](https://nextjs.org/docs/basic-features/layouts#data-fetching)
+
+  레이아웃 내에서 `useEffect` 또는 [SWR](https://swr.vercel.app/)과 같은 라이브러리를 사용하여 클라이언트 측에서 데이터를 가져올 수 있습니다. 이 파일은 페이지가 아니므로 현재 `getStaticProps` 또는 `getServerSideProps`를 사용할 수 없습니다.
+
+  ```javascript
+  // components/layout.js
+
+  import useSWR from 'swr'
+  import Navbar from './navbar'
+  import Footer from './footer'
+
+  export default function Layout({ children }) {
+    const { data, error } = useSWR('/api/navigation', fetcher)
+
+    if (error) return <div>Failed to load</div>if (!data) return <div>Loading...</div>return (
+      <>
+        <Navbar links={data.links} />
+        <main>{children}</main>
+        <Footer />
+      </>)
+  }
+  ```
+
+  다음 단계에 대한 자세한 내용은 다음 섹션을 참조하는 것이 좋습니다:
+
+  - [Pages](https://nextjs.org/docs/basic-features/pages)
+
+    Next.js에서 페이지가 무엇인지에 대해 자세히 알아보세요.
+
+  - [사용자 정의 App](https://nextjs.org/docs/advanced-features/custom-app)Next.js가 페이지를 초기화하는 방법에 대해 자세히 알아보세요.
+
+  ​
 
 - ### Image Optimization
 
 >Examples
-> 
+>
 >[Image Component](https://github.com/vercel/next.js/tree/canary/examples/image-component)
 >
 
@@ -962,23 +1399,23 @@ export default function Home() {
 3. Implicitly(절대적), [fill](https://nextjs.org/docs/api-reference/next/image#fill) 를 사용하여  이미지를 부모 element에 확장하고 채운다. 
 
 > 이미지 사이즈를 모른다면?
-> 
+>
 > 만약 이미지 사이지의 정보가 없는 소스로 부터 이미지들에 접근했다면, 아래와 같이 몇가지 할수 있는게 있다:
-> 
+>
 > Use `fill`
-> 
+>
 > `fill` prop은 이미지가 부모 element에 의해 크기가 측정된다. CSS를 사용하여 모든 media query break points에 일치하는 페이지의 `sizes` prop에 따라 부모의 element에 공간을 주는 것을 고려해라. 
 > `object-fit` 에 `fill`, `contain` 또는 `cover` 를 사용하고, `object-position`를 사용해서 그 공간을 이미지가 매우는 방법을 정의할 수 있다.
-> 
-> Normalize your images
-> 
->제어하는 소스로부터 이미지를 제공할 경우, 일정한 사이지로 이미지를 표준하는 이미지 파이프 라인을 수정하는 것을 고려해라.
 >
->Modify your API calls
-> 
+> Normalize your images
+>
+> 제어하는 소스로부터 이미지를 제공할 경우, 일정한 사이지로 이미지를 표준하는 이미지 파이프 라인을 수정하는 것을 고려해라.
+>
+> Modify your API calls
+>
 > 만약 어플리케이션이 API call(cms와 같은)을 사용하여 이미지 URL들을 회수한다면, URL과 함께 이미지 치수를 함께 리턴하는 API call을 수정할 수 있을 것이다.
-> 
-제안된 방법 중 이미지 크기 조정에 적합한것이 없다면  `next/image` component는 표준의 `<img>` elements 와 함께 페이지에서 잘 작동하도록 설계되었다.
+>
+> 제안된 방법 중 이미지 크기 조정에 적합한것이 없다면  `next/image` component는 표준의 `<img>` elements 와 함께 페이지에서 잘 작동하도록 설계되었다.
 
 #### Styling
 image component 스타일링은 보통 `<img>` element에 스타일링 하는것과 유사해 보이지만, 아래의 몇가지 지침을 명심해야한다:
@@ -1293,7 +1730,7 @@ module.exports = {
 [Image Optimization](https://nextjs.org/docs/basic-features/image-optimization)
 
 - ### Static File Serving
-Next.js는 root 디렉토리에 `public` 폴더 아래에서 이미지같은 static 파일들을 관리 할 수 있습니다. `public` 안쪽에 파일은 URL(`/`)로 시작하여 접근 할 수 있습니다.
+  Next.js는 root 디렉토리에 `public` 폴더 아래에서 이미지같은 static 파일들을 관리 할 수 있습니다. `public` 안쪽에 파일은 URL(`/`)로 시작하여 접근 할 수 있습니다.
 
 예를 들어 , 만약에 public/me.png 이미지를 추가하려면 , 아래와 같은 코드는 이미지에 접근 할 수 있습니다.
 
@@ -1321,7 +1758,7 @@ export default Avatar
 
 
 - ### Fash Refresh
-Fast Refresh는 Next.js에 기능이고 이 기능은 리액트 컴포넌트를 수정할때 즉각적인 피드백을 줍니다. Fast Refresh는 Next.js **9.4 버전** 부터 가능합니다. Next.js Fast Refresh를 사용하면 **컴포넌트 상태를 잃지** 않고 대부분의 편집 내용을 1초 이내에 볼 수 있습니다.
+  Fast Refresh는 Next.js에 기능이고 이 기능은 리액트 컴포넌트를 수정할때 즉각적인 피드백을 줍니다. Fast Refresh는 Next.js **9.4 버전** 부터 가능합니다. Next.js Fast Refresh를 사용하면 **컴포넌트 상태를 잃지** 않고 대부분의 편집 내용을 1초 이내에 볼 수 있습니다.
 
 **How It Works**
 
@@ -1345,7 +1782,7 @@ Fast Refresh는 편집중인 컴포넌트에 로컬 React 상태를 안전한 �
 - 클래스 컴포넌트에서는 로컬 상태가 보존되지 않습니다. ( 오직 함수형 컴포넌트가 가능합니다. )
 - 편집 중인 파일에 React 컴포넌트 외에 다른 내보내기가 있을 수 있습니다.
 - 때떄로 , 파일은HOC(Wrapped Component)와 같은 상위 구성 요소를 호출한 결과를 내보냅니다. 반환된 구성 요소가 클래스인 경우 해당 상태가 재설정됩니다.
--  `export default () => <div />`와 같은 익명 화살표는 Fast Refresh로 인해 로컬 구성 요소 상태가 유지되지 않습니다. 대규모 코드베이스의 경우 Name-default-component 코드모드를 사용할 수 있습니다.
+- `export default () => <div />`와 같은 익명 화살표는 Fast Refresh로 인해 로컬 구성 요소 상태가 유지되지 않습니다. 대규모 코드베이스의 경우 Name-default-component 코드모드를 사용할 수 있습니다.
 
 함수형 컴포넌트로 변함에 따라서 더 많은 경우 상태가 유지될 것입니다. 
 
@@ -1504,3 +1941,4 @@ Fast Refresh는 가능한 편집하는동안 컴포넌트 상태를 유지하려
 - ### Migrating from React Router
 ---
 ## FAQ
+>>>>>>> 25313b985700f4f116fa34872652905d7db2bdd8
