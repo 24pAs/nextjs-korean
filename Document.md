@@ -1623,8 +1623,410 @@ Fast Refresh는 가능한 편집하는동안 컴포넌트 상태를 유지하려
 
 그러나 때때로 useEffect의 재실행에 탄력적인 코드 작성은 Fast Refresh가 없어도 좋은 방법입니다. 당신이 나중에 그것에 새로운 의존성을 소개하는 것이 더 쉽게 만들 것이며, 우리가 적극적으로 활성화하는 것을 권장하는 [React Strict Mode](https://nextjs.org/docs/api-reference/next.config.js/react-strict-mode)에 의해 시행됩니다.
 - ### ESLint
+  Next.js는 통합된 ESLint 환경을 제공합니다. `next lint` 스크립트를 `package.json`에 추가하여 사용할 수 있습니다. 
+
+```jsx
+"scripts": {
+  "lint": "next lint"
+}
+```
+
+그런 다음 `npm run lint` 혹은 `yarn lint`를 실행하세요 
+
+```jsx
+yarn lint 
+```
+
+여러분의 애플리케이션에 ESLint가 아직 구성되어 있지 않다면 설치 및 구성 프로세스 가이드를 참고하여 진행하세요. 
+
+```jsx
+yarn lint
+
+# You'll see a prompt like this:
+#
+# ? How would you like to configure ESLint?
+#
+# ❯   Base configuration + Core Web Vitals rule-set (recommended)
+#     Base configuration
+#     None
+```
+
+아래와 같은 세가지 옵션 중 하나를 선택할 수 있습니다. 
+
+- Strict: Next.js의 기본 ESLint 설정을 보다 엄격한 Core Web Vitals 규칙들과 함께 포함합니다. 이는 ESLint를 처음 설정하는 개발자들을 위해 추천되는 구성입니다.
+
+```jsx
+{
+  "extends": "next/core-web-vitals"
+}
+```
+
+- Base: Next.js의 ESLint 구성을 포함합니다.
+
+```jsx
+{
+  "extends": "next"
+}
+```
+
+- Cancle: ESLint 구성을 포함하고 있지 않습니다. 커스텀한 ESLint 구성을 설정할 계획이 있는 경우에만 해당 옵션을 설정하세요.
+
+두 가지 옵션을 선택하면 Next.js는 자동적으로 애플리케이션에 `eslint`와 `eslint-config-next`를 dev dependecies로 설치하고 프로젝트의 루트 경로에 여러분이 선택한 구성을 포함한 `.eslintrc.json` 파일을 생성할 것입니다. 
+
+이제 `next lint`를 실행할 때마다 ESLint가 실행되어 에러를 잡을 것입니다. ESLint는 한 번 설정하면 매번 빌드시(`next build`) 자동으로 실행됩니다. 에러가 있을 경우 빌드에 실패하고 경고의 경우는 아닙니다. 
+
+만약 `next build` 시 ESLint를 실행하고 싶지 않다면 [Ignoring ESLint](https://nextjs.org/docs/api-reference/next.config.js/ignoring-eslint) 문서를 참고하세요. 
+
+적절한 [intergration](https://eslint.org/docs/latest/use/integrations#editors)을 사용하여 개발 시 코드 편집기에서 경고와 에러를 바로 보는 것을 추천합니다.
+
+### ESLint Config
+
+기본적인 구성(eslint-config-next)는 Next.js환경에서 lint를 사용하는데 필요한 거의 모든 옵션을 포함합니다. 아직 여러분의 애플리케이션에 ESLint를 가지고 있지 않다면 우리는 `next lint`를 사용하여 ESLint를 구성하는 것을 추천합니다. 
+
+다른 구성으로 `eslint-config-next`를 사용하고 싶다면 해당 내용에 대해 언급하고 있는  [Additional Configurations](https://nextjs.org/docs/basic-features/eslint#additional-configurations) 페이지에서 충돌을 발생시키지 않는 방법을 학습하세요. 
+
+아래의 ESLint 플러그인에서 권장되는 규칙들은 모두 `eslint-config-next`에 포함됩니다. 
+
+- `[eslint-plugin-react](https://www.npmjs.com/package/eslint-plugin-react)`
+- `[eslint-plugin-react-hooks](https://www.npmjs.com/package/eslint-plugin-react-hooks)`
+- `[eslint-plugin-next](https://www.npmjs.com/package/@next/eslint-plugin-next)`
+
+위의 규칙들은 `next.config.js`에 있는 규칙보다 우선순위를 가집니다. 
+
+**ESLint Plugin **
+
+Next.js는 `eslint-plugin-next`라는 ESLint 플러그인을 제공하므로 기본 구성으로 번들되었다면 Next.js 애플리케이션에서 일어나는 이슈와 문제를 잡을 수 있습니다. 전체적인 규칙들은 아래와 같습니다. 
+
+- ✔: 권장되는 구성에서 enable된 값입니다.
+
+|  | Rule | Description |
+| --- | --- | --- |
+| ✔️ | https://nextjs.org/docs/messages/google-font-display | 구글의 폰트와 같은 폰트로 보이도록 강제합니다.  |
+| ✔️ | https://nextjs.org/docs/messages/google-font-preconnect | preconnect가 구글 폰트와 함께 사용되도록 보장합니다.  |
+| ✔️ | https://nextjs.org/docs/messages/inline-script-id | next/script 컴포넌트의  id 속성을 inline content로 강제합니다.  |
+| ✔️ | https://nextjs.org/docs/messages/next-script-for-ga | Google Analytics를 위한 inline script를 사용할 경우 next/script 컴포넌트를 선호합니다. |
+| ✔️ | https://nextjs.org/docs/messages/no-assign-module-variable | module 변수를 할당하는 것을 방지합니다.  |
+| ✔️ | https://nextjs.org/docs/messages/no-before-interactive-script-outside-document | next/script의 beforInteractive 를 pages/_document.js이외의 파일에서 사용하는 것을 방지합니다.  |
+| ✔️ | https://nextjs.org/docs/messages/no-css-tags | 수동 스타일 시트 태그를 방지합니다.  |
+| ✔️ | https://nextjs.org/docs/messages/no-document-import-in-page |  next/document를 pages/_document.js 이외의 파일에서 import하는 것을 방지합니다.  |
+| ✔️ | https://nextjs.org/docs/messages/no-duplicate-head | pages/_document.js에서 <Head>를 중복해서 사용하는 것을 방지합니다.  |
+| ✔️ | https://nextjs.org/docs/messages/no-head-element | <head> 요소를 사용하는 것을 방지합니다.  |
+| ✔️ | https://nextjs.org/docs/messages/no-head-import-in-document | next/head를 pages/_document.js에서 사용하는 것을 방지합니다.  |
+| ✔️ | https://nextjs.org/docs/messages/no-html-link-for-pages | Next.js 내부의 페이지로 이동하기 위해 <a> 태그를 사용하는 것을 방지합니다.  |
+| ✔️ | https://nextjs.org/docs/messages/no-img-element | 낮은 LCP와 높은 대역폭을 가진 <img> 태그를 사용하는 것을 방지합니다.  |
+| ✔️ | https://nextjs.org/docs/messages/no-page-custom-font | 페이지에서만 사용하는 custom font를 방지합니다.  |
+| ✔️ | https://nextjs.org/docs/messages/no-script-component-in-head | next/head 컴포넌트에서 next/script를 사용하는 것을 방지합니다.  |
+| ✔️ | https://nextjs.org/docs/messages/no-styled-jsx-in-document | styled-jsx를 pages/_document.js에서 사용하는 것을 방지합니다.  |
+| ✔️ | https://nextjs.org/docs/messages/no-sync-scripts | 동기적인 script를 방지합니다.  |
+| ✔️ | https://nextjs.org/docs/messages/no-title-in-document-head | next/document에서 <title> 태그를 Head 컴포넌트와 함께 사용하는 것을 막습니다.  |
+| ✔️ | @next/next/no-typos | https://nextjs.org/docs/basic-features/data-fetching에서 발생할 수 있는 일반적인 오타를 방지합니다.  |
+| ✔️ | https://nextjs.org/docs/messages/no-unwanted-polyfillio | Polyfill.io의 polyfills의 중복을 방지합니다.  |
+
+여러분의 애플리케이션에 ESLint 구성이 이미 존재한다면 `eslint-config-next`를 사용하는 것보다는 위의 플러그인을 확장해서 사용하는 것을 추천합니다. 더 자세히 알고 싶다면 [Recommended Plugin Ruleset](https://nextjs.org/docs/basic-features/eslint#recommended-plugin-ruleset) 페이지를 참조하세요.
+  
+  **Caching** 
+
+성능을 향상시키기 위해서 기본적으로 ESLint의 파일 정보는 캐싱됩니다. 이는 `next/cache`에 저장되거나 사용자가 정의한 [build directory](https://nextjs.org/docs/api-reference/next.config.js/setting-a-custom-build-directory)에 저장됩니다. single source file의 내용에 의존하는 ESLint 룰을 포함하고 있어 캐싱을 불가능하게 해야 한다면 `next lint`와 함께 `--no-cache` 플래그를 사용하세요. 
+
+```Bash
+next lint --no-cache
+```
+
+**Disabling Rules** 
+
+만약 기본으로 지원되는 플러그인(`react`, `react-hooks`, `next`) 안에 있는 어떠한 규칙을 변형하거나 불가능하게 만들고 싶다면 `.eslintrc` 안의 `rules` 속성을 사용하여 바로 변경할 수 있습니다. 
+
+```JSON
+{
+  "extends": "next",
+  "rules": {
+    "react/no-unescaped-entities": "off",
+    "@next/next/no-page-custom-font": "off"
+  }
+}
+```
+
+**Core Web Vitals** 
+
+`next/core-web-vitals` 의 규칙들은 strict 옵션을 선택하고 `next lint` 를 초기에 한 번 실행하면 활성화됩니다. 
+
+```JSON
+{
+  "extends": "next/core-web-vitals"
+}
+```
+
+`next/core-web-vitals`은 [Core Web Vitals](https://web.dev/vitals/)에 영향을 미치는 경우 기본적으로 경고가 되는 여러 규칙에서  `eslint-plugin-next`를 오류로 업데이트합니다. 
+
+`next/core-web-vitals` 의 entry point는 [Create Next App](https://nextjs.org/docs/api-reference/create-next-app)으로 빌드한 새로운 애플리케이션을 자동으로 포함합니다. 
+
+**Use With Other Tools** 
+
+**Prettier** 
+
+ESLint는 코드 formatting 규칙 또한 포함하므로 이미 존재하는[Prettier](https://prettier.io/) 규칙들과 충돌할 수 있습니다. ESLint와 Prettier를 함께 사용하고 싶다면 ESLint config에 https://github.com/prettier/eslint-config-prettier를 추가하는 것을 권장합니다. 
+
+먼저 의존성을 설치해봅시다. 
+
+```Bash
+npm install --save-dev eslint-config-prettier
+# or
+yarn add --dev eslint-config-prettier
+```
+
+그 후에 ESLint config에 `prettier`를 추가하세요. 
+
+```JSON
+{
+  "extends": ["next", "prettier"]
+}
+```
+
+**Init-staged** 
+
+만약 `next lint`를 staged 상태의 git파일들에 lint를 실행시키기 위해 [lint-staged](https://github.com/okonet/lint-staged)와 함께 사용하고 싶다면 `--file` 플래그의 사용을 지정하기 위해 아래의 내용들을 프로젝트의 루트 경로의 `.lintstagedrc.js` 파일에 추가하세요.  
+
+```jsx
+const path = require('path')
+
+const buildEslintCommand = (filenames) =>
+  `next lint --fix --file ${filenames
+    .map((f) => path.relative(process.cwd(), f))
+    .join(' --file ')}`
+
+module.exports = {
+  '*.{js,jsx,ts,tsx}': [buildEslintCommand],
+}
+```
+
+**Migrating Existing Config** 
+
+**Recommended Plugin Ruleset** 
+
+여러분의 애플리케이션에 ESLint가 이미 존재하고 아래의 조건들 중 하나라도 포함되는 경우: 
+
+- 아래의 플러그인 중 하나 혹은 그 이상이 이미 설치되어 있다면(각각을 설치했거나 `airbnb`나 `react-app`과 같은 다른 config에 포함될 경우):
+    - `react`
+    - `react-hooks`
+    - `jsx-ally`
+    - `import`
+- Next.js 내에서 Babel이 구성되는 방식과 다른 특정 `parserOptions`을 정의한 경우(Bable 구성을 customized한 경우에는 권장하지 않습니다.)
+- import 문을 처리하기 위해 Node.js나 Typescript [resolvers](https://github.com/benmosher/eslint-plugin-import#resolvers)에 `eslint-plugin-import`가 설치되어 있는 경우
+
+위 조건들에 해당되는 경우 여러분이 `eslint-config-next` 내에서 구성된 방식을 선호한다면 이러한 설정을 제거하거나 대신 Next.js ESLint 플러그인에서 직접 확장하는 것이 좋습니다. 
+
+```jsx
+module.exports = {
+  extends: [
+    //...
+    'plugin:@next/next/recommended',
+  ],
+}
+```
+
+해당 플러그인들은 `next lint`를 실행할 필요없이 프로젝트에 기본적으로 설치되어 있을 것입니다. 
+
+```Bash
+npm install --save-dev @next/eslint-plugin-next
+# or
+yarn add --dev @next/eslint-plugin-next
+```
+
+이는 같은 플러그인이나 설정들이 중복되어 충돌이나 에러를 발생시킬 위험을 제거합니다. 
+
+**Additional Configurations** 
+
+만약 여러분이 분리된 ESLint 설정을 이미 가지고 있는 상태에서 `eslint-config-next`를 포함하고 싶다면 아래와 같이 다른 구성들 이후에 확장되었다는 것을 명시해야 합니다. 
+
+```JSON
+{
+  "extends": ["eslint:recommended", "next"]
+}
+```
+
+`next`의 구성은 `parser`, `plugins`, `setting` 속성들의 기본값을 이미 다루고 있습니다. 여러분의 필요에 의해 다른 속성을 추가하고 싶은 것이 아니라면 해당 속성들을 재선언할 필요는 없습니다. 만약 공유가능한 다른 구성들을 포함한다면 해당 속성들이 덮여씌여지거나 변형되지 않았다는 것을 보장해야 합니다. 그렇지 않으면 다음 구성과 동작을 공유하는 모든 구성을 제거하거나 위에서 언급한 대로 Next.js ESLint 플러그인에서 직접 확장하는 것이 좋습니다.
+  
 
 - ### TypeScript
+  - Version History
+    
+    
+    | Version | Changes |
+    | --- | --- |
+    | v12.0.0 | TypeScript와 TSX를 빠르게 빌드하기 위해 https://nextjs.org/docs/advanced-features/compiler를 기본 컴파일러로 사용합니다.   |
+    | v10.2.1 | tsconfig.json에서 설정을 추가한 경우 https://www.typescriptlang.org/tsconfig#incremental을 지원합니다.  |
+    
+
+Next.js는 zero-configuration 설정과 Pages, APIs 등을 위한 빌트인 타입을 포함한 통합된 [TypeScript](https://www.typescriptlang.org/)환경을 제공합니다. 
+
+- [Clone and deploy the TypeScript starter](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-typescript&project-name=with-typescript&repository-name=with-typescript&utm_source=next-site&utm_medium=docs&utm_campaign=next-website)
+- [View an example application](https://github.com/vercel/next.js/tree/canary/examples/with-typescript)
+  
+  `**create-next-app` support** 
+
+`create-next-app` 에 `--ts, --typescript` 플래그를 사용하여 TypeScript 프로젝트를 만들 수 있습니다. 
+
+```Bash
+npx create-next-app@latest --ts
+# or
+yarn create next-app --typescript
+# or
+pnpm create next-app --ts
+```
+
+**Existing projects** 
+
+이미 존재하는 프로젝트에서 시작하고 싶다면 빈 `tsconfig.json`파일을 루트 디렉토리에 생성해주세요. 
+
+```Bash
+touch tsconfig.json
+```
+
+Next.js는 자동으로 해당 파일을 기본값으로 구성합니다. 커스텀한 [compiler options](https://www.typescriptlang.org/docs/handbook/compiler-options.html)을 포함하는  `tsconfig.json` 또한 지원합니다. 
+
+`next.config.js` 파일 안의 `typescript.tsconfigPath` 설정을 통해 `tsconfig.json` 파일에 대한 절대경로를 지원할 수도 있습니다. 
+
+`v12.0.0` 에서 시작한다면 Next.js는 TypeScript와 TSX의 빠른 빌드를 위해 [SWC](https://nextjs.org/docs/advanced-features/compiler)를 기본 컴파일러로 사용합니다. 
+
+Next.js는 `.babelrc`가 존재한다면 TypeScript를 처리하기 위해 Babel을 사용할 것입니다. 이는 몇 가지의 [주의사항](https://babeljs.io/docs/en/babel-plugin-transform-typescript#caveats)이 있으며 [일부 컴파일러 옵션이 다르게 동작할 수 있습니다.](https://babeljs.io/docs/en/babel-plugin-transform-typescript#typescript-compiler-options) 
+
+`next`를 실행시키면 Next.js는 설정을 마무리하기 위해 필요한 package들을 설치하기 위한 가이드를 제공할 것입니다. 
+
+```Bash
+npm run dev
+
+# You'll see instructions like these:
+#
+# Please install TypeScript, @types/react, and @types/node by running:
+#
+#         yarn add --dev typescript @types/react @types/node
+#
+# ...
+```
+
+이제 여러분은 파일을 `js`에서 `tsx`로 변환시키고 TypeScript의 이점을 활용할 준비가 되었습니다. 
+
+`next-env.d.ts` 파일이 프로젝트의 루트 경로에 생성되었을 것입니다. 이 파일은 TypeScript 컴파일러가 Next.js의 type을 선택하도록 보장합니다. 어떠한 경우에도 해당파일을 지우거나 수정하지 마세요. 해당 파일은 커밋되지 않아야 하며 version control에서 무시되어야 합니다.(eg. `gitignore` 파일 내부) 
+
+TypeScript의 `strict` 모드는 기본적으로 꺼져있습니다. TypeScript에 익숙하다면 `tsconfig.json`에서 해당 설정을 켜는 것을 권장합니다. 
+
+`next-env.d.ts`를 수정하는 대신에 `additional.d.ts`라는 새로운 파일을 만들고 `tsconfig.json`의 `include` 배열에 해당 참조를 추가하여 추가적인 type을 선언할 수 있습니다. 
+
+기본적으로 Next.js는 `next build` 시 type을 확인합니다. 우리는 개발 동안에 에디터에서 type을 확인하는 것을 권장합니다. 
+
+에러를 무시하고 싶다면 [Ignoring TypeScript errors](https://nextjs.org/docs/api-reference/next.config.js/ignoring-typescript-errors) 문서를 참고하세요. 
+
+****[Static Generation and Server-side Rendering](https://nextjs.org/docs/basic-features/typescript#static-generation-and-server-side-rendering)****
+
+`getStaticProps, getStaticPaths, getServerSideProps`를 위해서 각각 `GetStaticProps, GetStaticPaths, GetServerSideProps` type을 사용할 수 있습니다. 
+
+```jsx
+import { GetStaticProps, GetStaticPaths, GetServerSideProps } from 'next'
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  // ...
+}
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  // ...
+}
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  // ...
+```
+
+`getInitialProps`를 사용한다면 [해당 문서의 방법을 따라하세요.](https://nextjs.org/docs/api-reference/data-fetching/get-initial-props#typescript) 
+
+**API Routes**
+
+아래는 API Routes를 위한 빌트인 type을 사용하는 방법의 예시입니다. 
+
+```jsx
+import type { NextApiRequest, NextApiResponse } from 'next'
+
+export default function handler(req: NextApiRequest, res: NextApiResponse) {
+  res.status(200).json({ name: 'John Doe' })
+}
+```
+
+response data의 type또한 설정할 수 있습니다. 
+
+```jsx
+import type { NextApiRequest, NextApiResponse } from 'next'
+
+type Data = {
+  name: string
+}
+
+export default function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<Data>
+) {
+  res.status(200).json({ name: 'John Doe' })
+}
+```
+
+**custom app** 
+
+만약 [custom `App`](https://nextjs.org/docs/advanced-features/custom-app)을 가지고 있다면 `AppProps` 빌트인 타입을 사용하여 아래와 같이 `./pages/_app.tsx` 로 파일이름을 변경할 수 있습니다.  
+
+```jsx
+import type { AppProps } from 'next/app'
+
+export default function MyApp({ Component, pageProps }: AppProps) {
+  return <Component {...pageProps} />
+}
+```
+
+**path aliases and baseUrl** 
+
+Next.js는 자동적으로 `tsconfig.json`의 `paths`와 `baseUrl` 옵션을 지원합니다. 해당 내용에 대해 더 자세히 알고 싶다면 [Module Path aliases 문서](https://nextjs.org/docs/advanced-features/module-path-aliases)를 참고하세요. 
+
+**Type checking next.config.js** 
+
+`next.config.js` 파일은 Babel이나 Typescript에 의해 파싱되지 않으므로 JavaScript 파일이어야 합니다. 하지만 아래와 같이 IDE의 JSDoc을 사용하여 type을 확인할 수 있습니다. 
+
+```jsx
+// @ts-check
+
+/**
+ * @type {import('next').NextConfig}
+ **/
+const nextConfig = {
+  /* config options here */
+}
+
+module.exports = nextConfig
+```
+
+**incremetal type checking** 
+
+`v10.2.1` 이후로 Next.js는 `tsconfig.json`에서 설정을 추가한 경우 [Incremental type checking](https://www.typescriptlang.org/tsconfig#incremental)을 지원합니다. 이는 거대 애플리케이션에서 type을 확인하는 시간을 빠르게 해줍니다. 
+
+해당 기능을 사용할 때는 TypeScript 경험의 [best performance](https://devblogs.microsoft.com/typescript/announcing-typescript-4-3/#lazier-incremental)를 위해서 최소 `v4.3.2` 이상을 사용하는 것을 권장합니다. 
+
+**Ignoring TypeScript Errors** 
+
+Next.js는 현재 여러분의 프로젝트에 TypeScript 에러가 존재할 때 프로덕션 빌드(`next build`)를 실패합니다. 
+
+만약 애플리케이션에 오류가 있더라도 Next.js가 위험하게 프로덕션 코드를 생성하게 하고 싶다면 빌트 인 type 확인 단계를 비활성 할 수 있습니다. 
+
+비활성할 경우 빌드 혹은 배포 과정의 일부로 type 체크를 실행하고 있어야 합니다. 그렇지 않을 경우 매우 위험할 수 있습니다. 
+
+`next.config.js`를 열고 `typescript` 구성의 `ignoreBuildErrors` 옵션을 활성화하세요
+
+```jsx
+module.exports = {
+  typescript: {
+    // !! WARN !!
+    // Dangerously allow production builds to successfully complete even if
+    // your project has type errors.
+    // !! WARN !!
+    ignoreBuildErrors: true,
+  },
+}
+```
+  
 
 - ### Environment Variables
 
