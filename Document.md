@@ -92,10 +92,531 @@
 ---
 ## Getting Started
 
+> Next.js 13이 최근 출시되었습니다. 해당 내용에 대해 자세히 [알고싶다면](https://nextjs.org/blog/next-13) [업그레이드 가이드](https://nextjs.org/docs/upgrading#upgrading-from-12-to-13)를 참조하세요. 13버전은 점진적인 채택을 위해 page directory(안정적)와 함께 작동하는 [app directory](https://beta.nextjs.org/docs/app-directory-roadmap)와 같은 베타 기능을 도입했습니다. Next.js 13에서는 pages를 계속해서 사용할 수 있지만 만약 새로운 기능인 app directory를 사용하고 싶다면 새로운 [베타 문서](https://beta.nextjs.org/docs)를 참조하세요.
+
+### ****Getting Started****
+
+Next.js 공식문서에 오신 것을 환영합니다! 
+
+Next.js에 대해서 처음 학습하는 것이라면 먼저 학습 과정을 수행하는 것을 추천합니다. 퀴즈가 있는 상호작용적인 과정은 Next.js를 사용하기 위해 알아야 할 모든 것을 알려줄 것입니다. 
+
+Next.js와 관련하여 질문이 있으시다면 언제든지 GitHub Discussions에 있는 커뮤니티에 문의해주세요. 
+
+**System Requirements** 
+
+- [Node.js 14.6.0](https://nodejs.org/en/) 이상
+- Mac OS, Windows(WSL을 포함), Linux를 지원합니다.
+
+### Automatic Setup
+
+모든 것을 자동으로 설정해주는 create-next-app을 사용하여 새로운 Next.js앱을 만드는 것을 추천합니다. (빈 디렉토리를 만들 필요는 없습니다. create-next-app이 만들 것입니다.) 프로젝트를 실행하기 위해서 다음을 실행하세요. 
+
+```bash
+npx create-next-app@latest
+# or
+yarn create next-app
+# or
+pnpm create next-app
+```
+
+만약 typescript 프로젝트를 만들고 싶다면 `--typescript` 플래그를 사용하세요. 
+
+```bash
+npx create-next-app@latest --typescript
+# or
+yarn create next-app --typescript
+# or
+pnpm create next-app --typescript
+```
+
+설치가 완료되었다면: 
+
+- `npm run dev` 혹은 `yarn dev` 혹은 `pnpm dev` 를 실행하여 `[http://localhost:3000](http://localhost:3000)` 에서 개발 서버를 시작하세요.
+- 애플리케이션을 보고 싶다면 `[http://localhost:3000](http://localhost:3000)`에 방문하세요.
+- `pages/index.js`를 수정하고 브라우저에서 업데이트된 결과를 확인하세요.
+
+`create-next-app` 의 더 자세한 사용법에 대해 알고 싶다면 `[create-next-app` 설명서](https://nextjs.org/docs/api-reference/create-next-app)를 참조하세요.  
+
+### Manual Setup
+
+`next`, `react`와 `react-dom`을 프로젝트에 설치하세요. 
+
+```bash
+npm install next react react-dom
+# or
+yarn add next react react-dom
+# or
+pnpm add next react react-dom
+```
+
+`package.json` 을 열고 아래의 `script`를 추가하세요. 
+
+```bash
+"scripts": {
+  "dev": "next dev",
+  "build": "next build",
+  "start": "next start",
+  "lint": "next lint"
+}
+```
+
+해당 스크립트는 애플리케이션 개발의 여러 다른 단계를 나타냅니다. 
+
+- `dev` -  `next dev`를 실행하여 개발 모드의 Next.js를 실행합니다.
+- `build` - `next build` 를 실행하여 production 용도의 애플리케이션을 빌드합니다.
+- `start` - `next start` 를 실행하여 Next.js의 production 서버를 시작합니다.
+- `lint` - `next lint` 를 실행하여 Next.js의 ESLint 구성을 작성합니다.
+
+애플리케이션의 최상위 루트에서 `pages`와 `public` 두 개의 디렉토리를 생성합니다.
+
+- `pages` - 파일 이름을 기준으로 경로와 연결됩니다. 예를 들어서 `pages/about.js`라면 `/about`과 매핑됩니다.
+- `public` - 이미지, 폰트 등과 같은 정적인 assets을 저장합니다. `public` 디렉토리 안에 있는 파일은 base URL(/)로 시작하는 코드로 참조할 수 있습니다.
+
+Next.js는 `[pages](https://nextjs.org/docs/basic-features/pages)`의 컨셉을 중심으로 구축됩니다. 하나의 페이지는 `pages` 디렉토리의 `.js`, `.jsx`, `.ts`, `.tsx` 파일에서 내보낸 [React Component](https://reactjs.org/docs/components-and-props.html)입니다. 파일의 이름을 사용하여 [dynamic route](https://nextjs.org/docs/routing/dynamic-routes) 매개변수를 추가할 수도 있습니다.  
+
+`pages` 디렉토리 안에 `index.js` 파일을 추가하여 시작하세요. 사용자가 애플리케이션의 루트에 방문할 때 렌더링되는 페이지입니다. 
+
+`pages/index.js`를 아래와 같은 내용으로 추가하세요. 
+
+```jsx
+function HomePage() {
+  return <div>Welcome to Next.js!</div>
+}
+
+export default HomePage
+```
+
+설정이 완료되었다면: 
+
+- `npm run dev` 혹은 `yarn dev` 혹은 `pnpm dev`를 실행하여 `[http://localhost:3000](http://localhost:3000)` 에서 개발 서버를 시작합니다.
+- 애플리케이션을 보려면 `[http://localhost:3000](http://localhost:3000)에 방문하세요.`
+- `pages/index.js`를 수정하고 브라우저에서 업데이트된 결과를 확인하세요.
+
+지금까지 우리가 배운것은: 
+
+- 자동 컴파일 및 번들링
+- [React Fast Refresh](https://nextjs.org/blog/next-9-4#fast-refresh)
+- `pages/`의 [Static generation과 server-side rendering](https://nextjs.org/docs/basic-features/data-fetching/overview)
+- base url에 매핑된  `public/` 을 통한 [정적 파일 서빙](https://nextjs.org/docs/basic-features/static-file-serving)
+
+추가적으로 모든 Next.js 애플리케이션은 시작할때부터 production에 대한 준비가 되어있습니다. [배포 공식 문서](https://nextjs.org/docs/deployment)에서 더 자세히 확인해보세요.
+
+### Related
+
+다음단계와 관련된 더 자세한 정보를 알고 싶다면 아래의 과정을 따라가보는 것을 추천합니다. 
+
+[Basic Features: Pages | Next.js](https://nextjs.org/docs/basic-features/pages)
+
+[Basic Features: Built-in CSS Support | Next.js](https://nextjs.org/docs/basic-features/built-in-css-support)
+
+[CLI | Next.js](https://nextjs.org/docs/api-reference/cli)
+
+
 ---
 ## Basic Features
 
 - ### Pages
+  > 참고: Next.js 13의 /app 디렉토리(베타)를 소개합니다. 이 새로운 디렉토리는 레이아웃과 중접된 경로를 지원하며 Server Component를 기본값으로 사용합니다. `app/` 안에서는 레이아웃 내부의 전체 애플리케이션에 대한 데이터를 가져올 수 있으며 여기에는 보다 세분화된 중첩 레이아웃 지원이 포함됩니다. ([colocated data fetching](https://beta.nextjs.org/docs/data-fetching/fundamentals)) 
+[app/을 점진적으로 적용하는 방법에 대해서는 더 자세히 알아보세요](https://beta.nextjs.org/docs/upgrade-guide).
+
+Next.js에서 페이지는  `pages` 디렉토리의 `.js`, `.jsx`, `.ts`, `.tsx` 파일에서 내보낸 React Component입니다. 
+
+각각의 페이지는 파일 이름을 기준으로 경로와 연결됩니다. 
+
+예: 아래와 같은 React component를 내보내는 `pages/about.js` 라는 파일을 만든다면 `/about` 경로에서 접근가능합니다. 
+
+```jsx
+export default function About() {
+  return <div>About</div>
+}
+```
+
+**Pre-rendering** 
+
+기본적으로 Next.js는 모든 페이지를 pre-render한다. 이것은 Next.js가 client-side 자바스크립트에 의해 모든 것을 수행하는 대신 각각의 페이지를 위한 HTML을 사전에 생성한다는 것을 의미합니다.  pre-render를 수행하면 성능과 SEO가 향상될 수 있습니다. 
+
+생성된 HTML은 페이지를 구성하는데 필요한 최소한의 자바스크립트와 연관되어 있습니다. 페이지가 브라우저에 의해 로드될 때 자바스크립트 코드를 실행하고 페이지를 완전히 상호작용하게 만듭니다.(이 과정을 hydration이라고 합니다) 
+
+**Two forms of Pre-rendering** 
+
+Next.js는 Static Generation과 Server-Side Rendering이라는 두가지 형태의 pre-rendering을 가지고 있습니다. 둘의 차이는 페이지를 위한 HTML을 언제 생성하는지에 있습니다. 
+
+- **[Static Generation (Recommended)](https://nextjs.org/docs/basic-features/pages#static-generation): 빌드시에 HTML을 생성하며 각각의 요청이 있을 때 재사용됩니다.**
+- **[Server-side Rendering](https://nextjs.org/docs/basic-features/pages#server-side-rendering): 각각의 요청이 있을 때 HTML을 생성합니다.**
+
+중요한 것은 Next.js를 사용하면 두 가지 pre-rendering 방식 중 각 페이지에 사용할 방식을 선택할 수 있다는 것입니다. 대부분의 페이지에서 Static Generation으로 페이지를 생성하고 나머지를 Server-side Rendering으로 구현하여 하이브리드 Next.js앱을 만들 수 있습니다. 
+
+우리는 성능 상의 이유로 Server-side Rendering보다 Static Generation을 사용하는 것을 추천합니다. 정적으로 생성된 페이지는 CDN에 의해 캐싱되어 성능을 향상시킬 수 있습니다. 그러나 때에 따라 Server-side Rendering이 유일한 옵션일 수 있습니다. 
+
+Static Generation 혹은 Server-side Rendering과 함께 Client-side 데이터 페칭을 사용할 수도 있습니다. 이는 페이지의 일부분이 전적으로 클라이언트 측의 자바스크립트에 의해 렌더링될 수 있다는 것을 의미합니다. 더 자세한 내용은 [Data Fetching](https://nextjs.org/docs/basic-features/data-fetching/client-side) ********************************************************************************************************************************************공식문서를 확인하세요.
+
+**Static Generation**
+
+- Examples
+    - [WordPress Example](https://github.com/vercel/next.js/tree/canary/examples/cms-wordpress) ([Demo](https://next-blog-wordpress.vercel.app/))
+    - [Blog Starter using markdown files](https://github.com/vercel/next.js/tree/canary/examples/blog-starter) ([Demo](https://next-blog-starter.vercel.app/))
+    - [DatoCMS Example](https://github.com/vercel/next.js/tree/canary/examples/cms-datocms) ([Demo](https://next-blog-datocms.vercel.app/))
+    - [TakeShape Example](https://github.com/vercel/next.js/tree/canary/examples/cms-takeshape) ([Demo](https://next-blog-takeshape.vercel.app/))
+    - [Sanity Example](https://github.com/vercel/next.js/tree/canary/examples/cms-sanity) ([Demo](https://next-blog-sanity.vercel.app/))
+    - [Prismic Example](https://github.com/vercel/next.js/tree/canary/examples/cms-prismic) ([Demo](https://next-blog-prismic.vercel.app/))
+    - [Contentful Example](https://github.com/vercel/next.js/tree/canary/examples/cms-contentful) ([Demo](https://next-blog-contentful.vercel.app/))
+    - [Strapi Example](https://github.com/vercel/next.js/tree/canary/examples/cms-strapi) ([Demo](https://next-blog-strapi.vercel.app/))
+    - [Prepr Example](https://github.com/vercel/next.js/tree/canary/examples/cms-prepr) ([Demo](https://next-blog-prepr.vercel.app/))
+    - [Agility CMS Example](https://github.com/vercel/next.js/tree/canary/examples/cms-agilitycms) ([Demo](https://next-blog-agilitycms.vercel.app/))
+    - [Cosmic Example](https://github.com/vercel/next.js/tree/canary/examples/cms-cosmic) ([Demo](https://next-blog-cosmic.vercel.app/))
+    - [ButterCMS Example](https://github.com/vercel/next.js/tree/canary/examples/cms-buttercms) ([Demo](https://next-blog-buttercms.vercel.app/))
+    - [Storyblok Example](https://github.com/vercel/next.js/tree/canary/examples/cms-storyblok) ([Demo](https://next-blog-storyblok.vercel.app/))
+    - [GraphCMS Example](https://github.com/vercel/next.js/tree/canary/examples/cms-graphcms) ([Demo](https://next-blog-graphcms.vercel.app/))
+    - [Kontent Example](https://github.com/vercel/next.js/tree/canary/examples/cms-kontent) ([Demo](https://next-blog-kontent.vercel.app/))
+    - [Builder.io Example](https://github.com/vercel/next.js/tree/canary/examples/cms-builder-io) ([Demo](https://cms-builder-io.vercel.app/))
+    - [TinaCMS Example](https://github.com/vercel/next.js/tree/canary/examples/cms-tina) ([Demo](https://cms-tina-example.vercel.app/))
+    - [Static Tweet (Demo)](https://static-tweet.vercel.app/)
+    - [Enterspeed Example](https://github.com/vercel/next.js/tree/canary/examples/cms-enterspeed) ([Demo](https://next-blog-demo.enterspeed.com/))
+
+페이지가 Static Generation을 사용하는 경우 페이지의 HTML은 빌드 시 생성됩니다. 즉 production에서 `next build`를 실행할 때 페이지의 HTML이 생성됩니다. 이 HTML은 각 요청시마다 재사용되며 CDN에 의해 캐싱될 수 있습니다. 
+
+Next.js에서 데이터가 있거나 없는 페이지를 정적으로 생성할 수 있습니다. 각각의 케이스를 살펴봅시다. 
+
+**Static Generation without data** 
+
+기본적으로 Next.js는 데이터 페칭없이 Static Generation을 사용하여 페이지를 사전에 렌더링합니다. 아래는 그 예입니다. 
+
+```jsx
+function About() {
+  return <div>About</div>
+}
+
+export default About
+```
+
+이 페이지는 사전에 렌더링할 외부 데이터를 가져올 필요가 없습니다. 이러한 경우 Next.js는 빌드 시간 동안 페이지당 하나의 HTML 파일을 생성합니다. 
+
+**Static Generation with data** 
+
+일부 페이지는 pre-rendering을 위해 외부 데이터를 가져와야 합니다. 두 가지 시나리오가 있으며 하나 혹은 모두 적용될 수 있습니다. 각각의 경우에 Next.js가 제공하는 다음 기능을 사용할 수 있습니다. 
+
+1. 여러분의 페이지 내용이 외부 데이터에 의존한다면 `getStaticProps` 를 사용하세요.
+2. 여러분의 페이지의 경로가 외부 데이터에 의존한다면 `getStaticPaths`를 사용하세요. (일반적으로 `getStaticProps`와 함께 사용됩니다. 
+
+Senario1: 외부 데이터에 따라 페이지 내용이 달라질 때 
+
+Example: 여러분의 블로그 페이지는 CMS(content management system)에서 블로그 게시물 목록을 가져와야 할 수 있습니다. 
+
+```jsx
+// TODO: Need to fetch `posts` (by calling some API endpoint)
+//       before this page can be pre-rendered.
+export default function Blog({ posts }) {
+  return (
+    <ul>
+      {posts.map((post) => (
+        <li>{post.title}</li>
+      ))}
+    </ul>
+  )
+}
+```
+
+사전 렌더링 시 해당 데이터를 가져오기 위해서 Next.js는 같은 파일에서 getStaticProps라는 비동기 함수를 export 할 수 있습니다. 이 함수는 빌드 시 호출되며 가져온 데이터를 사전 렌더링 시 페이지의 props로 절달 할 수 있게 합니다. 
+
+```jsx
+export default function Blog({ posts }) {
+  // Render posts...
+}
+
+// This function gets called at build time
+export async function getStaticProps() {
+  // Call an external API endpoint to get posts
+  const res = await fetch('https://.../posts')
+  const posts = await res.json()
+
+  // By returning { props: { posts } }, the Blog component
+  // will receive `posts` as a prop at build time
+  return {
+    props: {
+      posts,
+    },
+  }
+}
+```
+
+`getStaticProps`의 동작 방식에 대해 더 자세히 알고 싶다면 [Data Fetching 공식문서](https://nextjs.org/docs/basic-features/data-fetching/get-static-props)를 확인하세요. ****
+
+Senario 2: 외부 데이터에 의해 페이지의 경로가 달라질 때 
+
+Next.js는 dynamic routes를 사용하여 페이지를 생성할 수 있습니다. 예를 들어 `pages/posts/[id].js`라는 파일을 생성한다면 id를 기반으로 한 하나의 블로그 게시물을 보여줍니다. `posts/1` 에 접근하면 id가 1인 블로그 게시물을 보여줍니다. 
+
+> dynamic routing에 대해 더 자세히 알고 싶다면 [Dynamic Routing 공식문서](https://nextjs.org/docs/routing/dynamic-routes)를 확인하세요.
+> 
+
+그러나 빌드 시 사전에 렌더링할 id는 외부 데이터에 따라 달라질 수 있습니다. 
+
+Example: id가 1인 하나의 게시물만을 데이터베이스에 추가했다고 가정해봅시다. 이 경우 여러분은 빌드시에 `post/1`이라는 단 하나의 게시물만을 사전에 렌더링할 수 있습니다. 
+
+이후에 id가 2인 두 번쨰 게시물을 추가한다면 여러분은 `posts/2` 또한 사전에 렌더링하고 싶을 것입니다. 
+
+따라서 사전에 렌더링된 페이지의 경로는 외부 데이터에 의해 달라집니다. 이를 처리하기 위해서 Next.js는 동적 페이지(`pages/posts/[id].js`)에서 `getStaticPaths`라는 비동기 함수를 export할 수 있습니다. 이 함수는 빌드 시 호출되며 미리 렌더링할 경로를 지정할 수 있습니다. 
+
+```jsx
+// This function gets called at build time
+export async function getStaticPaths() {
+  // Call an external API endpoint to get posts
+  const res = await fetch('https://.../posts')
+  const posts = await res.json()
+
+  // Get the paths we want to pre-render based on posts
+  const paths = posts.map((post) => ({
+    params: { id: post.id },
+  }))
+
+  // We'll pre-render only these paths at build time.
+  // { fallback: false } means other routes should 404.
+  return { paths, fallback: false }
+}
+```
+
+또한 `pages/posts/[id].js`에서 getStaticProps를 내보내야만 이 id의 게시물에 대한 데이터를 가져와 페이지를 미리 렌더링하는 데 사용할 수 있습니다. 
+
+```jsx
+export default function Post({ post }) {
+  // Render post...
+}
+
+export async function getStaticPaths() {
+  // ...
+}
+
+// This also gets called at build time
+export async function getStaticProps({ params }) {
+  // params contains the post `id`.
+  // If the route is like /posts/1, then params.id is 1
+  const res = await fetch(`https://.../posts/${params.id}`)
+  const post = await res.json()
+
+  // Pass post data to the page via props
+  return { props: { post } }
+}
+```
+
+`getStaticPaths`에 대해 더 자세히 알고 싶다면 [Data Fetching 공식문서](https://nextjs.org/docs/basic-features/data-fetching/get-static-paths)를 확인하세요.
+
+**Static Generation**
+
+- Examples
+    - [WordPress Example](https://github.com/vercel/next.js/tree/canary/examples/cms-wordpress) ([Demo](https://next-blog-wordpress.vercel.app/))
+    - [Blog Starter using markdown files](https://github.com/vercel/next.js/tree/canary/examples/blog-starter) ([Demo](https://next-blog-starter.vercel.app/))
+    - [DatoCMS Example](https://github.com/vercel/next.js/tree/canary/examples/cms-datocms) ([Demo](https://next-blog-datocms.vercel.app/))
+    - [TakeShape Example](https://github.com/vercel/next.js/tree/canary/examples/cms-takeshape) ([Demo](https://next-blog-takeshape.vercel.app/))
+    - [Sanity Example](https://github.com/vercel/next.js/tree/canary/examples/cms-sanity) ([Demo](https://next-blog-sanity.vercel.app/))
+    - [Prismic Example](https://github.com/vercel/next.js/tree/canary/examples/cms-prismic) ([Demo](https://next-blog-prismic.vercel.app/))
+    - [Contentful Example](https://github.com/vercel/next.js/tree/canary/examples/cms-contentful) ([Demo](https://next-blog-contentful.vercel.app/))
+    - [Strapi Example](https://github.com/vercel/next.js/tree/canary/examples/cms-strapi) ([Demo](https://next-blog-strapi.vercel.app/))
+    - [Prepr Example](https://github.com/vercel/next.js/tree/canary/examples/cms-prepr) ([Demo](https://next-blog-prepr.vercel.app/))
+    - [Agility CMS Example](https://github.com/vercel/next.js/tree/canary/examples/cms-agilitycms) ([Demo](https://next-blog-agilitycms.vercel.app/))
+    - [Cosmic Example](https://github.com/vercel/next.js/tree/canary/examples/cms-cosmic) ([Demo](https://next-blog-cosmic.vercel.app/))
+    - [ButterCMS Example](https://github.com/vercel/next.js/tree/canary/examples/cms-buttercms) ([Demo](https://next-blog-buttercms.vercel.app/))
+    - [Storyblok Example](https://github.com/vercel/next.js/tree/canary/examples/cms-storyblok) ([Demo](https://next-blog-storyblok.vercel.app/))
+    - [GraphCMS Example](https://github.com/vercel/next.js/tree/canary/examples/cms-graphcms) ([Demo](https://next-blog-graphcms.vercel.app/))
+    - [Kontent Example](https://github.com/vercel/next.js/tree/canary/examples/cms-kontent) ([Demo](https://next-blog-kontent.vercel.app/))
+    - [Builder.io Example](https://github.com/vercel/next.js/tree/canary/examples/cms-builder-io) ([Demo](https://cms-builder-io.vercel.app/))
+    - [TinaCMS Example](https://github.com/vercel/next.js/tree/canary/examples/cms-tina) ([Demo](https://cms-tina-example.vercel.app/))
+    - [Static Tweet (Demo)](https://static-tweet.vercel.app/)
+    - [Enterspeed Example](https://github.com/vercel/next.js/tree/canary/examples/cms-enterspeed) ([Demo](https://next-blog-demo.enterspeed.com/))
+
+페이지가 Static Generation을 사용하는 경우 페이지의 HTML은 빌드 시 생성됩니다. 즉 production에서 `next build`를 실행할 때 페이지의 HTML이 생성됩니다. 이 HTML은 각 요청시마다 재사용되며 CDN에 의해 캐싱될 수 있습니다. 
+
+Next.js에서 데이터가 있거나 없는 페이지를 정적으로 생성할 수 있습니다. 각각의 케이스를 살펴봅시다. 
+
+**Static Generation without data** 
+
+기본적으로 Next.js는 데이터 페칭없이 Static Generation을 사용하여 페이지를 사전에 렌더링합니다. 아래는 그 예입니다. 
+
+```jsx
+function About() {
+  return <div>About</div>
+}
+
+export default About
+```
+
+이 페이지는 사전에 렌더링할 외부 데이터를 가져올 필요가 없습니다. 이러한 경우 Next.js는 빌드 시간 동안 페이지당 하나의 HTML 파일을 생성합니다. 
+
+**Static Generation with data** 
+
+일부 페이지는 pre-rendering을 위해 외부 데이터를 가져와야 합니다. 두 가지 시나리오가 있으며 하나 혹은 모두 적용될 수 있습니다. 각각의 경우에 Next.js가 제공하는 다음 기능을 사용할 수 있습니다. 
+
+1. 여러분의 페이지 내용이 외부 데이터에 의존한다면 `getStaticProps` 를 사용하세요.
+2. 여러분의 페이지의 경로가 외부 데이터에 의존한다면 `getStaticPaths`를 사용하세요. (일반적으로 `getStaticProps`와 함께 사용됩니다. 
+
+Senario1: 외부 데이터에 따라 페이지 내용이 달라질 때 
+
+Example: 여러분의 블로그 페이지는 CMS(content management system)에서 블로그 게시물 목록을 가져와야 할 수 있습니다. 
+
+```jsx
+// TODO: Need to fetch `posts` (by calling some API endpoint)
+//       before this page can be pre-rendered.
+export default function Blog({ posts }) {
+  return (
+    <ul>
+      {posts.map((post) => (
+        <li>{post.title}</li>
+      ))}
+    </ul>
+  )
+}
+```
+
+사전 렌더링 시 해당 데이터를 가져오기 위해서 Next.js는 같은 파일에서 getStaticProps라는 비동기 함수를 export 할 수 있습니다. 이 함수는 빌드 시 호출되며 가져온 데이터를 사전 렌더링 시 페이지의 props로 절달 할 수 있게 합니다. 
+
+```jsx
+export default function Blog({ posts }) {
+  // Render posts...
+}
+
+// This function gets called at build time
+export async function getStaticProps() {
+  // Call an external API endpoint to get posts
+  const res = await fetch('https://.../posts')
+  const posts = await res.json()
+
+  // By returning { props: { posts } }, the Blog component
+  // will receive `posts` as a prop at build time
+  return {
+    props: {
+      posts,
+    },
+  }
+}
+```
+
+`getStaticProps`의 동작 방식에 대해 더 자세히 알고 싶다면 [Data Fetching 공식문서](https://nextjs.org/docs/basic-features/data-fetching/get-static-props)를 확인하세요. ****
+
+Senario 2: 외부 데이터에 의해 페이지의 경로가 달라질 때 
+
+Next.js는 dynamic routes를 사용하여 페이지를 생성할 수 있습니다. 예를 들어 `pages/posts/[id].js`라는 파일을 생성한다면 id를 기반으로 한 하나의 블로그 게시물을 보여줍니다. `posts/1` 에 접근하면 id가 1인 블로그 게시물을 보여줍니다. 
+
+> dynamic routing에 대해 더 자세히 알고 싶다면 [Dynamic Routing 공식문서](https://nextjs.org/docs/routing/dynamic-routes)를 확인하세요.
+> 
+
+그러나 빌드 시 사전에 렌더링할 id는 외부 데이터에 따라 달라질 수 있습니다. 
+
+Example: id가 1인 하나의 게시물만을 데이터베이스에 추가했다고 가정해봅시다. 이 경우 여러분은 빌드시에 `post/1`이라는 단 하나의 게시물만을 사전에 렌더링할 수 있습니다. 
+
+이후에 id가 2인 두 번쨰 게시물을 추가한다면 여러분은 `posts/2` 또한 사전에 렌더링하고 싶을 것입니다. 
+
+따라서 사전에 렌더링된 페이지의 경로는 외부 데이터에 의해 달라집니다. 이를 처리하기 위해서 Next.js는 동적 페이지(`pages/posts/[id].js`)에서 `getStaticPaths`라는 비동기 함수를 export할 수 있습니다. 이 함수는 빌드 시 호출되며 미리 렌더링할 경로를 지정할 수 있습니다. 
+
+```jsx
+// This function gets called at build time
+export async function getStaticPaths() {
+  // Call an external API endpoint to get posts
+  const res = await fetch('https://.../posts')
+  const posts = await res.json()
+
+  // Get the paths we want to pre-render based on posts
+  const paths = posts.map((post) => ({
+    params: { id: post.id },
+  }))
+
+  // We'll pre-render only these paths at build time.
+  // { fallback: false } means other routes should 404.
+  return { paths, fallback: false }
+}
+```
+
+또한 `pages/posts/[id].js`에서 getStaticProps를 내보내야만 이 id의 게시물에 대한 데이터를 가져와 페이지를 미리 렌더링하는 데 사용할 수 있습니다. 
+
+```jsx
+export default function Post({ post }) {
+  // Render post...
+}
+
+export async function getStaticPaths() {
+  // ...
+}
+
+// This also gets called at build time
+export async function getStaticProps({ params }) {
+  // params contains the post `id`.
+  // If the route is like /posts/1, then params.id is 1
+  const res = await fetch(`https://.../posts/${params.id}`)
+  const post = await res.json()
+
+  // Pass post data to the page via props
+  return { props: { post } }
+}
+```
+
+`getStaticPaths`에 대해 더 자세히 알고 싶다면 [Data Fetching 공식문서](https://nextjs.org/docs/basic-features/data-fetching/get-static-paths)를 확인하세요. 
+
+**When should I use Static Generation?** 
+
+Static Generation을 사용하면 페이지는 한 번 빌드되어 CDN에 의해 제공되므로 모든 요청에 대해 서버가 페이지를 렌더링하는 것보다 더 빠르므로 가능하다면 데이터의 유무에 상관없이 Static Generation을 사용하는 것을 권장합니다. 
+
+Static Generation은 다음을 포함한 다양한 유형의 페이지에 사용할 수 있습니다. 
+
+- Marketing pages
+- Blog posts and portfolios
+- E-commerce product listings
+- Help and documentation
+
+사용자의 요청에 앞서 해당 페이지를 사전에 렌더링할 수 있다면 Static Generation을 선택해야 합니다. 
+
+반면에 사용자의요청보다 먼저 페이지를 미리 렌더링할 수 없는 경우 Static Generation은 좋은 방법이 아닙니다. 페이지에 자주 업데이트되는 데이터가 표시되고 페이지 내용이 요청할 때마다 변경될 수 있습니다. 
+
+이 경우 다음 중 하나를 따라갈 수 있습니다. 
+
+- Client-side 데이터 페칭과 함께 Static Generation을 사용하기: 페이지의 일부 사전 렌더링을 건너뛰고 client-side의 자바스크립트를 사용하여 이를 채울 수 있습니다. 이러한 접근 방식에 대해서 더 자세히 알고 싶다면 [Data Fetching 공식문서](https://nextjs.org/docs/basic-features/data-fetching/client-side)를 확인하세요
+- Server-Side Rendering을 사용하기: Next.js는 각 요청에 대해 페이지를 미리 렌더링합니다. CDN으로 페이지를 캐싱할 수 없으므로 느려지지만 사전 렌더링된 페이지는 항상 최신 상태입니다. 이 접근 방식에 대해서는 아래에서 자세히 살펴보겠습니다.
+
+**Server-side Rendering** 
+
+> SSR과 Dynamic Rendering에 대해서도 언급하고 있습니다.
+> 
+
+만약 페이지가 Server-side Rendering을 사용한다면 페이지 HTML은 각 요청시에 생성됩니다. 
+
+페이지를 위해 Server-side Rendering을 사용하려면 `getServerSideProps`라는 비동기 함수를 export해야 합니다. 이 함수는 모든 요청 시 서버에 의해 호출됩니다. 
+
+예를 들어 페이지에서 자주 업데이트되는 데이터(외부 API에서 가져온 데이터)를 미리 렌더링해야 한다고 가정해봅시다. `Page`로 데이터를 전달하는 `getServerSideProps`를 아래와 같이 작성할 수 있습니다. 
+
+```jsx
+export default function Page({ data }) {
+  // Render data...
+}
+
+// This gets called on every request
+export async function getServerSideProps() {
+  // Fetch data from external API
+  const res = await fetch(`https://.../data`)
+  const data = await res.json()
+
+  // Pass data to the page via props
+  return { props: { data } }
+}
+```
+
+위와 같이 `getServerSideProps` 는 `getStaticProps`와 유사하지만 `getServerSideProps`는 빌드 시가 아닌 모든 요청에서 실행되는 점이 다릅니다. 
+
+`getServerSideProps` 의 작동 방식에 대해 알고 싶다면 [Data Fetching 공식문서](https://nextjs.org/docs/basic-features/data-fetching/get-server-side-props)를 참고하세요. 
+
+**Summary** 
+
+Next.js의 사전 렌더링의 두 가지 형태에 대해 알아봤습니다. 
+
+- Static Generation(Recommended): HTML이 빌드시에 생성되며 매 요청시 재사용됩니다. Static Generation을 사용해 페이지를 만들기 위해서는 page component를 내보내거나 `getStaticProps`(필요한 경우 `getStaticPaths`도 함께 내보냄)를 내보내야 합니다. 사용자의 요청에 앞서 미리 렌더링할 수 있는 페이지에 적합합니다. 클라이언트 사이드 렌더링과 함께 사용하여 추가 데이터를 가져올 수도 있습니다.
+- Server-side Rendering: HTML은 각 요청시마다 생성됩니다. Server-side Rendering 페이지를 만들기 위해서는 `getServerSideProps`를 내보내야 합니다. Server-side Rendering은 Static Generation보다 성능이 느리므로 반드시 필요한 경우에만 해당 기능을 사용해야 합니다.
+
+
+
+**Pages with Dynamic Routes**
+Next.js는 dynamic route 페이지를 지원합니다. 예를 들어 `pages/posts/[id].js` 라는 파일을 만들면 `posts/1, `posts/2`` 등의 페이지에서 접근할 수 있습니다. 
+
+dynamic route에 대한 자세한 내용은 [Dynamic Routing 공식문서](https://nextjs.org/docs/routing/dynamic-routes)를 참고하세요.
+
+
+Next.js는 dynamic route 페이지를 지원합니다. 예를 들어 `pages/posts/[id].js` 라는 파일을 만들면 `posts/1, `posts/2`` 등의 페이지에서 접근할 수 있습니다. 
+
+dynamic route에 대한 자세한 내용은 [Dynamic Routing 공식문서](https://nextjs.org/docs/routing/dynamic-routes)를 참고하세요.
 
 - ### Data Fetching
 
