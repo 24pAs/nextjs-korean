@@ -2751,6 +2751,67 @@ module.exports = {
 - ### Imperatively
 
 - ### Shallow Routing
+
+>Examples
+> [Shallow Routing](https://github.com/vercel/next.js/tree/canary/examples/with-shallow-routing)
+
+Shallow Routing을 사용하면 `getServerSideProps`, `getStaticProps` 및 `getInitialProps`를 포함한 data fetching method 를 다시 실행하지 않고도 URL을 변경할 수 있습니다.
+
+업데이트된 `path name`과 `query`는 `router object`(`userRouter` 또는 `Router`를 사용하여 추가)를 통해 상태를 잃지 않고 수신됩니다.
+
+Shallow Routing을 사용하려면 'shallow' 옵션을 `true`로 설정합니다. 다음과 같은 예를 생각해 보십시오:
+
+```jsx
+import { useEffect } from 'react'
+import { useRouter } from 'next/router'
+
+// Current URL is '/'
+function Page() {
+  const router = useRouter()
+
+  useEffect(() => {
+    // Always do navigations after the first render
+    router.push('/?counter=10', undefined, { shallow: true })
+  }, [])
+
+  useEffect(() => {
+    // The counter changed!
+  }, [router.query.counter])
+}
+
+export default Page
+```
+
+URL이 `/?counter=10`로 업데이트되고 페이지는 교체되지 않으며 route 상태만 변경됩니다.
+
+아래와 같이 [componentDidUpdate](https://reactjs.org/docs/react-component.html#componentdidupdate)를 통해 URL 변경 사항을 확인할 수도 있습니다:
+
+```jsx
+componentDidUpdate(prevProps) {
+  const { pathname, query } = this.props.router
+  // verify props have changed to avoid an infinite loop
+  if (query.counter !== prevProps.router.query.counter) {
+    // fetch data based on the new query
+  }
+}
+```
+
+#### Caveats
+
+Shallow routing 은 현재 페이지에서 URL 변경을 위해서만 동작합니다. 
+예를 들어, `pages/about.js` 라는 다른 페이지를 가지고 있는데, 다음을 실행한다고 가정해봅시다.
+
+```jsx
+router.push('/?counter=10', '/about?counter=10', { shallow: true })
+```
+
+새로운 페이지이기 때문에, shallow routing을 요청했음에도 불구하고, 현재 페이지는 로드되지 않을 것이고, 새로운 페이지를 로드하고 data fetching 을 위해 대기할것입니다.
+
+middleware와 함께 shallow routing을 사용했을 때, 이전에 middleware 없이 수행한 것처럼 새 페이지가 현재 페이지와 일치하는지 확인하지 않습니다.
+이것은 middleware가 동적으로 다시 쓰여질 수 있고 얕게 스킵한 data fetch 없이 client-side 에서 확인 할 수 없기 때문입니다. 
+따라서 shallow route는 항상 얕은 것으로 처리되어야 합니다.
+
+
 ---
 ## API Routes
 
