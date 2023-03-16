@@ -93,531 +93,10 @@
 ---
 ## Getting Started
 
-> Next.js 13이 최근 출시되었습니다. 해당 내용에 대해 자세히 [알고싶다면](https://nextjs.org/blog/next-13) [업그레이드 가이드](https://nextjs.org/docs/upgrading#upgrading-from-12-to-13)를 참조하세요. 13버전은 점진적인 채택을 위해 page directory(안정적)와 함께 작동하는 [app directory](https://beta.nextjs.org/docs/app-directory-roadmap)와 같은 베타 기능을 도입했습니다. Next.js 13에서는 pages를 계속해서 사용할 수 있지만 만약 새로운 기능인 app directory를 사용하고 싶다면 새로운 [베타 문서](https://beta.nextjs.org/docs)를 참조하세요.
-
-### ****Getting Started****
-
-Next.js 공식문서에 오신 것을 환영합니다! 
-
-Next.js에 대해서 처음 학습하는 것이라면 먼저 학습 과정을 수행하는 것을 추천합니다. 퀴즈가 있는 상호작용적인 과정은 Next.js를 사용하기 위해 알아야 할 모든 것을 알려줄 것입니다. 
-
-Next.js와 관련하여 질문이 있으시다면 언제든지 GitHub Discussions에 있는 커뮤니티에 문의해주세요. 
-
-**System Requirements** 
-
-- [Node.js 14.6.0](https://nodejs.org/en/) 이상
-- Mac OS, Windows(WSL을 포함), Linux를 지원합니다.
-
-### Automatic Setup
-
-모든 것을 자동으로 설정해주는 create-next-app을 사용하여 새로운 Next.js앱을 만드는 것을 추천합니다. (빈 디렉토리를 만들 필요는 없습니다. create-next-app이 만들 것입니다.) 프로젝트를 실행하기 위해서 다음을 실행하세요. 
-
-```bash
-npx create-next-app@latest
-# or
-yarn create next-app
-# or
-pnpm create next-app
-```
-
-만약 typescript 프로젝트를 만들고 싶다면 `--typescript` 플래그를 사용하세요. 
-
-```bash
-npx create-next-app@latest --typescript
-# or
-yarn create next-app --typescript
-# or
-pnpm create next-app --typescript
-```
-
-설치가 완료되었다면: 
-
-- `npm run dev` 혹은 `yarn dev` 혹은 `pnpm dev` 를 실행하여 `[http://localhost:3000](http://localhost:3000)` 에서 개발 서버를 시작하세요.
-- 애플리케이션을 보고 싶다면 `[http://localhost:3000](http://localhost:3000)`에 방문하세요.
-- `pages/index.js`를 수정하고 브라우저에서 업데이트된 결과를 확인하세요.
-
-`create-next-app` 의 더 자세한 사용법에 대해 알고 싶다면 `[create-next-app` 설명서](https://nextjs.org/docs/api-reference/create-next-app)를 참조하세요.  
-
-### Manual Setup
-
-`next`, `react`와 `react-dom`을 프로젝트에 설치하세요. 
-
-```bash
-npm install next react react-dom
-# or
-yarn add next react react-dom
-# or
-pnpm add next react react-dom
-```
-
-`package.json` 을 열고 아래의 `script`를 추가하세요. 
-
-```bash
-"scripts": {
-  "dev": "next dev",
-  "build": "next build",
-  "start": "next start",
-  "lint": "next lint"
-}
-```
-
-해당 스크립트는 애플리케이션 개발의 여러 다른 단계를 나타냅니다. 
-
-- `dev` -  `next dev`를 실행하여 개발 모드의 Next.js를 실행합니다.
-- `build` - `next build` 를 실행하여 production 용도의 애플리케이션을 빌드합니다.
-- `start` - `next start` 를 실행하여 Next.js의 production 서버를 시작합니다.
-- `lint` - `next lint` 를 실행하여 Next.js의 ESLint 구성을 작성합니다.
-
-애플리케이션의 최상위 루트에서 `pages`와 `public` 두 개의 디렉토리를 생성합니다.
-
-- `pages` - 파일 이름을 기준으로 경로와 연결됩니다. 예를 들어서 `pages/about.js`라면 `/about`과 매핑됩니다.
-- `public` - 이미지, 폰트 등과 같은 정적인 assets을 저장합니다. `public` 디렉토리 안에 있는 파일은 base URL(/)로 시작하는 코드로 참조할 수 있습니다.
-
-Next.js는 `[pages](https://nextjs.org/docs/basic-features/pages)`의 컨셉을 중심으로 구축됩니다. 하나의 페이지는 `pages` 디렉토리의 `.js`, `.jsx`, `.ts`, `.tsx` 파일에서 내보낸 [React Component](https://reactjs.org/docs/components-and-props.html)입니다. 파일의 이름을 사용하여 [dynamic route](https://nextjs.org/docs/routing/dynamic-routes) 매개변수를 추가할 수도 있습니다.  
-
-`pages` 디렉토리 안에 `index.js` 파일을 추가하여 시작하세요. 사용자가 애플리케이션의 루트에 방문할 때 렌더링되는 페이지입니다. 
-
-`pages/index.js`를 아래와 같은 내용으로 추가하세요. 
-
-```jsx
-function HomePage() {
-  return <div>Welcome to Next.js!</div>
-}
-
-export default HomePage
-```
-
-설정이 완료되었다면: 
-
-- `npm run dev` 혹은 `yarn dev` 혹은 `pnpm dev`를 실행하여 `[http://localhost:3000](http://localhost:3000)` 에서 개발 서버를 시작합니다.
-- 애플리케이션을 보려면 `[http://localhost:3000](http://localhost:3000)에 방문하세요.`
-- `pages/index.js`를 수정하고 브라우저에서 업데이트된 결과를 확인하세요.
-
-지금까지 우리가 배운것은: 
-
-- 자동 컴파일 및 번들링
-- [React Fast Refresh](https://nextjs.org/blog/next-9-4#fast-refresh)
-- `pages/`의 [Static generation과 server-side rendering](https://nextjs.org/docs/basic-features/data-fetching/overview)
-- base url에 매핑된  `public/` 을 통한 [정적 파일 서빙](https://nextjs.org/docs/basic-features/static-file-serving)
-
-추가적으로 모든 Next.js 애플리케이션은 시작할때부터 production에 대한 준비가 되어있습니다. [배포 공식 문서](https://nextjs.org/docs/deployment)에서 더 자세히 확인해보세요.
-
-### Related
-
-다음단계와 관련된 더 자세한 정보를 알고 싶다면 아래의 과정을 따라가보는 것을 추천합니다. 
-
-[Basic Features: Pages | Next.js](https://nextjs.org/docs/basic-features/pages)
-
-[Basic Features: Built-in CSS Support | Next.js](https://nextjs.org/docs/basic-features/built-in-css-support)
-
-[CLI | Next.js](https://nextjs.org/docs/api-reference/cli)
-
-
 ---
 ## Basic Features
 
 - ### Pages
-  > 참고: Next.js 13의 /app 디렉토리(베타)를 소개합니다. 이 새로운 디렉토리는 레이아웃과 중접된 경로를 지원하며 Server Component를 기본값으로 사용합니다. `app/` 안에서는 레이아웃 내부의 전체 애플리케이션에 대한 데이터를 가져올 수 있으며 여기에는 보다 세분화된 중첩 레이아웃 지원이 포함됩니다. ([colocated data fetching](https://beta.nextjs.org/docs/data-fetching/fundamentals)) 
-[app/을 점진적으로 적용하는 방법에 대해서는 더 자세히 알아보세요](https://beta.nextjs.org/docs/upgrade-guide).
-
-Next.js에서 페이지는  `pages` 디렉토리의 `.js`, `.jsx`, `.ts`, `.tsx` 파일에서 내보낸 React Component입니다. 
-
-각각의 페이지는 파일 이름을 기준으로 경로와 연결됩니다. 
-
-예: 아래와 같은 React component를 내보내는 `pages/about.js` 라는 파일을 만든다면 `/about` 경로에서 접근가능합니다. 
-
-```jsx
-export default function About() {
-  return <div>About</div>
-}
-```
-
-**Pre-rendering** 
-
-기본적으로 Next.js는 모든 페이지를 pre-render한다. 이것은 Next.js가 client-side 자바스크립트에 의해 모든 것을 수행하는 대신 각각의 페이지를 위한 HTML을 사전에 생성한다는 것을 의미합니다.  pre-render를 수행하면 성능과 SEO가 향상될 수 있습니다. 
-
-생성된 HTML은 페이지를 구성하는데 필요한 최소한의 자바스크립트와 연관되어 있습니다. 페이지가 브라우저에 의해 로드될 때 자바스크립트 코드를 실행하고 페이지를 완전히 상호작용하게 만듭니다.(이 과정을 hydration이라고 합니다) 
-
-**Two forms of Pre-rendering** 
-
-Next.js는 Static Generation과 Server-Side Rendering이라는 두가지 형태의 pre-rendering을 가지고 있습니다. 둘의 차이는 페이지를 위한 HTML을 언제 생성하는지에 있습니다. 
-
-- **[Static Generation (Recommended)](https://nextjs.org/docs/basic-features/pages#static-generation): 빌드시에 HTML을 생성하며 각각의 요청이 있을 때 재사용됩니다.**
-- **[Server-side Rendering](https://nextjs.org/docs/basic-features/pages#server-side-rendering): 각각의 요청이 있을 때 HTML을 생성합니다.**
-
-중요한 것은 Next.js를 사용하면 두 가지 pre-rendering 방식 중 각 페이지에 사용할 방식을 선택할 수 있다는 것입니다. 대부분의 페이지에서 Static Generation으로 페이지를 생성하고 나머지를 Server-side Rendering으로 구현하여 하이브리드 Next.js앱을 만들 수 있습니다. 
-
-우리는 성능 상의 이유로 Server-side Rendering보다 Static Generation을 사용하는 것을 추천합니다. 정적으로 생성된 페이지는 CDN에 의해 캐싱되어 성능을 향상시킬 수 있습니다. 그러나 때에 따라 Server-side Rendering이 유일한 옵션일 수 있습니다. 
-
-Static Generation 혹은 Server-side Rendering과 함께 Client-side 데이터 페칭을 사용할 수도 있습니다. 이는 페이지의 일부분이 전적으로 클라이언트 측의 자바스크립트에 의해 렌더링될 수 있다는 것을 의미합니다. 더 자세한 내용은 [Data Fetching](https://nextjs.org/docs/basic-features/data-fetching/client-side) ********************************************************************************************************************************************공식문서를 확인하세요.
-
-**Static Generation**
-
-- Examples
-    - [WordPress Example](https://github.com/vercel/next.js/tree/canary/examples/cms-wordpress) ([Demo](https://next-blog-wordpress.vercel.app/))
-    - [Blog Starter using markdown files](https://github.com/vercel/next.js/tree/canary/examples/blog-starter) ([Demo](https://next-blog-starter.vercel.app/))
-    - [DatoCMS Example](https://github.com/vercel/next.js/tree/canary/examples/cms-datocms) ([Demo](https://next-blog-datocms.vercel.app/))
-    - [TakeShape Example](https://github.com/vercel/next.js/tree/canary/examples/cms-takeshape) ([Demo](https://next-blog-takeshape.vercel.app/))
-    - [Sanity Example](https://github.com/vercel/next.js/tree/canary/examples/cms-sanity) ([Demo](https://next-blog-sanity.vercel.app/))
-    - [Prismic Example](https://github.com/vercel/next.js/tree/canary/examples/cms-prismic) ([Demo](https://next-blog-prismic.vercel.app/))
-    - [Contentful Example](https://github.com/vercel/next.js/tree/canary/examples/cms-contentful) ([Demo](https://next-blog-contentful.vercel.app/))
-    - [Strapi Example](https://github.com/vercel/next.js/tree/canary/examples/cms-strapi) ([Demo](https://next-blog-strapi.vercel.app/))
-    - [Prepr Example](https://github.com/vercel/next.js/tree/canary/examples/cms-prepr) ([Demo](https://next-blog-prepr.vercel.app/))
-    - [Agility CMS Example](https://github.com/vercel/next.js/tree/canary/examples/cms-agilitycms) ([Demo](https://next-blog-agilitycms.vercel.app/))
-    - [Cosmic Example](https://github.com/vercel/next.js/tree/canary/examples/cms-cosmic) ([Demo](https://next-blog-cosmic.vercel.app/))
-    - [ButterCMS Example](https://github.com/vercel/next.js/tree/canary/examples/cms-buttercms) ([Demo](https://next-blog-buttercms.vercel.app/))
-    - [Storyblok Example](https://github.com/vercel/next.js/tree/canary/examples/cms-storyblok) ([Demo](https://next-blog-storyblok.vercel.app/))
-    - [GraphCMS Example](https://github.com/vercel/next.js/tree/canary/examples/cms-graphcms) ([Demo](https://next-blog-graphcms.vercel.app/))
-    - [Kontent Example](https://github.com/vercel/next.js/tree/canary/examples/cms-kontent) ([Demo](https://next-blog-kontent.vercel.app/))
-    - [Builder.io Example](https://github.com/vercel/next.js/tree/canary/examples/cms-builder-io) ([Demo](https://cms-builder-io.vercel.app/))
-    - [TinaCMS Example](https://github.com/vercel/next.js/tree/canary/examples/cms-tina) ([Demo](https://cms-tina-example.vercel.app/))
-    - [Static Tweet (Demo)](https://static-tweet.vercel.app/)
-    - [Enterspeed Example](https://github.com/vercel/next.js/tree/canary/examples/cms-enterspeed) ([Demo](https://next-blog-demo.enterspeed.com/))
-
-페이지가 Static Generation을 사용하는 경우 페이지의 HTML은 빌드 시 생성됩니다. 즉 production에서 `next build`를 실행할 때 페이지의 HTML이 생성됩니다. 이 HTML은 각 요청시마다 재사용되며 CDN에 의해 캐싱될 수 있습니다. 
-
-Next.js에서 데이터가 있거나 없는 페이지를 정적으로 생성할 수 있습니다. 각각의 케이스를 살펴봅시다. 
-
-**Static Generation without data** 
-
-기본적으로 Next.js는 데이터 페칭없이 Static Generation을 사용하여 페이지를 사전에 렌더링합니다. 아래는 그 예입니다. 
-
-```jsx
-function About() {
-  return <div>About</div>
-}
-
-export default About
-```
-
-이 페이지는 사전에 렌더링할 외부 데이터를 가져올 필요가 없습니다. 이러한 경우 Next.js는 빌드 시간 동안 페이지당 하나의 HTML 파일을 생성합니다. 
-
-**Static Generation with data** 
-
-일부 페이지는 pre-rendering을 위해 외부 데이터를 가져와야 합니다. 두 가지 시나리오가 있으며 하나 혹은 모두 적용될 수 있습니다. 각각의 경우에 Next.js가 제공하는 다음 기능을 사용할 수 있습니다. 
-
-1. 여러분의 페이지 내용이 외부 데이터에 의존한다면 `getStaticProps` 를 사용하세요.
-2. 여러분의 페이지의 경로가 외부 데이터에 의존한다면 `getStaticPaths`를 사용하세요. (일반적으로 `getStaticProps`와 함께 사용됩니다. 
-
-Senario1: 외부 데이터에 따라 페이지 내용이 달라질 때 
-
-Example: 여러분의 블로그 페이지는 CMS(content management system)에서 블로그 게시물 목록을 가져와야 할 수 있습니다. 
-
-```jsx
-// TODO: Need to fetch `posts` (by calling some API endpoint)
-//       before this page can be pre-rendered.
-export default function Blog({ posts }) {
-  return (
-    <ul>
-      {posts.map((post) => (
-        <li>{post.title}</li>
-      ))}
-    </ul>
-  )
-}
-```
-
-사전 렌더링 시 해당 데이터를 가져오기 위해서 Next.js는 같은 파일에서 getStaticProps라는 비동기 함수를 export 할 수 있습니다. 이 함수는 빌드 시 호출되며 가져온 데이터를 사전 렌더링 시 페이지의 props로 절달 할 수 있게 합니다. 
-
-```jsx
-export default function Blog({ posts }) {
-  // Render posts...
-}
-
-// This function gets called at build time
-export async function getStaticProps() {
-  // Call an external API endpoint to get posts
-  const res = await fetch('https://.../posts')
-  const posts = await res.json()
-
-  // By returning { props: { posts } }, the Blog component
-  // will receive `posts` as a prop at build time
-  return {
-    props: {
-      posts,
-    },
-  }
-}
-```
-
-`getStaticProps`의 동작 방식에 대해 더 자세히 알고 싶다면 [Data Fetching 공식문서](https://nextjs.org/docs/basic-features/data-fetching/get-static-props)를 확인하세요. ****
-
-Senario 2: 외부 데이터에 의해 페이지의 경로가 달라질 때 
-
-Next.js는 dynamic routes를 사용하여 페이지를 생성할 수 있습니다. 예를 들어 `pages/posts/[id].js`라는 파일을 생성한다면 id를 기반으로 한 하나의 블로그 게시물을 보여줍니다. `posts/1` 에 접근하면 id가 1인 블로그 게시물을 보여줍니다. 
-
-> dynamic routing에 대해 더 자세히 알고 싶다면 [Dynamic Routing 공식문서](https://nextjs.org/docs/routing/dynamic-routes)를 확인하세요.
-> 
-
-그러나 빌드 시 사전에 렌더링할 id는 외부 데이터에 따라 달라질 수 있습니다. 
-
-Example: id가 1인 하나의 게시물만을 데이터베이스에 추가했다고 가정해봅시다. 이 경우 여러분은 빌드시에 `post/1`이라는 단 하나의 게시물만을 사전에 렌더링할 수 있습니다. 
-
-이후에 id가 2인 두 번쨰 게시물을 추가한다면 여러분은 `posts/2` 또한 사전에 렌더링하고 싶을 것입니다. 
-
-따라서 사전에 렌더링된 페이지의 경로는 외부 데이터에 의해 달라집니다. 이를 처리하기 위해서 Next.js는 동적 페이지(`pages/posts/[id].js`)에서 `getStaticPaths`라는 비동기 함수를 export할 수 있습니다. 이 함수는 빌드 시 호출되며 미리 렌더링할 경로를 지정할 수 있습니다. 
-
-```jsx
-// This function gets called at build time
-export async function getStaticPaths() {
-  // Call an external API endpoint to get posts
-  const res = await fetch('https://.../posts')
-  const posts = await res.json()
-
-  // Get the paths we want to pre-render based on posts
-  const paths = posts.map((post) => ({
-    params: { id: post.id },
-  }))
-
-  // We'll pre-render only these paths at build time.
-  // { fallback: false } means other routes should 404.
-  return { paths, fallback: false }
-}
-```
-
-또한 `pages/posts/[id].js`에서 getStaticProps를 내보내야만 이 id의 게시물에 대한 데이터를 가져와 페이지를 미리 렌더링하는 데 사용할 수 있습니다. 
-
-```jsx
-export default function Post({ post }) {
-  // Render post...
-}
-
-export async function getStaticPaths() {
-  // ...
-}
-
-// This also gets called at build time
-export async function getStaticProps({ params }) {
-  // params contains the post `id`.
-  // If the route is like /posts/1, then params.id is 1
-  const res = await fetch(`https://.../posts/${params.id}`)
-  const post = await res.json()
-
-  // Pass post data to the page via props
-  return { props: { post } }
-}
-```
-
-`getStaticPaths`에 대해 더 자세히 알고 싶다면 [Data Fetching 공식문서](https://nextjs.org/docs/basic-features/data-fetching/get-static-paths)를 확인하세요.
-
-**Static Generation**
-
-- Examples
-    - [WordPress Example](https://github.com/vercel/next.js/tree/canary/examples/cms-wordpress) ([Demo](https://next-blog-wordpress.vercel.app/))
-    - [Blog Starter using markdown files](https://github.com/vercel/next.js/tree/canary/examples/blog-starter) ([Demo](https://next-blog-starter.vercel.app/))
-    - [DatoCMS Example](https://github.com/vercel/next.js/tree/canary/examples/cms-datocms) ([Demo](https://next-blog-datocms.vercel.app/))
-    - [TakeShape Example](https://github.com/vercel/next.js/tree/canary/examples/cms-takeshape) ([Demo](https://next-blog-takeshape.vercel.app/))
-    - [Sanity Example](https://github.com/vercel/next.js/tree/canary/examples/cms-sanity) ([Demo](https://next-blog-sanity.vercel.app/))
-    - [Prismic Example](https://github.com/vercel/next.js/tree/canary/examples/cms-prismic) ([Demo](https://next-blog-prismic.vercel.app/))
-    - [Contentful Example](https://github.com/vercel/next.js/tree/canary/examples/cms-contentful) ([Demo](https://next-blog-contentful.vercel.app/))
-    - [Strapi Example](https://github.com/vercel/next.js/tree/canary/examples/cms-strapi) ([Demo](https://next-blog-strapi.vercel.app/))
-    - [Prepr Example](https://github.com/vercel/next.js/tree/canary/examples/cms-prepr) ([Demo](https://next-blog-prepr.vercel.app/))
-    - [Agility CMS Example](https://github.com/vercel/next.js/tree/canary/examples/cms-agilitycms) ([Demo](https://next-blog-agilitycms.vercel.app/))
-    - [Cosmic Example](https://github.com/vercel/next.js/tree/canary/examples/cms-cosmic) ([Demo](https://next-blog-cosmic.vercel.app/))
-    - [ButterCMS Example](https://github.com/vercel/next.js/tree/canary/examples/cms-buttercms) ([Demo](https://next-blog-buttercms.vercel.app/))
-    - [Storyblok Example](https://github.com/vercel/next.js/tree/canary/examples/cms-storyblok) ([Demo](https://next-blog-storyblok.vercel.app/))
-    - [GraphCMS Example](https://github.com/vercel/next.js/tree/canary/examples/cms-graphcms) ([Demo](https://next-blog-graphcms.vercel.app/))
-    - [Kontent Example](https://github.com/vercel/next.js/tree/canary/examples/cms-kontent) ([Demo](https://next-blog-kontent.vercel.app/))
-    - [Builder.io Example](https://github.com/vercel/next.js/tree/canary/examples/cms-builder-io) ([Demo](https://cms-builder-io.vercel.app/))
-    - [TinaCMS Example](https://github.com/vercel/next.js/tree/canary/examples/cms-tina) ([Demo](https://cms-tina-example.vercel.app/))
-    - [Static Tweet (Demo)](https://static-tweet.vercel.app/)
-    - [Enterspeed Example](https://github.com/vercel/next.js/tree/canary/examples/cms-enterspeed) ([Demo](https://next-blog-demo.enterspeed.com/))
-
-페이지가 Static Generation을 사용하는 경우 페이지의 HTML은 빌드 시 생성됩니다. 즉 production에서 `next build`를 실행할 때 페이지의 HTML이 생성됩니다. 이 HTML은 각 요청시마다 재사용되며 CDN에 의해 캐싱될 수 있습니다. 
-
-Next.js에서 데이터가 있거나 없는 페이지를 정적으로 생성할 수 있습니다. 각각의 케이스를 살펴봅시다. 
-
-**Static Generation without data** 
-
-기본적으로 Next.js는 데이터 페칭없이 Static Generation을 사용하여 페이지를 사전에 렌더링합니다. 아래는 그 예입니다. 
-
-```jsx
-function About() {
-  return <div>About</div>
-}
-
-export default About
-```
-
-이 페이지는 사전에 렌더링할 외부 데이터를 가져올 필요가 없습니다. 이러한 경우 Next.js는 빌드 시간 동안 페이지당 하나의 HTML 파일을 생성합니다. 
-
-**Static Generation with data** 
-
-일부 페이지는 pre-rendering을 위해 외부 데이터를 가져와야 합니다. 두 가지 시나리오가 있으며 하나 혹은 모두 적용될 수 있습니다. 각각의 경우에 Next.js가 제공하는 다음 기능을 사용할 수 있습니다. 
-
-1. 여러분의 페이지 내용이 외부 데이터에 의존한다면 `getStaticProps` 를 사용하세요.
-2. 여러분의 페이지의 경로가 외부 데이터에 의존한다면 `getStaticPaths`를 사용하세요. (일반적으로 `getStaticProps`와 함께 사용됩니다. 
-
-Senario1: 외부 데이터에 따라 페이지 내용이 달라질 때 
-
-Example: 여러분의 블로그 페이지는 CMS(content management system)에서 블로그 게시물 목록을 가져와야 할 수 있습니다. 
-
-```jsx
-// TODO: Need to fetch `posts` (by calling some API endpoint)
-//       before this page can be pre-rendered.
-export default function Blog({ posts }) {
-  return (
-    <ul>
-      {posts.map((post) => (
-        <li>{post.title}</li>
-      ))}
-    </ul>
-  )
-}
-```
-
-사전 렌더링 시 해당 데이터를 가져오기 위해서 Next.js는 같은 파일에서 getStaticProps라는 비동기 함수를 export 할 수 있습니다. 이 함수는 빌드 시 호출되며 가져온 데이터를 사전 렌더링 시 페이지의 props로 절달 할 수 있게 합니다. 
-
-```jsx
-export default function Blog({ posts }) {
-  // Render posts...
-}
-
-// This function gets called at build time
-export async function getStaticProps() {
-  // Call an external API endpoint to get posts
-  const res = await fetch('https://.../posts')
-  const posts = await res.json()
-
-  // By returning { props: { posts } }, the Blog component
-  // will receive `posts` as a prop at build time
-  return {
-    props: {
-      posts,
-    },
-  }
-}
-```
-
-`getStaticProps`의 동작 방식에 대해 더 자세히 알고 싶다면 [Data Fetching 공식문서](https://nextjs.org/docs/basic-features/data-fetching/get-static-props)를 확인하세요. ****
-
-Senario 2: 외부 데이터에 의해 페이지의 경로가 달라질 때 
-
-Next.js는 dynamic routes를 사용하여 페이지를 생성할 수 있습니다. 예를 들어 `pages/posts/[id].js`라는 파일을 생성한다면 id를 기반으로 한 하나의 블로그 게시물을 보여줍니다. `posts/1` 에 접근하면 id가 1인 블로그 게시물을 보여줍니다. 
-
-> dynamic routing에 대해 더 자세히 알고 싶다면 [Dynamic Routing 공식문서](https://nextjs.org/docs/routing/dynamic-routes)를 확인하세요.
-> 
-
-그러나 빌드 시 사전에 렌더링할 id는 외부 데이터에 따라 달라질 수 있습니다. 
-
-Example: id가 1인 하나의 게시물만을 데이터베이스에 추가했다고 가정해봅시다. 이 경우 여러분은 빌드시에 `post/1`이라는 단 하나의 게시물만을 사전에 렌더링할 수 있습니다. 
-
-이후에 id가 2인 두 번쨰 게시물을 추가한다면 여러분은 `posts/2` 또한 사전에 렌더링하고 싶을 것입니다. 
-
-따라서 사전에 렌더링된 페이지의 경로는 외부 데이터에 의해 달라집니다. 이를 처리하기 위해서 Next.js는 동적 페이지(`pages/posts/[id].js`)에서 `getStaticPaths`라는 비동기 함수를 export할 수 있습니다. 이 함수는 빌드 시 호출되며 미리 렌더링할 경로를 지정할 수 있습니다. 
-
-```jsx
-// This function gets called at build time
-export async function getStaticPaths() {
-  // Call an external API endpoint to get posts
-  const res = await fetch('https://.../posts')
-  const posts = await res.json()
-
-  // Get the paths we want to pre-render based on posts
-  const paths = posts.map((post) => ({
-    params: { id: post.id },
-  }))
-
-  // We'll pre-render only these paths at build time.
-  // { fallback: false } means other routes should 404.
-  return { paths, fallback: false }
-}
-```
-
-또한 `pages/posts/[id].js`에서 getStaticProps를 내보내야만 이 id의 게시물에 대한 데이터를 가져와 페이지를 미리 렌더링하는 데 사용할 수 있습니다. 
-
-```jsx
-export default function Post({ post }) {
-  // Render post...
-}
-
-export async function getStaticPaths() {
-  // ...
-}
-
-// This also gets called at build time
-export async function getStaticProps({ params }) {
-  // params contains the post `id`.
-  // If the route is like /posts/1, then params.id is 1
-  const res = await fetch(`https://.../posts/${params.id}`)
-  const post = await res.json()
-
-  // Pass post data to the page via props
-  return { props: { post } }
-}
-```
-
-`getStaticPaths`에 대해 더 자세히 알고 싶다면 [Data Fetching 공식문서](https://nextjs.org/docs/basic-features/data-fetching/get-static-paths)를 확인하세요. 
-
-**When should I use Static Generation?** 
-
-Static Generation을 사용하면 페이지는 한 번 빌드되어 CDN에 의해 제공되므로 모든 요청에 대해 서버가 페이지를 렌더링하는 것보다 더 빠르므로 가능하다면 데이터의 유무에 상관없이 Static Generation을 사용하는 것을 권장합니다. 
-
-Static Generation은 다음을 포함한 다양한 유형의 페이지에 사용할 수 있습니다. 
-
-- Marketing pages
-- Blog posts and portfolios
-- E-commerce product listings
-- Help and documentation
-
-사용자의 요청에 앞서 해당 페이지를 사전에 렌더링할 수 있다면 Static Generation을 선택해야 합니다. 
-
-반면에 사용자의요청보다 먼저 페이지를 미리 렌더링할 수 없는 경우 Static Generation은 좋은 방법이 아닙니다. 페이지에 자주 업데이트되는 데이터가 표시되고 페이지 내용이 요청할 때마다 변경될 수 있습니다. 
-
-이 경우 다음 중 하나를 따라갈 수 있습니다. 
-
-- Client-side 데이터 페칭과 함께 Static Generation을 사용하기: 페이지의 일부 사전 렌더링을 건너뛰고 client-side의 자바스크립트를 사용하여 이를 채울 수 있습니다. 이러한 접근 방식에 대해서 더 자세히 알고 싶다면 [Data Fetching 공식문서](https://nextjs.org/docs/basic-features/data-fetching/client-side)를 확인하세요
-- Server-Side Rendering을 사용하기: Next.js는 각 요청에 대해 페이지를 미리 렌더링합니다. CDN으로 페이지를 캐싱할 수 없으므로 느려지지만 사전 렌더링된 페이지는 항상 최신 상태입니다. 이 접근 방식에 대해서는 아래에서 자세히 살펴보겠습니다.
-
-**Server-side Rendering** 
-
-> SSR과 Dynamic Rendering에 대해서도 언급하고 있습니다.
-> 
-
-만약 페이지가 Server-side Rendering을 사용한다면 페이지 HTML은 각 요청시에 생성됩니다. 
-
-페이지를 위해 Server-side Rendering을 사용하려면 `getServerSideProps`라는 비동기 함수를 export해야 합니다. 이 함수는 모든 요청 시 서버에 의해 호출됩니다. 
-
-예를 들어 페이지에서 자주 업데이트되는 데이터(외부 API에서 가져온 데이터)를 미리 렌더링해야 한다고 가정해봅시다. `Page`로 데이터를 전달하는 `getServerSideProps`를 아래와 같이 작성할 수 있습니다. 
-
-```jsx
-export default function Page({ data }) {
-  // Render data...
-}
-
-// This gets called on every request
-export async function getServerSideProps() {
-  // Fetch data from external API
-  const res = await fetch(`https://.../data`)
-  const data = await res.json()
-
-  // Pass data to the page via props
-  return { props: { data } }
-}
-```
-
-위와 같이 `getServerSideProps` 는 `getStaticProps`와 유사하지만 `getServerSideProps`는 빌드 시가 아닌 모든 요청에서 실행되는 점이 다릅니다. 
-
-`getServerSideProps` 의 작동 방식에 대해 알고 싶다면 [Data Fetching 공식문서](https://nextjs.org/docs/basic-features/data-fetching/get-server-side-props)를 참고하세요. 
-
-**Summary** 
-
-Next.js의 사전 렌더링의 두 가지 형태에 대해 알아봤습니다. 
-
-- Static Generation(Recommended): HTML이 빌드시에 생성되며 매 요청시 재사용됩니다. Static Generation을 사용해 페이지를 만들기 위해서는 page component를 내보내거나 `getStaticProps`(필요한 경우 `getStaticPaths`도 함께 내보냄)를 내보내야 합니다. 사용자의 요청에 앞서 미리 렌더링할 수 있는 페이지에 적합합니다. 클라이언트 사이드 렌더링과 함께 사용하여 추가 데이터를 가져올 수도 있습니다.
-- Server-side Rendering: HTML은 각 요청시마다 생성됩니다. Server-side Rendering 페이지를 만들기 위해서는 `getServerSideProps`를 내보내야 합니다. Server-side Rendering은 Static Generation보다 성능이 느리므로 반드시 필요한 경우에만 해당 기능을 사용해야 합니다.
-
-
-
-**Pages with Dynamic Routes**
-Next.js는 dynamic route 페이지를 지원합니다. 예를 들어 `pages/posts/[id].js` 라는 파일을 만들면 `posts/1, `posts/2`` 등의 페이지에서 접근할 수 있습니다. 
-
-dynamic route에 대한 자세한 내용은 [Dynamic Routing 공식문서](https://nextjs.org/docs/routing/dynamic-routes)를 참고하세요.
-
-
-Next.js는 dynamic route 페이지를 지원합니다. 예를 들어 `pages/posts/[id].js` 라는 파일을 만들면 `posts/1, `posts/2`` 등의 페이지에서 접근할 수 있습니다. 
-
-dynamic route에 대한 자세한 내용은 [Dynamic Routing 공식문서](https://nextjs.org/docs/routing/dynamic-routes)를 참고하세요.
 
 - ### Data Fetching
 
@@ -2329,414 +1808,254 @@ Fast Refresh는 가능한 편집하는동안 컴포넌트 상태를 유지하려
 
 그러나 때때로 useEffect의 재실행에 탄력적인 코드 작성은 Fast Refresh가 없어도 좋은 방법입니다. 당신이 나중에 그것에 새로운 의존성을 소개하는 것이 더 쉽게 만들 것이며, 우리가 적극적으로 활성화하는 것을 권장하는 [React Strict Mode](https://nextjs.org/docs/api-reference/next.config.js/react-strict-mode)에 의해 시행됩니다.
 - ### ESLint
-  Next.js는 통합된 ESLint 환경을 제공합니다. `next lint` 스크립트를 `package.json`에 추가하여 사용할 수 있습니다. 
-
-```jsx
-"scripts": {
-  "lint": "next lint"
-}
-```
-
-그런 다음 `npm run lint` 혹은 `yarn lint`를 실행하세요 
-
-```jsx
-yarn lint 
-```
-
-여러분의 애플리케이션에 ESLint가 아직 구성되어 있지 않다면 설치 및 구성 프로세스 가이드를 참고하여 진행하세요. 
-
-```jsx
-yarn lint
-
-# You'll see a prompt like this:
-#
-# ? How would you like to configure ESLint?
-#
-# ❯   Base configuration + Core Web Vitals rule-set (recommended)
-#     Base configuration
-#     None
-```
-
-아래와 같은 세가지 옵션 중 하나를 선택할 수 있습니다. 
-
-- Strict: Next.js의 기본 ESLint 설정을 보다 엄격한 Core Web Vitals 규칙들과 함께 포함합니다. 이는 ESLint를 처음 설정하는 개발자들을 위해 추천되는 구성입니다.
-
-```jsx
-{
-  "extends": "next/core-web-vitals"
-}
-```
-
-- Base: Next.js의 ESLint 구성을 포함합니다.
-
-```jsx
-{
-  "extends": "next"
-}
-```
-
-- Cancle: ESLint 구성을 포함하고 있지 않습니다. 커스텀한 ESLint 구성을 설정할 계획이 있는 경우에만 해당 옵션을 설정하세요.
-
-두 가지 옵션을 선택하면 Next.js는 자동적으로 애플리케이션에 `eslint`와 `eslint-config-next`를 dev dependecies로 설치하고 프로젝트의 루트 경로에 여러분이 선택한 구성을 포함한 `.eslintrc.json` 파일을 생성할 것입니다. 
-
-이제 `next lint`를 실행할 때마다 ESLint가 실행되어 에러를 잡을 것입니다. ESLint는 한 번 설정하면 매번 빌드시(`next build`) 자동으로 실행됩니다. 에러가 있을 경우 빌드에 실패하고 경고의 경우는 아닙니다. 
-
-만약 `next build` 시 ESLint를 실행하고 싶지 않다면 [Ignoring ESLint](https://nextjs.org/docs/api-reference/next.config.js/ignoring-eslint) 문서를 참고하세요. 
-
-적절한 [intergration](https://eslint.org/docs/latest/use/integrations#editors)을 사용하여 개발 시 코드 편집기에서 경고와 에러를 바로 보는 것을 추천합니다.
-
-### ESLint Config
-
-기본적인 구성(eslint-config-next)는 Next.js환경에서 lint를 사용하는데 필요한 거의 모든 옵션을 포함합니다. 아직 여러분의 애플리케이션에 ESLint를 가지고 있지 않다면 우리는 `next lint`를 사용하여 ESLint를 구성하는 것을 추천합니다. 
-
-다른 구성으로 `eslint-config-next`를 사용하고 싶다면 해당 내용에 대해 언급하고 있는  [Additional Configurations](https://nextjs.org/docs/basic-features/eslint#additional-configurations) 페이지에서 충돌을 발생시키지 않는 방법을 학습하세요. 
-
-아래의 ESLint 플러그인에서 권장되는 규칙들은 모두 `eslint-config-next`에 포함됩니다. 
-
-- `[eslint-plugin-react](https://www.npmjs.com/package/eslint-plugin-react)`
-- `[eslint-plugin-react-hooks](https://www.npmjs.com/package/eslint-plugin-react-hooks)`
-- `[eslint-plugin-next](https://www.npmjs.com/package/@next/eslint-plugin-next)`
-
-위의 규칙들은 `next.config.js`에 있는 규칙보다 우선순위를 가집니다. 
-
-**ESLint Plugin **
-
-Next.js는 `eslint-plugin-next`라는 ESLint 플러그인을 제공하므로 기본 구성으로 번들되었다면 Next.js 애플리케이션에서 일어나는 이슈와 문제를 잡을 수 있습니다. 전체적인 규칙들은 아래와 같습니다. 
-
-- ✔: 권장되는 구성에서 enable된 값입니다.
-
-|  | Rule | Description |
-| --- | --- | --- |
-| ✔️ | https://nextjs.org/docs/messages/google-font-display | 구글의 폰트와 같은 폰트로 보이도록 강제합니다.  |
-| ✔️ | https://nextjs.org/docs/messages/google-font-preconnect | preconnect가 구글 폰트와 함께 사용되도록 보장합니다.  |
-| ✔️ | https://nextjs.org/docs/messages/inline-script-id | next/script 컴포넌트의  id 속성을 inline content로 강제합니다.  |
-| ✔️ | https://nextjs.org/docs/messages/next-script-for-ga | Google Analytics를 위한 inline script를 사용할 경우 next/script 컴포넌트를 선호합니다. |
-| ✔️ | https://nextjs.org/docs/messages/no-assign-module-variable | module 변수를 할당하는 것을 방지합니다.  |
-| ✔️ | https://nextjs.org/docs/messages/no-before-interactive-script-outside-document | next/script의 beforInteractive 를 pages/_document.js이외의 파일에서 사용하는 것을 방지합니다.  |
-| ✔️ | https://nextjs.org/docs/messages/no-css-tags | 수동 스타일 시트 태그를 방지합니다.  |
-| ✔️ | https://nextjs.org/docs/messages/no-document-import-in-page |  next/document를 pages/_document.js 이외의 파일에서 import하는 것을 방지합니다.  |
-| ✔️ | https://nextjs.org/docs/messages/no-duplicate-head | pages/_document.js에서 <Head>를 중복해서 사용하는 것을 방지합니다.  |
-| ✔️ | https://nextjs.org/docs/messages/no-head-element | <head> 요소를 사용하는 것을 방지합니다.  |
-| ✔️ | https://nextjs.org/docs/messages/no-head-import-in-document | next/head를 pages/_document.js에서 사용하는 것을 방지합니다.  |
-| ✔️ | https://nextjs.org/docs/messages/no-html-link-for-pages | Next.js 내부의 페이지로 이동하기 위해 <a> 태그를 사용하는 것을 방지합니다.  |
-| ✔️ | https://nextjs.org/docs/messages/no-img-element | 낮은 LCP와 높은 대역폭을 가진 <img> 태그를 사용하는 것을 방지합니다.  |
-| ✔️ | https://nextjs.org/docs/messages/no-page-custom-font | 페이지에서만 사용하는 custom font를 방지합니다.  |
-| ✔️ | https://nextjs.org/docs/messages/no-script-component-in-head | next/head 컴포넌트에서 next/script를 사용하는 것을 방지합니다.  |
-| ✔️ | https://nextjs.org/docs/messages/no-styled-jsx-in-document | styled-jsx를 pages/_document.js에서 사용하는 것을 방지합니다.  |
-| ✔️ | https://nextjs.org/docs/messages/no-sync-scripts | 동기적인 script를 방지합니다.  |
-| ✔️ | https://nextjs.org/docs/messages/no-title-in-document-head | next/document에서 <title> 태그를 Head 컴포넌트와 함께 사용하는 것을 막습니다.  |
-| ✔️ | @next/next/no-typos | https://nextjs.org/docs/basic-features/data-fetching에서 발생할 수 있는 일반적인 오타를 방지합니다.  |
-| ✔️ | https://nextjs.org/docs/messages/no-unwanted-polyfillio | Polyfill.io의 polyfills의 중복을 방지합니다.  |
-
-여러분의 애플리케이션에 ESLint 구성이 이미 존재한다면 `eslint-config-next`를 사용하는 것보다는 위의 플러그인을 확장해서 사용하는 것을 추천합니다. 더 자세히 알고 싶다면 [Recommended Plugin Ruleset](https://nextjs.org/docs/basic-features/eslint#recommended-plugin-ruleset) 페이지를 참조하세요.
-  
-  **Caching** 
-
-성능을 향상시키기 위해서 기본적으로 ESLint의 파일 정보는 캐싱됩니다. 이는 `next/cache`에 저장되거나 사용자가 정의한 [build directory](https://nextjs.org/docs/api-reference/next.config.js/setting-a-custom-build-directory)에 저장됩니다. single source file의 내용에 의존하는 ESLint 룰을 포함하고 있어 캐싱을 불가능하게 해야 한다면 `next lint`와 함께 `--no-cache` 플래그를 사용하세요. 
-
-```Bash
-next lint --no-cache
-```
-
-**Disabling Rules** 
-
-만약 기본으로 지원되는 플러그인(`react`, `react-hooks`, `next`) 안에 있는 어떠한 규칙을 변형하거나 불가능하게 만들고 싶다면 `.eslintrc` 안의 `rules` 속성을 사용하여 바로 변경할 수 있습니다. 
-
-```JSON
-{
-  "extends": "next",
-  "rules": {
-    "react/no-unescaped-entities": "off",
-    "@next/next/no-page-custom-font": "off"
-  }
-}
-```
-
-**Core Web Vitals** 
-
-`next/core-web-vitals` 의 규칙들은 strict 옵션을 선택하고 `next lint` 를 초기에 한 번 실행하면 활성화됩니다. 
-
-```JSON
-{
-  "extends": "next/core-web-vitals"
-}
-```
-
-`next/core-web-vitals`은 [Core Web Vitals](https://web.dev/vitals/)에 영향을 미치는 경우 기본적으로 경고가 되는 여러 규칙에서  `eslint-plugin-next`를 오류로 업데이트합니다. 
-
-`next/core-web-vitals` 의 entry point는 [Create Next App](https://nextjs.org/docs/api-reference/create-next-app)으로 빌드한 새로운 애플리케이션을 자동으로 포함합니다. 
-
-**Use With Other Tools** 
-
-**Prettier** 
-
-ESLint는 코드 formatting 규칙 또한 포함하므로 이미 존재하는[Prettier](https://prettier.io/) 규칙들과 충돌할 수 있습니다. ESLint와 Prettier를 함께 사용하고 싶다면 ESLint config에 https://github.com/prettier/eslint-config-prettier를 추가하는 것을 권장합니다. 
-
-먼저 의존성을 설치해봅시다. 
-
-```Bash
-npm install --save-dev eslint-config-prettier
-# or
-yarn add --dev eslint-config-prettier
-```
-
-그 후에 ESLint config에 `prettier`를 추가하세요. 
-
-```JSON
-{
-  "extends": ["next", "prettier"]
-}
-```
-
-**Init-staged** 
-
-만약 `next lint`를 staged 상태의 git파일들에 lint를 실행시키기 위해 [lint-staged](https://github.com/okonet/lint-staged)와 함께 사용하고 싶다면 `--file` 플래그의 사용을 지정하기 위해 아래의 내용들을 프로젝트의 루트 경로의 `.lintstagedrc.js` 파일에 추가하세요.  
-
-```jsx
-const path = require('path')
-
-const buildEslintCommand = (filenames) =>
-  `next lint --fix --file ${filenames
-    .map((f) => path.relative(process.cwd(), f))
-    .join(' --file ')}`
-
-module.exports = {
-  '*.{js,jsx,ts,tsx}': [buildEslintCommand],
-}
-```
-
-**Migrating Existing Config** 
-
-**Recommended Plugin Ruleset** 
-
-여러분의 애플리케이션에 ESLint가 이미 존재하고 아래의 조건들 중 하나라도 포함되는 경우: 
-
-- 아래의 플러그인 중 하나 혹은 그 이상이 이미 설치되어 있다면(각각을 설치했거나 `airbnb`나 `react-app`과 같은 다른 config에 포함될 경우):
-    - `react`
-    - `react-hooks`
-    - `jsx-ally`
-    - `import`
-- Next.js 내에서 Babel이 구성되는 방식과 다른 특정 `parserOptions`을 정의한 경우(Bable 구성을 customized한 경우에는 권장하지 않습니다.)
-- import 문을 처리하기 위해 Node.js나 Typescript [resolvers](https://github.com/benmosher/eslint-plugin-import#resolvers)에 `eslint-plugin-import`가 설치되어 있는 경우
-
-위 조건들에 해당되는 경우 여러분이 `eslint-config-next` 내에서 구성된 방식을 선호한다면 이러한 설정을 제거하거나 대신 Next.js ESLint 플러그인에서 직접 확장하는 것이 좋습니다. 
-
-```jsx
-module.exports = {
-  extends: [
-    //...
-    'plugin:@next/next/recommended',
-  ],
-}
-```
-
-해당 플러그인들은 `next lint`를 실행할 필요없이 프로젝트에 기본적으로 설치되어 있을 것입니다. 
-
-```Bash
-npm install --save-dev @next/eslint-plugin-next
-# or
-yarn add --dev @next/eslint-plugin-next
-```
-
-이는 같은 플러그인이나 설정들이 중복되어 충돌이나 에러를 발생시킬 위험을 제거합니다. 
-
-**Additional Configurations** 
-
-만약 여러분이 분리된 ESLint 설정을 이미 가지고 있는 상태에서 `eslint-config-next`를 포함하고 싶다면 아래와 같이 다른 구성들 이후에 확장되었다는 것을 명시해야 합니다. 
-
-```JSON
-{
-  "extends": ["eslint:recommended", "next"]
-}
-```
-
-`next`의 구성은 `parser`, `plugins`, `setting` 속성들의 기본값을 이미 다루고 있습니다. 여러분의 필요에 의해 다른 속성을 추가하고 싶은 것이 아니라면 해당 속성들을 재선언할 필요는 없습니다. 만약 공유가능한 다른 구성들을 포함한다면 해당 속성들이 덮여씌여지거나 변형되지 않았다는 것을 보장해야 합니다. 그렇지 않으면 다음 구성과 동작을 공유하는 모든 구성을 제거하거나 위에서 언급한 대로 Next.js ESLint 플러그인에서 직접 확장하는 것이 좋습니다.
-  
 
 - ### TypeScript
-  - Version History
-    
-    
-    | Version | Changes |
-    | --- | --- |
-    | v12.0.0 | TypeScript와 TSX를 빠르게 빌드하기 위해 https://nextjs.org/docs/advanced-features/compiler를 기본 컴파일러로 사용합니다.   |
-    | v10.2.1 | tsconfig.json에서 설정을 추가한 경우 https://www.typescriptlang.org/tsconfig#incremental을 지원합니다.  |
-    
-
-Next.js는 zero-configuration 설정과 Pages, APIs 등을 위한 빌트인 타입을 포함한 통합된 [TypeScript](https://www.typescriptlang.org/)환경을 제공합니다. 
-
-- [Clone and deploy the TypeScript starter](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-typescript&project-name=with-typescript&repository-name=with-typescript&utm_source=next-site&utm_medium=docs&utm_campaign=next-website)
-- [View an example application](https://github.com/vercel/next.js/tree/canary/examples/with-typescript)
-  
-  `**create-next-app` support** 
-
-`create-next-app` 에 `--ts, --typescript` 플래그를 사용하여 TypeScript 프로젝트를 만들 수 있습니다. 
-
-```Bash
-npx create-next-app@latest --ts
-# or
-yarn create next-app --typescript
-# or
-pnpm create next-app --ts
-```
-
-**Existing projects** 
-
-이미 존재하는 프로젝트에서 시작하고 싶다면 빈 `tsconfig.json`파일을 루트 디렉토리에 생성해주세요. 
-
-```Bash
-touch tsconfig.json
-```
-
-Next.js는 자동으로 해당 파일을 기본값으로 구성합니다. 커스텀한 [compiler options](https://www.typescriptlang.org/docs/handbook/compiler-options.html)을 포함하는  `tsconfig.json` 또한 지원합니다. 
-
-`next.config.js` 파일 안의 `typescript.tsconfigPath` 설정을 통해 `tsconfig.json` 파일에 대한 절대경로를 지원할 수도 있습니다. 
-
-`v12.0.0` 에서 시작한다면 Next.js는 TypeScript와 TSX의 빠른 빌드를 위해 [SWC](https://nextjs.org/docs/advanced-features/compiler)를 기본 컴파일러로 사용합니다. 
-
-Next.js는 `.babelrc`가 존재한다면 TypeScript를 처리하기 위해 Babel을 사용할 것입니다. 이는 몇 가지의 [주의사항](https://babeljs.io/docs/en/babel-plugin-transform-typescript#caveats)이 있으며 [일부 컴파일러 옵션이 다르게 동작할 수 있습니다.](https://babeljs.io/docs/en/babel-plugin-transform-typescript#typescript-compiler-options) 
-
-`next`를 실행시키면 Next.js는 설정을 마무리하기 위해 필요한 package들을 설치하기 위한 가이드를 제공할 것입니다. 
-
-```Bash
-npm run dev
-
-# You'll see instructions like these:
-#
-# Please install TypeScript, @types/react, and @types/node by running:
-#
-#         yarn add --dev typescript @types/react @types/node
-#
-# ...
-```
-
-이제 여러분은 파일을 `js`에서 `tsx`로 변환시키고 TypeScript의 이점을 활용할 준비가 되었습니다. 
-
-`next-env.d.ts` 파일이 프로젝트의 루트 경로에 생성되었을 것입니다. 이 파일은 TypeScript 컴파일러가 Next.js의 type을 선택하도록 보장합니다. 어떠한 경우에도 해당파일을 지우거나 수정하지 마세요. 해당 파일은 커밋되지 않아야 하며 version control에서 무시되어야 합니다.(eg. `gitignore` 파일 내부) 
-
-TypeScript의 `strict` 모드는 기본적으로 꺼져있습니다. TypeScript에 익숙하다면 `tsconfig.json`에서 해당 설정을 켜는 것을 권장합니다. 
-
-`next-env.d.ts`를 수정하는 대신에 `additional.d.ts`라는 새로운 파일을 만들고 `tsconfig.json`의 `include` 배열에 해당 참조를 추가하여 추가적인 type을 선언할 수 있습니다. 
-
-기본적으로 Next.js는 `next build` 시 type을 확인합니다. 우리는 개발 동안에 에디터에서 type을 확인하는 것을 권장합니다. 
-
-에러를 무시하고 싶다면 [Ignoring TypeScript errors](https://nextjs.org/docs/api-reference/next.config.js/ignoring-typescript-errors) 문서를 참고하세요. 
-
-****[Static Generation and Server-side Rendering](https://nextjs.org/docs/basic-features/typescript#static-generation-and-server-side-rendering)****
-
-`getStaticProps, getStaticPaths, getServerSideProps`를 위해서 각각 `GetStaticProps, GetStaticPaths, GetServerSideProps` type을 사용할 수 있습니다. 
-
-```jsx
-import { GetStaticProps, GetStaticPaths, GetServerSideProps } from 'next'
-
-export const getStaticProps: GetStaticProps = async (context) => {
-  // ...
-}
-
-export const getStaticPaths: GetStaticPaths = async () => {
-  // ...
-}
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  // ...
-```
-
-`getInitialProps`를 사용한다면 [해당 문서의 방법을 따라하세요.](https://nextjs.org/docs/api-reference/data-fetching/get-initial-props#typescript) 
-
-**API Routes**
-
-아래는 API Routes를 위한 빌트인 type을 사용하는 방법의 예시입니다. 
-
-```jsx
-import type { NextApiRequest, NextApiResponse } from 'next'
-
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  res.status(200).json({ name: 'John Doe' })
-}
-```
-
-response data의 type또한 설정할 수 있습니다. 
-
-```jsx
-import type { NextApiRequest, NextApiResponse } from 'next'
-
-type Data = {
-  name: string
-}
-
-export default function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<Data>
-) {
-  res.status(200).json({ name: 'John Doe' })
-}
-```
-
-**custom app** 
-
-만약 [custom `App`](https://nextjs.org/docs/advanced-features/custom-app)을 가지고 있다면 `AppProps` 빌트인 타입을 사용하여 아래와 같이 `./pages/_app.tsx` 로 파일이름을 변경할 수 있습니다.  
-
-```jsx
-import type { AppProps } from 'next/app'
-
-export default function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
-}
-```
-
-**path aliases and baseUrl** 
-
-Next.js는 자동적으로 `tsconfig.json`의 `paths`와 `baseUrl` 옵션을 지원합니다. 해당 내용에 대해 더 자세히 알고 싶다면 [Module Path aliases 문서](https://nextjs.org/docs/advanced-features/module-path-aliases)를 참고하세요. 
-
-**Type checking next.config.js** 
-
-`next.config.js` 파일은 Babel이나 Typescript에 의해 파싱되지 않으므로 JavaScript 파일이어야 합니다. 하지만 아래와 같이 IDE의 JSDoc을 사용하여 type을 확인할 수 있습니다. 
-
-```jsx
-// @ts-check
-
-/**
- * @type {import('next').NextConfig}
- **/
-const nextConfig = {
-  /* config options here */
-}
-
-module.exports = nextConfig
-```
-
-**incremetal type checking** 
-
-`v10.2.1` 이후로 Next.js는 `tsconfig.json`에서 설정을 추가한 경우 [Incremental type checking](https://www.typescriptlang.org/tsconfig#incremental)을 지원합니다. 이는 거대 애플리케이션에서 type을 확인하는 시간을 빠르게 해줍니다. 
-
-해당 기능을 사용할 때는 TypeScript 경험의 [best performance](https://devblogs.microsoft.com/typescript/announcing-typescript-4-3/#lazier-incremental)를 위해서 최소 `v4.3.2` 이상을 사용하는 것을 권장합니다. 
-
-**Ignoring TypeScript Errors** 
-
-Next.js는 현재 여러분의 프로젝트에 TypeScript 에러가 존재할 때 프로덕션 빌드(`next build`)를 실패합니다. 
-
-만약 애플리케이션에 오류가 있더라도 Next.js가 위험하게 프로덕션 코드를 생성하게 하고 싶다면 빌트 인 type 확인 단계를 비활성 할 수 있습니다. 
-
-비활성할 경우 빌드 혹은 배포 과정의 일부로 type 체크를 실행하고 있어야 합니다. 그렇지 않을 경우 매우 위험할 수 있습니다. 
-
-`next.config.js`를 열고 `typescript` 구성의 `ignoreBuildErrors` 옵션을 활성화하세요
-
-```jsx
-module.exports = {
-  typescript: {
-    // !! WARN !!
-    // Dangerously allow production builds to successfully complete even if
-    // your project has type errors.
-    // !! WARN !!
-    ignoreBuildErrors: true,
-  },
-}
-```
-  
 
 - ### Environment Variables
+예시
+
+- [Environment Variables](https://github.com/vercel/next.js/tree/canary/examples/environment-variables)
+
+Next.js는 환경 변수를 내장하고 있어 다음을 수행할 수 있습니다.
+
+- `[.env.local`를 사용하여 환경 변수 로드](<https://nextjs.org/docs/basic-features/environment-variables#loading-environment-variables>)
+- [브라우저에 `NEXT_PUBLIC_`를 접두사로 사용하여 환경 변수 노출](https://nextjs.org/docs/basic-features/environment-variables#exposing-environment-variables-to-the-browser)
+
+#### 환경 변수 로드
+
+Next.js는 내장된 `.env.local`에서 환경 변수를 `process.env`로 로드할 수 있는 기능을 제공합니다.
+
+예를 들어 `.env.local`:
+
+```
+DB_HOST=localhost
+DB_USER=myuser
+DB_PASS=mypassword
+
+
+```
+
+이는 `process.env.DB_HOST`, `process.env.DB_USER`, `process.env.DB_PASS`를 Node.js 환경에 자동으로 로드하여 [Next.js 데이터 가져오기 방법](https://nextjs.org/docs/basic-features/data-fetching/overview) 및 [API 라우트](https://nextjs.org/docs/api-routes/introduction)에서 사용할 수 있게 합니다.
+
+예를 들어 `getStaticProps` 사용:
+
+```
+// pages/index.js
+export async function getStaticProps() {
+  const db = await myDB.connect({
+    host: process.env.DB_HOST,
+    username: process.env.DB_USER,
+    password: process.env.DB_PASS,
+  })
+  // ...
+}
+
+```
+
+> 참고: 서버 전용 비밀은 안전하게 유지하기 위해 환경 변수는 빌드 시 평가되므로 실제로 사용되는 환경 변수만 포함됩니다. 이는 `process.env`가 표준 JavaScript 객체가 아니므로 객체 구조 분해를 사용할 수 없다는 것을 의미합니다. 환경 변수는 `process.env.PUBLISHABLE_KEY` 등으로 참조해야 합니다.
+
+> 참고: Next.js는 `.env*` 파일 내부의 변수($VAR)를 자동으로 확장합니다. 이를 사용하여 다른 비밀을 참조할 수 있습니다.
+>
+> ```
+> # .env
+> HOSTNAME=localhost
+> PORT=8080
+> HOST=http://$HOSTNAME:$PORT
+>
+> ```
+>
+> 실제 값에 `$`가 있는 변수를 사용하려면 다음과 같이 이스케이프해야 합니다: `\\\\ $`.
+>
+> 예를 들어:
+>
+> ```
+> # .env
+> A=abc
+>
+> # becomes "preabc"
+> WRONG=pre$A
+>
+> # becomes "pre$A"
+> CORRECT=pre\\\\$A
+>
+> ```
+
+> 참고: /src 폴더를 사용하는 경우 Next.js는 .env 파일을 상위 폴더에서만 로드하고 /src 폴더에서는 로드하지 않습니다.
+
+#### 브라우저에 환경 변수 노출
+
+기본적으로 환경 변수는 브라우저에 표시되지 않기 때문에 Node.js 환경에서만 사용할 수 있습니다.
+
+브라우저에 변수를 노출하려면 변수를 `NEXT_PUBLIC_`로 접두사를 붙여야 합니다. 예를 들면:
+
+```
+NEXT_PUBLIC_ANALYTICS_ID=abcdefghijk
+
+```
+
+이는 `process.env.NEXT_PUBLIC_ANALYTICS_ID`를 Node.js 환경에 자동으로 로드하여 코드의 어디에서든 사용할 수 있게 합니다. 값은 `NEXT_PUBLIC_` 접두사 때문에 브라우저로 전송되는 JavaScript에 인라인됩니다. 이 인라인은 빌드 시 발생하므로 프로젝트 빌드 시 `NEXT_PUBLIC_` 환경이 설정되어 있어야 합니다.
+
+```
+// pages/index.js
+import setupAnalyticsService from '../lib/my-analytics-service'
+
+// 'NEXT_PUBLIC_ANALYTICS_ID' can be used here as it's prefixed by 'NEXT_PUBLIC_'.
+// It will be transformed at build time to `setupAnalyticsService('abcdefghijk')`.
+setupAnalyticsService(process.env.NEXT_PUBLIC_ANALYTICS_ID)
+
+function HomePage() {
+  return <h1>Hello World</h1>
+}
+
+export default HomePage
+
+```
+
+참고: 동적 조회는 인라인되지 않습니다.
+
+```
+// This will NOT be inlined, because it uses a variable
+const varName = 'NEXT_PUBLIC_ANALYTICS_ID'
+setupAnalyticsService(process.env[varName])
+
+// This will NOT be inlined, because it uses a variable
+const env = process.env
+setupAnalyticsService(env.NEXT_PUBLIC_ANALYTICS_ID)
+
+```
+
+#### 기본 환경 변수
+
+일반적으로 `.env.local` 파일 하나만 필요합니다. 그러나 개발(`next dev`) 또는 프로덕션(`next start`) 환경에 기본값을 추가하려는 경우가 있습니다.
+
+Next.js는 `.env`(모든 환경), `.env.development`(개발 환경) 및 `.env.production`(프로덕션 환경)에서 기본값을 설정할 수 있습니다.
+
+`.env.local`은 항상 설정된 기본값을 덮어씁니다.
+
+> 참고: .env, .env.development 및 .env.production 파일은 저장소에 포함되어야 합니다. .env*.local은 무시되어야 합니다. .env.local에 비밀을 저장할 수 있습니다.
+
+#### Vercel의 환경 변수
+
+Next.js 애플리케이션을 [Vercel](https://vercel.com/)에 배포할 때 환경 변수는 [프로젝트 설정](https://vercel.com/docs/concepts/projects/environment-variables?utm_source=next-site&utm_medium=docs&utm_campaign=next-website)에서 구성할 수 있습니다.
+
+모든 유형의 환경 변수를 구성해야 합니다. 개발에 사용되는 환경 변수도 다운로드하여 이후에 로컬 기기에서 사용할 수 있습니다.
+
+개발 환경 변수를 구성했다면 다음 명령을 사용하여 .env.local에서 사용할 수 있습니다.
+
+```
+vercel env pull .env.local
+
+```
+
+#### 테스트 환경 변수
+
+개발 및 프로덕션 환경 외에 `test`라는 3번째 옵션이 있습니다. 개발이나 프로덕션 환경에 기본값을 설정할 수 있는 것처럼, `testing` 환경을 위한 `.env.test` 파일을 사용하여 동일한 작업을 수행할 수 있습니다. 이 방법은 이전 두 가지 방법보다는 일반적이지 않습니다. Next.js는 `.env.development` 또는 `.env.production`에서 `testing` 환경에서 환경 변수를 로드하지 않습니다.
+
+이 방법은 `jest`나 `cypress`와 같은 도구로 테스트를 실행할 때 특정 환경 변수를 설정해야 하는 경우에 유용합니다. 테스트 기본값이 로드됩니다. `NODE_ENV`가 `test`로 설정된 경우, 하지만 대개 테스트 도구가 이를 대신 처리합니다.
+
+`test` 환경, `development` 및 `production` 간의 차이점이 있으므로 `.env.local`이 로드되지 않습니다. 테스트가 모든 사람에게 동일한 결과를 생성하도록 기대하기 때문입니다. 이렇게하면 각 테스트 실행이 동일한 환경 기본값을 사용하여 다른 실행에서 `.env.local`(기본 설정을 무시하는 것)을 무시하게 됩니다.
+
+> 참고: 기본 환경 변수와 유사하게 `env.test` 파일은 저장소에 포함되어야 하지만 `.env.test.local`은 `.env*.local`가 `.gitignore`을 통해 무시되도록 의도된 파일이므로 포함해서는 안 됩니다.
+
+단위 테스트를 실행하는 동안 `@next/env` 패키지의 `loadEnvConfig` 함수를 활용하여 Next.js가 환경 변수를 로드하는 방식과 동일하게 환경 변수를 로드할 수 있습니다.
+
+```
+// The below can be used in a Jest global setup file or similar for your testing set-up
+import { loadEnvConfig } from '@next/env'
+
+export default async () => {
+  const projectDir = process.cwd()
+  loadEnvConfig(projectDir)
+}
+
+
+```
+
+#### 환경 변수 로드 순서
+
+환경 변수는 다음 순서로 검색되며, 변수가 찾아지면 중지됩니다.
+
+1. `process.env`
+2. `.env.$(NODE_ENV).local`
+3. `.env.local`(NODE_ENV가 `test`인 경우 확인되지 않음.)
+4. `.env.$(NODE_ENV)`
+5. `.env`
+
+예를 들어 `NODE_ENV`가 `development`이고 `.env.development.local` 및 `.env`에서 변수를 정의하면 `.env.development.local`의 값이 사용됩니다.
+
+> 참고: NODE_ENV의 허용된 값은 production, development, test입니다.
+
+---
 
 - ### Supported Browsers and Features
+Next.js는 구성 없이 **최신 브라우저**를 지원합니다.
+
+- Chrome 64+
+- Edge 79+
+- Firefox 67+
+- Opera 51+
+- Safari 12+
+
+#### Browserslist
+
+특정 브라우저나 기능을 대상으로 하려면, Next.js는 `package.json` 파일에서 [Browserslist](https://browsersl.ist/) 구성을 지원합니다. Next.js는 다음과 같은 Browserslist 구성을 기본적으로 사용합니다.
+
+```
+{
+  "browserslist": [
+    "chrome 64",
+    "edge 79",
+    "firefox 67",
+    "opera 51",
+    "safari 12"
+  ]
+}
+
+
+
+```
+
+#### 폴리필
+
+Next.js는 [널리 사용되는 폴리필](https://github.com/vercel/next.js/blob/canary/packages/next-polyfill-nomodule/src/index.js)을 삽입합니다.
+
+- **fetch()** — 대체: `whatwg-fetch` and `unfetch`.
+- **URL** — 대체: the `[url` package (Node.js API)](<https://nodejs.org/api/url.html>).
+- **Object.assign()** — 대체: `object-assign`, `object.assign`, and `core-js/object/assign`.
+
+이러한 폴리필 중 하나라도 종속성에 포함되어 있으면, 중복을 피하기 위해 제작 빌드에서 자동으로 제거됩니다.
+
+또한 번들 크기를 줄이기 위해, Next.js는 필요한 브라우저에서만 이러한 폴리필을 로드합니다. 전 세계 대부분의 웹 트래픽은 이러한 폴리필을 다운로드하지 않습니다.
+
+#### 사용자 정의 폴리필
+
+대상 브라우저(예: IE 11)에서 지원되지 않는 기능이 필요한 경우, 사용자 정의 폴리필을 추가해야 합니다.
+
+이 경우에는 [사용자 정의 ``](https://nextjs.org/docs/advanced-features/custom-app) 또는 개별 컴포넌트에서 필요한 **특정 폴리필**을 상위 수준에서 가져와야 합니다.
+
+#### JavaScript 언어 기능
+
+Next.js를 사용하면 최신 JavaScript 기능을 쉽게 사용할 수 있습니다. ES6 기능 외에도 Next.js는 다음을 지원합니다.
+
+- [Async/await](https://github.com/tc39/ecmascript-asyncawait) (ES2017)
+- [Object Rest/Spread Properties](https://github.com/tc39/proposal-object-rest-spread) (ES2018)
+- [Dynamic `import()`](https://github.com/tc39/proposal-dynamic-import) (ES2020)
+- [Optional Chaining](https://github.com/tc39/proposal-optional-chaining) (ES2020)
+- [Nullish Coalescing](https://github.com/tc39/proposal-nullish-coalescing) (ES2020)
+- [Class Fields](https://github.com/tc39/proposal-class-fields) and [Static Properties](https://github.com/tc39/proposal-static-class-features) (stage 3 proposal의 일부)
+- 그 외 많은 기능들!
+
+#### 서버 측 폴리필
+
+클라이언트 측에서 `fetch()` 뿐만 아니라, Next.js는 Node.js 환경에서도 `fetch()` 폴리필을 지원합니다. 따라서 `isomorphic-unfetch` 또는 `node-fetch` 와 같은 폴리필 없이 서버 측 코드(예: `getStaticProps`/`getServerSideProps`)에서 `fetch()` 를 사용할 수 있습니다.
+
+#### TypeScript 기능
+
+Next.js에는 내장된 TypeScript 지원이 있습니다. [여기에서 자세히 알아보세요](https://nextjs.org/docs/basic-features/typescript).
+
+#### Babel 구성 사용자 정의(고급)
+
+Babel 구성을 사용자 정의할 수 있습니다. [여기에서 자세히 알아보세요](https://nextjs.org/docs/advanced-features/customizing-babel-config).
 
 - ### Handling Scritps
 ---
