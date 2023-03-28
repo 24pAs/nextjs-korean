@@ -2127,7 +2127,7 @@ router.push('/?counter=10', '/about?counter=10', { shallow: true })
 새로운 페이지이기 때문에, shallow routing을 요청했음에도 불구하고, 현재 페이지는 로드되지 않을 것이고, 새로운 페이지를 로드하고 data fetching 을 위해 대기할것입니다.
 
 middleware와 함께 shallow routing을 사용했을 때, 이전에 middleware 없이 수행한 것처럼 새 페이지가 현재 페이지와 일치하는지 확인하지 않습니다.
-이것은 middleware가 동적으로 다시 쓰여질 수 있고 얕게 스킵한 data fetch 없이 client-side 에서 확인 할 수 없기 때문입니다. 
+이것은 middleware가 동적으로 다시 쓰여질 수 있고 shallow routing에서 데이터 가져오기를 건너 뛰므로 클라이언트 측에서 확인할 수 없기 때문입니다. 
 따라서 shallow route는 항상 얕은 것으로 처리되어야 합니다.
 
 
@@ -2135,6 +2135,61 @@ middleware와 함께 shallow routing을 사용했을 때, 이전에 middleware �
 ## API Routes
 
 - ### Introduction
+API 라우트는 Next.js로 API를 빌드할 수 있는 해결책을 제공합니다.
+
+폴더 `pages/api` 내의 모든 파일은 `/api/*`에 매핑되며 `page` 대신 API 엔드포인트로 처리됩니다. 이들은 서버 측 번들에만 있으며 클라이언트 측 번들 크기를 증가시키지 않습니다.
+
+예를 들어, 다음과 같은 API route인 `pages/api/user.js`는 `200` 상태 코드와 함께 `JSON` 응답을 반환합니다.
+
+```js
+export default function handler(req, res) {
+  res.status(200).json({ name: 'John Doe' })
+}
+```
+
+> Note: `next.config.js`의  [pageExtensions configuration](https://nextjs.org/docs/api-reference/next.config.js/custom-page-extensions) 은 API Routes 에 영향을 미칩니다.
+
+API 라우트가 작동하려면 함수를 기본값(일명 request handler)으로 내보낸 다음 다음 매개변수를 수신해야 합니다.
+
+- req: [http.IncomingMessage](https://nodejs.org/api/http.html#class-httpincomingmessage)의 instance와 일부 미리 빌드된 middlewares 
+- res: [http.ServerResponse](https://nodejs.org/api/http.html#class-httpserverresponse)의 인스턴스와 일부 helper functions
+
+API route에서 다른 HTTP methods를 처리하려면 다음과 같이 request handler에서 `req.method`를 사용할 수 있습니다.
+
+```js
+export default function handler(req, res) {
+  if (req.method === 'POST') {
+    // Process a POST request
+  } else {
+    // Handle any other HTTP method
+  }
+}
+
+```
+
+API endpoints를 fetch 하는 것은, 이 섹션의 시작 부분의 예제를 다른 예제를 살펴봐야합니다.
+
+#### Use Cases
+
+새 프로젝트를 위해, API routes를 사용해서 전체 API를 빌드 할 수 있습니다.
+만약 현재 api를 가지고 있다면, API Routes를 통해 호출을 API에 전달할 필요가 없습니다.
+API Routes의 다른 사용 사례는 다음과 같습니다:
+
+- 외부 서비스의 URL 마스킹 (e.g. `/api/secret` instead of `https://company.com/secret-url`)
+- 서버에서 환경 변수를 사용하여 외부 서비스에 안전하게 엑세스합니다.
+
+#### Caveats
+
+- API Routes는 CORS headers를 지정하지 않습니다. 즉, 기본적으로 동일한 출처만 있습니다.
+request handler를 CORS request helpers로 래핑하여 이러한 동작을 사용자 지정할 수 있습니다.
+- API Routes는 `next export`를 사용할 수 없습니다.
+
+#### Related
+다음에 수행할 작업에 대한 자세한 내용은 다음 섹션을 참조하세요.
+
+- [API Routes Request Helpers](https://nextjs.org/docs/api-routes/request-helpers)
+- [Response Helpers](https://nextjs.org/docs/api-routes/response-helpers)
+- [TypeScript](https://nextjs.org/docs/basic-features/typescript#api-routes)
 
 - ### Dynamic API Routes
 
