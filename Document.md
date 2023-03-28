@@ -5,90 +5,6 @@
 
 ## Next.js
 ---
-### Documentation
-- [Getting Started](#getting-started)
-- [Basic Features](#basic-features)
-  - [Pages](#pages)
-  - [Data Fetching](#data-fetching)
-    - [Overview](#overview)
-    - [getServerSideProps](#getserversideprops)
-    - [getStaticProps](#getstaticprops)
-    - [getStaticPaths](#getstaticpaths)
-    - [Incremental Static Regeneration](#incremental-static-regeneration)
-    - [Client Side](#client-side)
-  - [Built-in CSS Support](#built-in-css-support)
-  - [Layouts](#layouts)
-  - [Image Optimization](#image-optimization)
-  - [Font Optimization](#font-optimization)
-  - [Static File Serving](#static-file-serving)
-  - [Fast Refresh](#fash-refresh)
-  - [ESLint](#eslint)
-  - [TypeScript](#typescript)
-  - [Environment Variables](#environment-variables)
-  - [Supported Browsers and Features](#supported-browsers-and-features)
-  - [Handling Scripts](#handling-scritps)
-- [Routing](#routing)
-  - [Introduction](#introduction)
-  - [Dynamic Routes](#dynamic-routes)
-  - [Imperatively](#imperatively)
-  - [Shallow Routing](#shallow-routing)
-- [API Routes](#api-routes)
-  - [Introduction](#introduction-1)
-  - [Dynamic API Routes](#dynamic-api-routes)
-  - [Request Helpers](#request-helpers)
-  - [Response Helpers](#response-helpers)
-  - [Edge API Routes](#edge-api-routes)
-- [Going to Production](#going-to-production)
-- [Deployment](#deployment)
-- [Authentication](#authentication)
-- [Testing](#testing)
-- [Accessibility](#accessibility)
-- [Guides](#guides)
-  - [Building Forms](#building-forms)
-- [Advanced Features](#advanced-features)
-  - [Next.js Complier](#nextjs-compiler)
-  - [Turbopack](#turbopack)
-  - [Preview Mode](#preview-mode)
-  - [Dynamic Import](#dynamic-import)
-  - [Automatic Static Optimization](#automatic-static-optimization)
-  - [Static HTML Export](#static-html-export)
-  - [Absolute Imports and Module Path Aliases](#absolute-imports-and-module-path-aliases)
-  - [Using MDX](#using-mdx)
-  - [AMP Support](#amp-support)
-    - [Introduction](#introduction-2)
-    - [Adding AMP Components](#adding-amp-components)
-    - [AMP in Static HTML Export](#amp-in-static-html-export)
-    - [TypeScript](#typescript-1)
-  - [Customizing Babel Config](#customizing-babel-config)
-  - [Customizing PostCSS Config](#customizing-postcss-config)
-  - [Custom Server](#custom-server)
-  - [Custom APP](#custom-app)
-  - [Custom Document](#custom-document)
-  - [Custom Error Page](#custom-error-page)
-  - [src Directory](#src-directory)
-  - [CI Build Caching](#ci-build-caching)
-  - [Multi Zones](#multi-zones)
-  - [Measuring performance](#measuring-performance)
-  - [Middlewares](#middleware)
-  - [Debugging](#debugging)
-  - [Error Handling](#error-handling)
-  - [Source Maps](#source-maps)
-  - [Codemods](#codemods)
-  - [Internatinalized Routing](#internationalized-routing)
-  - [Output File Tracing](#output-file-tracing)
-  - [Security Headers](#security-headers)
-  - [React 18](#react-18)
-    - [Overview](#overview-2)
-    - [Streaming SSR](#streaming-ssr)
-    - [React Server Components](#react-server-components)
-    - [Switchable Runtime](#switchable-runtiem)
-- [Upgrade Guide](#upgrade-guide)
-- [Migrating to Next.js](#migrating-to-nextjs)
-  - [Incrementally Adopting Next.js](#incrementally-adopting-nextjs)
-  - [Migrating fron Gatsby](#migrating-from-gatsby)
-  - [Migrating from Create React App](#migrating-from-create-react-app)
-  - [Migrating from React Router](#migrating-from-react-router)
-- [FAQ](#faq)
 
 ---
 ## Getting Started
@@ -2066,9 +1982,151 @@ Babel 구성을 사용자 정의할 수 있습니다. [여기에서 자세히 �
 - ### Introduction
 
 - ### Dynamic Routes
+미리 정의된 경로를 사용하여 경로를 정의하는 것만으로는 복잡한 응용프로그램에 항상 충분하지 않습니다. 
 
+Next.js에서는 dynamic route를 사용하기 위해서는 페이지에 괄호`([param])` 를 사용해서 사용할 수 있습니다. 
+
+아래와 같이 페이지를 만들어보세요. `pages/post/[pid].js`
+
+```js
+import { useRouter } from 'next/router'
+
+const Post = () => {
+  const router = useRouter()
+  const { pid } = router.query
+
+  return <p>Post: {pid}</p>
+}
+
+export default Post
+
+```
+
+`/post/1`, `/post/abc`, 기타 등등은  `pages/post/[pid].js`와 매칭될 것 입니다. 매칭된 path parameter는 페이지에 query parameter로 보내질 것 입니다. 그리고 다른 파라미터와 병합될 것 입니다. 
+
+
+
+예를 들어 `/post/abc` 경로에는 다음과 같은 쿼리 개체가 있습니다:
+
+```json
+{ "pid": "abc" }
+```
+
+마찬가지로, route `/post/abc?foo=bar`에는 다음과 같은 쿼리 객체가 있습니다:
+
+```json
+{ "foo": "bar", "pid": "abc" }
+```
+
+그러나 , router parameter는 같은 이름의 query parameter를 덮어쓸 것 입니다. 
+
+예를 들어 ,   `/post/abc?pid=123` 위와 같은 route는 아래와 같이 덮어씌여질 것 입니다. 
+
+```json
+{ "pid": "abc" }
+```
+
+여러개의 dynamic route는 같은 방식으로 동작합니다. 페이지 `/ post / [pid] / [comment] .js`는 경로 `/ post / abc / a-comment`와 일치하며 쿼리 객체는 다음과 같습니다.
+
+```json
+{ "pid": "abc", "comment": "a-comment" }
+```
+
+동적 경로에 대한 클라이언트 측 탐색은 `next/link`로 처리됩니다. 위에 사용된 경로에 대한 링크를 원한다면 다음과 같이 보일 것입니다.
+
+```js
+import Link from 'next/link'
+
+function Home() {
+  return (
+    <ul>
+      <li>
+        <Link href="/post/abc">Go to pages/post/[pid].js</Link>
+      </li>
+      <li>
+        <Link href="/post/abc?foo=bar">Also goes to pages/post/[pid].js</Link>
+      </li>
+      <li>
+        <Link href="/post/abc/a-comment">
+          Go to pages/post/[pid]/[comment].js
+        </Link>
+      </li>
+    </ul>
+  )
+}
+
+export default Home
+```
+
+자세한 내용은 문서에서 [페이지 간 연결]()을 참조하십시오.
+
+동적 라우트는 괄호 안에 세 개의 점( `...` )을 추가하여 모든 경로를 포함할 수 있습니다. 예를 들어:
+
+- `pages/post/[...slug].js`는 `/post/a`뿐만 아니라 `/post/a/b`, `/post/a/b/c` 등도 일치합니다.
+
+> 참고: slug 와 같은 이름 대신 [...param] 등의 이름을 사용할 수 있습니다.
+> 
+
+일치하는 매개변수는 쿼리 매개변수(`slug`의 경우)로 페이지로 전송되며 항상 배열이므로, 경로 `/post/a`는 다음과 같은 `query` 객체를 갖습니다.
+
+```
+{ "slug": ["a"] }
+
+```
+
+`/post/a/b` 및 일치하는 다른 경로의 경우 배열에 새 매개변수가 추가됩니다.
+
+```
+{ "slug": ["a", "b"] }
+
+```
+
+### **[optional catch all routes](https://nextjs.org/docs/routing/dynamic-routes#optional-catch-all-routes)**
+
+파라미터를 이중 괄호(`[[...slug]]`)로 포함하여 catch all 라우트를 선택적으로 만들 수 있습니다.
+
+예를 들어, `pages/post/[[...slug]].js` 는 `/post`, `/post/a`, `/post/a/b` 등과 일치합니다.
+
+catch all과 선택적 catch all 라우트의 주요 차이점은 선택적으로, 매개변수 없이 라우트도 일치한다는 것입니다(예를 들어, 위의 예에서 `/post`).
+
+`query` 객체는 다음과 같습니다.
+
+```
+{ } // GET `/post` (빈 객체)
+{ "slug": ["a"] } // `GET /post/a` (단일 요소 배열)
+{ "slug": ["a", "b"] } // `GET /post/a/b` (다중 요소 배열)
+
+```
+
+## **[주의점](https://nextjs.org/docs/routing/dynamic-routes#caveats)**
+
+- 정의된 라우트는 동적 라우트보다 우선하며, 동적 라우트는 catch all 라우트보다 우선합니다. 다음 예를 살펴보세요.
+    - `pages/post/create.js` - `/post/create`와 일치합니다.
+    - `pages/post/[pid].js` - `/post/1`, `/post/abc` 등과 일치합니다. 하지만 `/post/create`와 일치하지 않습니다.
+    - `pages/post/[...slug].js` - `/post/1/2`, `/post/a/b/c` 등과 일치합니다. 그러나 `/post/create`, `/post/abc`와 일치하지 않습니다.
+- 자동 정적 최적화로 정적으로 최적화된 페이지는 라우트 매개변수가 제공되지 않은 상태로 해제됩니다. 즉, `query`는 빈 객체(`{}`)가 됩니다.
+
+하이드레이션 후 Next.js는 애플리케이션을 업데이트하여 `query` 객체에서 라우트 매개변수를 제공합니다.
+
+## **[관련](https://nextjs.org/docs/routing/dynamic-routes#related)**
+
+다음 단계에 대한 자세한 내용은 다음 섹션을 참조하십시오:
 - ### Imperatively
+대부분의 라우팅 요구 사항을 처리하는 데 [next/link](https://nextjs.org/docs/api-reference/next/link)를 사용할 수 있지만, 클라이언트 측 내비게이션도 [next/router](https://nextjs.org/docs/api-reference/next/router)의 문서를 확인해보세요.
 
+다음 예제는 [useRouter](https://nextjs.org/docs/api-reference/next/router#userouter)를 사용하여 기본 페이지 내비게이션을 수행하는 방법을 보여줍니다.
+```
+import { useRouter } from 'next/router'
+
+export default function ReadMore() {
+  const router = useRouter()
+
+  return (
+    <button onClick={() => router.push('/about')}>
+      Click here to read more
+    </button>)
+}
+```
 - ### Shallow Routing
 
 >Examples
