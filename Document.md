@@ -1974,12 +1974,325 @@ Next.js에는 내장된 TypeScript 지원이 있습니다. [여기에서 자세�
 Babel 구성을 사용자 정의할 수 있습니다. [여기에서 자세히 알아보세요](https://nextjs.org/docs/advanced-features/customizing-babel-config).
 
 - ### Handling Scritps
+**스크립트 컴포넌트**인 `[next/script](<https://nextjs.org/docs/api-reference/next/script>)`는 Next.js 애플리케이션의 어디서든 서드파티 스크립트를 최적으로 로드할 수 있도록 해줍니다. 이는 HTML `<script>` 요소의 확장이며 사용 사례에 맞는 여러 로딩 전략 중에서 선택할 수 있도록 지원합니다.
+**[개요](https://nextjs.org/docs/basic-features/script#overview)**
+
+웹사이트는 종종 분석, 광고, 고객 지원 위젯 및 동의 관리와 같은 기능을 추가하기 위해 서드파티 스크립트를 사용합니다. 그러나 이는 사용자 및 개발자 경험에 영향을 미치는 문제를 발생시킬 수 있습니다.
+
+- 일부 서드파티 스크립트는 로딩 성능을 저하시킬 수 있으며 페이지 콘텐츠가 표시되는 것을 막기 위해 사용자 경험을 저하시킬 수 있습니다.
+- 개발자는 종종 페이지 성능에 영향을 미치지 않고 애플리케이션에서 서드파티 스크립트를 로드해야 할 위치와 방법을 확신할 수 없습니다.
+
+브라우저는 HTML의 배치 순서와 `async` 및 `defer` 속성의 사용에 따라 `<script>` 요소를 로드하고 실행합니다. 그러나 기본 `<script>` 요소를 사용하면 몇 가지 문제가 발생합니다.
+
+- 애플리케이션이 커지고 복잡해지면 서드파티 스크립트의 로딩 순서를 관리하기가 점점 어려워집니다.
+- [스트리밍 및 서스펜스](https://beta.nextjs.org/docs/data-fetching/streaming-and-suspense)는 가능한 한 빨리 새로운 콘텐츠를 렌더링하고 수화시킴으로써 페이지 성능을 향상시키지만 `<script>` 속성(예: `defer`)이 추가 작업 없이 호환되지 않는 경우가 있습니다.
+
+스크립트 컴포넌트는 선언적 API를 제공하여 서드파티 스크립트를 로드하는 문제를 해결합니다. 스트리밍을 지원하는 스크립트의 로딩 순서를 최적화하기 위해 사용할 수 있는 일련의 내장 로딩 전략을 제공합니다. 스크립트 컴포넌트가 제공하는 각 전략은 페이지 성능에 최소한의 영향을 미치도록 React 및 Web API의 최상의 조합을 사용합니다.
+
+**[사용 방법](https://nextjs.org/docs/basic-features/script#usage)**
+
+먼저 `next/script` 컴포넌트를 가져오세요.
+
+```
+import Script from 'next/script'
+
+```
+
+**[페이지 스크립트](https://nextjs.org/docs/basic-features/script#page-scripts)**
+
+단일 라우트에서 제3자 스크립트를 로드하려면 `next/script`를 가져와 페이지 컴포넌트에 직접 스크립트를 포함시키세요.
+
+```
+import Script from 'next/script'
+
+export default function Dashboard() {
+  return (
+    <>
+      <Script src="<https://example.com/script.js>" />
+    </>)
+}
+
+```
+
+이 스크립트는 브라우저에서 특정 페이지가 로드될 때만 가져와 실행됩니다.
+
+**[애플리케이션 스크립트](https://nextjs.org/docs/basic-features/script#application-scripts)**
+
+모든 라우트에 대해 제3자 스크립트를 로드하려면 `next/script`를 가져와 `pages/_app.js`에 스크립트를 직접 포함시키세요.
+
+```
+import Script from 'next/script'
+
+export default function MyApp({ Component, pageProps }) {
+  return (
+    <>
+      <Script src="<https://example.com/script.js>" />
+      <Component {...pageProps} />
+    </>)
+}
+
+```
+
+이 스크립트는 애플리케이션에서 *어떤* 라우트를 방문하더라도 로드되고 실행됩니다. 사용자가 여러 페이지를 이동하더라도 Next.js는 이 스크립트가 한 번만 로드되도록 보장합니다.
+
+> 참고: 애플리케이션의 모든 페이지에 대해 제3자 스크립트를 로드해야 할 필요는 거의 없습니다. 성능에 불필요한 영향을 최소화하기 위해 특정 페이지에만 제3자 스크립트를 포함하는 것이 좋습니다.
+> 
+
+**[전략](https://nextjs.org/docs/basic-features/script#strategy)**
+
+`next/script`의 기본 동작은 모든 페이지에서 제3자 스크립트를 로드할 수 있도록 하지만, `strategy` 속성을 사용하여 로딩 동작을 세밀하게 조정할 수 있습니다.
+
+- `beforeInteractive`: Next.js 코드와 페이지 hydration이 시작되기 전에 스크립트를 로드합니다.
+- `afterInteractive`: (**기본값**) 페이지 hydration이 일부 완료된 후에 스크립트를 로드합니다.
+- `lazyOnload`: 브라우저 유휴 시간에 스크립트를 로드합니다.
+- `worker`: (실험적) 웹 워커에서 스크립트를 로드합니다.
+
+각 전략 및 사용 사례에 대해 자세히 알아보려면 `[next/script]` API 참조 문서를 참조하세요.
+
+> 참고: 브라우저에서 next/script 컴포넌트가 로드되면 DOM에 남아 있으며 클라이언트 측 탐색은 스크립트를 다시 실행하지 않습니다.
+> 
+
+**[웹 워커를 사용하여 스크립트 오프로드(실험적)](https://nextjs.org/docs/basic-features/script#offloading-scripts-to-a-web-worker-experimental)**
+
+> 참고: worker 전략은 아직 안정적이지 않으며 app/ 디렉터리와 호환되지 않습니다. 주의해서 사용하세요.
+> 
+
+`worker` 전략을 사용하는 스크립트는 웹 워커에서 [Partytown](https://partytown.builder.io/)을 사용하여 오프로드되고 실행됩니다. 이를 통해 주요 스레드를 애플리케이션 코드의 나머지에 전담함으로써 사이트의 성능을 개선할 수 있습니다.
+
+이 전략은 아직 실험적이며 `next.config.js`에서 `nextScriptWorkers` 플래그를 활성화해야만 사용할 수 있습니다.
+
+```
+module.exports = {
+  experimental: {
+    nextScriptWorkers: true,
+  },
+}
+
+```
+
+그런 다음 `next` (보통 `npm run dev` 또는 `yarn dev`)를 실행하면 필요한 패키지를 설치하는 방법을 안내합니다.
+
+```
+npm run dev
+
+# 다음과 같은 명령어가 표시됩니다.
+#
+# Please install Partytown by running:
+#
+#         npm install @builder.io/partytown
+#
+# ...
+
+```
+
+설치가 완료되면 `strategy="worker"`를 정의하면 Partytown이 자동으로 애플리케이션에서 인스턴스화되어 스크립트를 웹 워커로 오프로드합니다.
+
+```
+import Script from 'next/script'
+
+export default function Home() {
+  return (
+    <>
+      <Script src="<https://example.com/script.js>" strategy="worker" />
+    </>)
+}
+
+```
+
+웹 워커에서 제3자 스크립트를 로드할 때 고려해야 할 여러 가지 Trade-offs가 있습니다. 자세한 내용은 Partytown의 [Trade-offs](https://partytown.builder.io/trade-offs) 문서를 참조하세요.
+
+**[인라인 스크립트](https://nextjs.org/docs/basic-features/script#inline-scripts)**
+
+스크립트 컴포넌트는 외부 파일에서 로드하지 않는 인라인 스크립트도 지원합니다. 이를 위해 JavaScript를 중괄호 안에 넣어 작성할 수 있습니다.
+
+```
+<Script id="show-banner" strategy="afterInteractive">
+  {`document.getElementById('banner').classList.remove('hidden')`}
+</Script>
+
+```
+
+또는 `dangerouslySetInnerHTML` 속성을 사용하여 작성할 수 있습니다.
+
+```
+<Script id="show-banner" strategy="afterInteractive" dangerouslySetInnerHTML={{
+    __html: `document.getElementById('banner').classList.remove('hidden')`,
+  }}/>
+
+```
+
+> 참고: 인라인 스크립트에서는 Next.js가 스크립트를 추적하고 최적화하기 위해 id 속성을 지정해야 합니다.
+> 
+
+**[추가 코드 실행](https://nextjs.org/docs/basic-features/script#executing-additional-code)**
+
+이벤트 핸들러를 Script 컴포넌트와 함께 사용하여 특정 이벤트가 발생한 후 추가 코드를 실행할 수 있습니다.
+
+- `onLoad`: 스크립트 로딩이 완료된 후 코드를 실행합니다.
+- `onReady`: 스크립트 로딩이 완료되고 컴포넌트가 마운트될 때마다 코드를 실행합니다.
+- `onError`: 스크립트 로딩에 실패한 경우 코드를 실행합니다.
+
+```
+import Script from 'next/script'
+
+export default function Page() {
+  return (
+    <>
+      <Scriptsrc="<https://example.com/script.js>"onLoad={() => {
+          console.log('Script has loaded')
+        }}/>
+    </>)
+}
+
+```
+
+각 이벤트 핸들러에 대해 자세히 알아보려면 `[next/script]` API 참조 문서를 참조하세요.
+**[추가 속성](https://nextjs.org/docs/basic-features/script#additional-attributes)**
+
+`<script>` 요소에 할당할 수 있는 많은 DOM 속성이 있지만 Script 컴포넌트에서 사용되지 않는 속성도 있습니다. 예를 들어 `[nonce]` 또는 [사용자 정의 데이터 속성](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/data-*)과 같은 속성이 포함될 수 있습니다. 추가 속성을 포함하면 최종으로 최적화된 `<script>` 요소로 자동 전달됩니다.
+
+```
+import Script from 'next/script'
+
+export default function Page() {
+  return (
+    <>
+      <Scriptsrc="<https://example.com/script.js"id="example-script"nonce="XUENAJFW"data-test="script>"/>
+    </>)
+}
+
+```
+  
 ---
 ## Routing
 
 - ### Overview
 
 - ### Introduction
+  Next.js는 페이지 개념에 기반한 파일 시스템 기반 라우터를 갖고 있습니다. `pages` 디렉토리에 파일을 추가하면 자동으로 라우트로 사용할 수 있습니다. `pages` 디렉토리 내부의 파일은 대부분의 공통 패턴을 정의하는 데 사용할 수 있습니다.
+
+**[인덱스 라우트](https://nextjs.org/docs/routing/introduction#index-routes)**
+
+라우터는 `index` 이름의 파일을 디렉토리의 루트로 자동 라우팅합니다.
+
+- `pages/index.js` → `/`
+- `pages/blog/index.js` → `/blog`
+
+**[중첩된 라우트](https://nextjs.org/docs/routing/introduction#nested-routes)**
+
+라우터는 중첩된 파일을 지원합니다. 중첩된 폴더 구조를 만들면 파일이 여전히 동일하게 라우팅됩니다.
+
+- `pages/blog/first-post.js` → `/blog/first-post`
+- `pages/dashboard/settings/username.js` → `/dashboard/settings/username`
+
+**[동적 라우트 세그먼트](https://nextjs.org/docs/routing/introduction#dynamic-route-segments)**
+
+동적 세그먼트를 일치시키려면 대괄호 구문을 사용할 수 있습니다. 이를 사용하면 이름이 지정된 매개변수를 일치시킬 수 있습니다.
+
+- `pages/blog/[slug].js` → `/blog/:slug` (`/blog/hello-world`)
+- `pages/[username]/settings.js` → `/:username/settings` (`/foo/settings`)
+- `pages/post/[...all].js` → `/post/*` (`/post/2020/id/title`)
+
+> 동적 라우트 문서를 확인하여 자세히 알아보세요.
+> 
+
+**[페이지 간 링크](https://nextjs.org/docs/routing/introduction#linking-between-pages)**
+
+Next.js 라우터는 단일 페이지 애플리케이션과 유사하게 페이지 간 클라이언트 측 라우트 전환을 수행할 수 있습니다.
+
+이 클라이언트 측 라우트 전환을 수행하기 위해 `Link` 라는 React 컴포넌트가 제공됩니다.
+
+```
+
+function Home() {
+  return (
+    <ul>
+      <li>
+        <Link href="/">Home</Link>
+      </li>
+      <li>
+        <Link href="/about">About Us</Link>
+      </li>
+      <li>
+        <Link href="/blog/hello-world">Blog Post</Link>
+      </li>
+    </ul>)
+}
+
+export default Home
+
+```
+
+위 예제는 여러 개의 링크를 사용합니다. 각 링크는 경로(`href`)를 알려진 페이지와 매핑합니다.
+
+- `/` → `pages/index.js`
+- `/about` → `pages/about.js`
+- `/blog/hello-world` → `pages/blog/[slug].js`
+
+화면 내의 `<Link />`는 기본적으로(초기 상태 또는 스크롤을 통해) 정적 생성을 사용하는 페이지의 경우(해당 데이터를 포함하여) 자동으로 캐싱됩니다. 서버 렌더링 라우트의 경우, 해당 데이터는 `<Link />`가 클릭될 때만 가져옵니다.
+
+**[동적 경로에 링크](https://nextjs.org/docs/routing/introduction#linking-to-dynamic-paths)**
+
+동적 라우트 세그먼트를 위해 경로를 생성할 때 보간(interpolation)을 사용할 수 있습니다. 예를 들어 프롭으로 구성된 게시물 목록을 보여주려면:
+
+```
+
+function Posts({ posts }) {
+  return (
+    <ul>
+      {posts.map((post) => (
+        <li key={post.id}>
+          <Link href={`/blog/${encodeURIComponent(post.slug)}`}>
+            {post.title}
+          </Link>
+        </li>))}
+    </ul>)
+}
+
+export default Posts
+
+```
+
+> 예제에서 encodeURIComponent는 경로가 utf-8 호환되도록 사용됩니다.
+> 
+
+대안으로 URL 객체를 사용할 수 있습니다.
+
+```
+
+function Posts({ posts }) {
+  return (
+    <ul>
+      {posts.map((post) => (
+        <li key={post.id}>
+          <Link href={{
+              pathname: '/blog/[slug]',
+              query: { slug: post.slug },
+            }}>
+            {post.title}
+          </Link>
+        </li>))}
+    </ul>)
+}
+
+export default Posts
+
+```
+
+이제 경로를 생성하기 위해 보간 대신 `href`에서 URL 객체를 사용합니다.
+
+- `pathname`은 `pages` 디렉토리 내의 페이지 이름입니다. 이 경우 `/blog/[slug]`입니다.
+- `query`는 동적 세그먼트가 있는 객체입니다. 이 경우 `slug`입니다.
+
+**[라우터 주입](https://nextjs.org/docs/routing/introduction#injecting-the-router)**
+
+- 예제
+    - [Dynamic Routing](https://github.com/vercel/next.js/tree/canary/examples/dynamic-routing)
+
+React 컴포넌트에서 `[router` 객체에 액세스하려면 `[useRouter](<https://nextjs.org/docs/api-reference/next/router#userouter>)` 또는 `[withRouter](<https://nextjs.org/docs/api-reference/next/router#withrouter>)`를 사용할 수 있습니다.
+
+일반적으로 `[useRouter](<https://nextjs.org/docs/api-reference/next/router#userouter>)`를 사용하는 것이 좋습니다.
+  
 
 - ### Dynamic Routes
 미리 정의된 경로를 사용하여 경로를 정의하는 것만으로는 복잡한 응용프로그램에 항상 충분하지 않습니다. 
